@@ -1,0 +1,13 @@
+<div
+	class="flex bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-zinc-900 to-zinc-800 bg-gradient-to-r] w-full h-full">
+	<nav class="navigation-container z-50">
+		<app-menu></app-menu>
+	</nav>
+	<div class="w-full h-full">
+		<router-outlet></router-outlet>
+	</div>
+	<div *ngIf="messagesOn" class="left-60 top-2 absolute h-full">
+		<app-messages class="flex items-center justify-center text-center align-middle bg-transparent"></app-messages>
+	</div>
+
+</div>

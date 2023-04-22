@@ -1,0 +1,26 @@
+/* Add application styles & imports to this file! */
+
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+html, body {
+    height: 100%;
+    scrollbar-color:hsl(0,0%,67%) transparent;
+    font-size: small;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin: 0px;
+    padding: 0px;
+    line-height: 1.5;
+}
+a {
+   text-decoration: none;
+}
+.selected {
+	background-color: white;
+	fill-opacity: 50;
+}
+
+
+

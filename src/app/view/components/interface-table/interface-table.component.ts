@@ -16,7 +16,7 @@ import { ViewService } from '../../services/view.service';
       class="interface-outlet flex flex-col items-center justify-center text-gray-500 min-w-full mt-[25vh]"
     >
       <span
-        class="text-slate-500 font-serif text-xl flex justify-center animate-fade-in-down mt-6 mb-2"
+        class="text-gray-100 font-serif text-xl flex justify-center animate-fade-in-down mt-6 mb-2"
       >
         Date View Selection</span
       >
@@ -33,18 +33,30 @@ import { ViewService } from '../../services/view.service';
       </div>
       <ng-container *ngIf="!error; then available; else errorDefault">
         <button
-          class="inline-block rounded bg-slate-700 px-6 pt-2.5 pb-2 mt-8 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-slate-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-slate-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]"
           (click)="onViewData()"
+          class="rounded-md px-3.5 py-2 m-1 overflow-hidden relative group cursor-pointer border-2 font-medium border-zinc-600 text-[#31abc8]"
         >
-          View Inventory
+          <span
+            class="absolute w-64 h-0 transition-all duration-300 origin-center rotate-45 -translate-x-20 bg-[#31abc8] top-1/2 group-hover:h-64 group-hover:-translate-y-32 ease"
+          ></span>
+          <span
+            class="relative text-[#31abc8] transition duration-300 group-hover:text-white ease"
+            >View Inventory</span
+          >
         </button></ng-container
       >
       <ng-template #available>
         <button
-          class="inline-block rounded nt-4 bg-[#6A64F1] bg-opacity-80 px-6 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:rounded-xl hover:bg-opacity-100 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-slate-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]"
           (click)="onViewData()"
+          class="rounded-md px-3.5 py-2 m-1 overflow-hidden relative group cursor-pointer border-2 font-medium border-zinc-600 text-[#31abc8]"
         >
-          View Inventory
+          <span
+            class="absolute w-64 h-0 transition-all duration-300 origin-center rotate-45 -translate-x-20 bg-[#31abc8] bg-opacity-70 top-1/2 group-hover:h-64 group-hover:-translate-y-32 ease"
+          ></span>
+          <span
+            class="relative text-[#31abc8] transition duration-300 group-hover:text-gray-100 ease"
+            >View Inventory</span
+          >
         </button>
       </ng-template>
       <ng-template #errorDefault>
@@ -70,10 +82,8 @@ export class InterfaceTableComponent implements OnInit, OnDestroy {
   error: boolean = false;
   loading: boolean = true;
   selectedRange: CalendarDay[] = [];
-  selectedDailyBreakdown: DailyMenuBreakdown[] = [];
   startDate: Date;
   endDate: Date;
-  nulldates: string[] = [];
   menuBreakdown$: Observable<DailyMenuBreakdown[]>;
   menubreakdowns: DailyMenuBreakdown[] = [];
   errorMessage$: Observable<CalendarDay[]>;

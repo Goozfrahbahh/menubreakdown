@@ -1,4 +1,4 @@
-import { Component, HostBinding, OnInit } from '@angular/core';
+import { Component, HostBinding, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import { UploadFormService } from '../services/upload-form.service';
@@ -19,7 +19,7 @@ import {
       class="upload flex align-middle items-center justify-center content-center p-12 mt-[10vh]"
     >
       <div
-        class="mx-auto w-full max-w-[550px] p-10 pb-2 bg-[#6A64F1] bg-opacity-40 shadow-xl hover:shadow-2xl rounded-xl"
+        class="mx-auto w-full max-w-[550px] p-10 pb-2 bg-zinc-800 bg-opacity-40 shadow-xl hover:shadow-2xl rounded-xl"
       >
         <h1
           class="text-2xl -mt-2 mb-6 text-gray-200 border-b border-b-zinc-700 pb-2"
@@ -52,7 +52,7 @@ import {
             >
               <div class="flex items-center justify-between">
                 <span
-                  class="truncate pr-3 text-base font-medium text-indigo-200"
+                  class="truncate pr-3 text-base font-medium text-[#31abc8]"
                 >
                   Selected Date:
                   <span class="text-gray-200">
@@ -87,10 +87,16 @@ import {
         </div>
         <div class="flex flex-row justify-center items-center text-center">
           <button
-            class="flex-no-shrink hover:shadow-lg bg-zinc-800 px-5 py-2 ml-4 text-sm font-medium tracking-wider text-white border border-gray-700 rounded-lg shadow-sm"
             (click)="onDelete()"
+            class="rounded-md px-3.5 py-2 m-1 overflow-hidden relative group cursor-pointer border-2 font-medium border-zinc-600 text-[#31abc8]"
           >
-            Delete
+            <span
+              class="absolute w-64 h-0 transition-all duration-300 origin-center rotate-45 -translate-x-20 bg-[#31abc8] bg-opacity-70 top-1/2 group-hover:h-64 group-hover:-translate-y-32 ease"
+            ></span>
+            <span
+              class="relative text-[#31abc8] transition duration-300 group-hover:text-gray-100 ease"
+              >Delete</span
+            >
           </button>
         </div>
       </div>
@@ -124,14 +130,11 @@ import {
     ]),
   ],
 })
-export class DeleteFormComponent implements OnInit {
+export class DeleteFormComponent implements OnInit, OnDestroy {
   @HostBinding('@listAnimation')
   dateField = new FormControl();
   id: number;
-  date: string;
   dateList: any[] = [];
-
-  protected dateSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   private destroy$ = new Subject<void>();
   constructor(
     private uploadFormService: UploadFormService,
@@ -162,5 +165,10 @@ export class DeleteFormComponent implements OnInit {
 
   onDelete() {
     this.menuExtractionService.deleteMenuBreakdown(this.id);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

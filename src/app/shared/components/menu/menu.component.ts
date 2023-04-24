@@ -34,7 +34,7 @@ import { SettingsService } from '../../services/settings.service';
         <a
           routerLink="/home"
           [routerLinkActive]="'active'"
-          class="flex items-center justify-center h-12 w-12 hover:bg-[#6A64F1] text-gray-500 rounded-full active:bg-[#6A64F1]"
+          class="flex items-center justify-center h-12 w-12 hover:bg-[#31abc8] text-gray-500 rounded-full active:bg-[#31abc8]"
         >
           <svg
             viewBox="100 110 800 800"
@@ -70,7 +70,7 @@ import { SettingsService } from '../../services/settings.service';
           <li>
             <a routerLink="/view" class="flex flex-col items-center">
               <span
-                class="flex items-center justify-center text-zinc-500 hover:bg-[#6A64F1] hover:text-white h-12 w-12 rounded-2xl"
+                class="flex items-center justify-center text-zinc-500 hover:bg-[#31abc8] hover:text-white h-12 w-12 rounded-2xl"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -97,7 +97,7 @@ import { SettingsService } from '../../services/settings.service';
           <li>
             <a routerLink="/upload" class="flex flex-col items-center">
               <span
-                class="flex items-center justify-center text-zinc-500 hover:bg-[#6A64F1] hover:text-white h-12 w-12 rounded-2xl"
+                class="flex items-center justify-center text-zinc-500 hover:bg-[#31abc8] hover:text-white h-12 w-12 rounded-2xl"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -126,7 +126,7 @@ import { SettingsService } from '../../services/settings.service';
           <li>
             <a routerLink="/message-center" class="flex flex-col items-center">
               <span
-                class="flex items-center justify-center text-zinc-500 hover:bg-[#6A64F1] hover:text-white h-12 w-12 rounded-2xl"
+                class="flex items-center justify-center text-zinc-500 hover:bg-[#31abc8] hover:text-white h-12 w-12 rounded-2xl"
               >
                 <svg
                   class="w-8 h-8"
@@ -153,7 +153,7 @@ import { SettingsService } from '../../services/settings.service';
           <li>
             <a routerLink="/settings" class="flex flex-col items-center">
               <span
-                class="flex items-center justify-center text-zinc-500 hover:bg-[#6A64F1] hover:text-white h-12 w-12 rounded-2xl"
+                class="flex items-center justify-center text-zinc-500 hover:bg-[#31abc8] hover:text-white h-12 w-12 rounded-2xl"
               >
                 <svg
                   class="w-6 h-6"
@@ -199,7 +199,7 @@ import { SettingsService } from '../../services/settings.service';
         display: none;
       }
       .active {
-        background-color: #6a64f1;
+        background-color: #31abc8;
       }
     `,
   ],
@@ -239,7 +239,6 @@ export class MenuComponent implements OnInit, OnDestroy {
   @ViewChild('menuitem', { static: true }) menuitem: ElementRef;
   toggleState: boolean = false;
   navOpacityController: boolean = false;
-  currentRoute: ParamMap;
   private destroy$ = new Subject<void>();
 
   constructor(private settings: SettingsService) {}

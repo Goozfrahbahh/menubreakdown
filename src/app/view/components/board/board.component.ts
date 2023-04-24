@@ -73,26 +73,18 @@ import { TableService } from '../../services/table.service';
 export class ViewBoardComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('calendarRef', { static: false }) calendarRef: ElementRef;
   @ContentChildren('boxRef') boxRef: QueryList<ElementRef>;
-
   @Input('selectedDate') selectedDate: CalendarDay;
 
   viewOff: boolean = false;
-
   calendar: CalendarDay[] = [];
-  days: CalendarDay;
   activeDate: Date;
   refList: any[] = [];
-  daySelected: CalendarDay;
-  startDate: CalendarDay;
-  endDate: CalendarDay;
-  selectedDates: Date[];
   dateRange: DateRange = [null, null];
   indexedRange: [number, number] = [0, 0];
   rangeDays: CalendarDay[] = [];
   selectedMenuBreakdowns: DailyMenuBreakdown[] = [];
   dataList: DailyMenuBreakdown[] = [];
   errorMessage: any[] = [];
-  data: CalendarDay[] = [];
 
   private destroy$ = new Subject<void>();
 

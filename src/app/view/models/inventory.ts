@@ -160,7 +160,11 @@ export const PicadaColombianaList: InventoryItems[] = [
 ];
 
 export const EntreeList = [
+  BistecChicoList,
+  BistecGrandeList,
   ChurrascoList,
+  ChicarronList,
+  ChorizoList,
   ChuletaParillaList,
   ChuletaVallunaList,
   CamaronesCatalanaList,
@@ -169,6 +173,7 @@ export const EntreeList = [
   PescadoCilantroMayonesaList,
   TamalList,
   BrisketList,
+  SopaPataconesList,
   LomoResParillaList,
   PechugaPolloList,
   PechugaEmpanizadaList,
@@ -184,17 +189,79 @@ export const EntreeList = [
   TequenosList,
   PicadaColombianaList,
 ];
-
-export const InventoryKey = [
+export const inventory = [
+  'CAB Top-Butt Sirloin',
+  'CAB Top-Butt Sirloin',
+  'CAB Top-Butt Sirloin',
+  'Pork Belly',
+  'Colombia Import',
+  'Pork Chop',
+  'Pork Loin',
+  'Shrimp, White',
+  'Salmon Skinless',
+  'Whole Tilapia',
+  'Tilapia Frozen',
+  'Combination',
+  'CAB Beef Brisket',
+  'CAB Beef Brisket',
+  'USDA Rib-eye',
+  'Chicken Breast',
+  'Chicken Breast',
+  'Whole Chicken',
+  'Whole Chicken',
+  'Combination',
+  'CAB Top-Butt Sirloin',
+  'Whole Chicken',
+  'Vegetable Mix',
+  'Tilapia Filet 2-3oz',
+  'Colombia Import',
+  'Colombia Import',
+  'Local Labels, Austin, Tx',
+  'Combination',
+];
+export const EntreeKey = [
+  'Pechuga de Pollo',
+  'Pechuga de Pollo Empanizada',
+  'Pabellon',
+  'Bandeja Paisa Tipica Antioquena',
+  'Chuleta Valluna',
+  'Pollo Guisado',
+  'BistecCriollo',
+  'Bandeja Paisa',
   'Churrasco',
+  'Pescado Frito',
+  'Bistec Encebollado',
+  'Lomo de Res a la Parilla',
+  'Plato Vegetariano',
+  'Parillada Vegetariano',
+  'Chuleta a la Parilla',
+  'Pechuga Rellena',
+  'Camarones a la Catalana',
+  'Pescado en Cilantro y Mayonesa',
+  'Ropa Vieja',
+  'Bistec a Caballo',
+  'Salmon en Limon y Mantequilla',
+  'Arroz con Pollo',
+  'Tamal Valluno',
+  'Pollo Empanizado',
+  'Pollo Guisado',
+  'Carne Asada',
+];
+export const InventoryKey = [
+  'Bistec Chico',
+  'Bistec Grande',
+  'Churrasco',
+  'Chicharron',
+  'Chorizo',
   'Pork Chop',
   'Pork Loin',
   'Shrimp',
-  'Salmon',
+  'Salmon En Limon Y Mantequilla',
   'Whole Fish',
   'Frozen Tilapia',
   'Tamal Valluno',
   'Brisket',
+  'Patacones Soup',
   'Rib-Eye',
   'Pechuga de Pollo',
   'Pechuga Empanizada',
@@ -210,8 +277,12 @@ export const InventoryKey = [
   'Tequenos',
   'Picada Colombiana',
 ];
+export interface TableInventory {
+  [key: string]: InventoryTableData;
+}
 
 export interface InventoryTableData {
+  category: string;
   totalQuantity: number;
   individualPlates: {
     name: string;
@@ -219,4 +290,6 @@ export interface InventoryTableData {
     modifier?: string;
     quantity: number;
   }[];
+
+  selected?: any;
 }

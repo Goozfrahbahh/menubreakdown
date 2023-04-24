@@ -48,7 +48,7 @@ import { FormControl } from '@angular/forms';
       class="upload flex align-middle items-center justify-center content-center p-12 mt-[10vh]"
     >
       <div
-        class="mx-auto w-full max-w-[550px] p-10 pb-2 bg-[#6b64f1] bg-opacity-40 shadow-xl hover:shadow-2xl rounded-xl"
+        class="mx-auto w-full max-w-[550px] p-10 pb-2 dark:divide-gray-700 bg-zinc-800 bg-opacity-40 shadow-xl hover:shadow-2xl rounded-xl"
       >
         <h1
           class="text-2xl -mt-2 mb-6 text-gray-200 border-b border-b-zinc-700 pb-2"
@@ -97,7 +97,7 @@ import { FormControl } from '@angular/forms';
                   Or
                 </span>
                 <button
-                  class="flex-no-shrink hover:shadow-lg bg-zinc-800 px-5 py-2 ml-4 text-sm font-medium tracking-wider text-white border border-gray-700 rounded-lg shadow-sm"
+                  class="flex-no-shrink hover:shadow-lg bg-zinc-800/70 px-5 py-2 ml-4 text-sm font-medium tracking-wider text-white border border-gray-700 rounded-lg shadow-sm"
                   role="button"
                   (click)="uploader.click()"
                 >
@@ -138,20 +138,20 @@ import { FormControl } from '@angular/forms';
                     width="10"
                     height="10"
                     viewBox="0 0 10 10"
-                    fill="none"
+                    fill="#31abc8"
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
                       fill-rule="evenodd"
                       clip-rule="evenodd"
                       d="M0.279337 0.279338C0.651787 -0.0931121 1.25565 -0.0931121 1.6281 0.279338L9.72066 8.3719C10.0931 8.74435 10.0931 9.34821 9.72066 9.72066C9.34821 10.0931 8.74435 10.0931 8.3719 9.72066L0.279337 1.6281C-0.0931125 1.25565 -0.0931125 0.651788 0.279337 0.279338Z"
-                      fill="currentColor"
+                      fill="#31abc8"
                     />
                     <path
                       fill-rule="evenodd"
                       clip-rule="evenodd"
                       d="M0.279337 9.72066C-0.0931125 9.34821 -0.0931125 8.74435 0.279337 8.3719L8.3719 0.279338C8.74435 -0.0931127 9.34821 -0.0931123 9.72066 0.279338C10.0931 0.651787 10.0931 1.25565 9.72066 1.6281L1.6281 9.72066C1.25565 10.0931 0.651787 10.0931 0.279337 9.72066Z"
-                      fill="currentColor"
+                      fill="#31abc8"
                     />
                   </svg>
                 </button>
@@ -160,10 +160,16 @@ import { FormControl } from '@angular/forms';
           </div>
           <div class="flex flex-row justify-center items-center text-center">
             <button
-              class="flex-no-shrink hover:shadow-lg bg-zinc-800 px-5 py-2 ml-4 text-sm font-medium tracking-wider text-white border border-gray-700 rounded-lg shadow-sm"
               (click)="onSubmit()"
+              class="rounded-md px-3.5 py-2 m-1 overflow-hidden relative group cursor-pointer border-2 font-medium border-zinc-600 text-[#31abc8]"
             >
-              Submit
+              <span
+                class="absolute w-64 h-0 transition-all duration-300 origin-center rotate-45 -translate-x-20 bg-[#31abc8] bg-opacity-70 top-1/2 group-hover:h-64 group-hover:-translate-y-32 ease"
+              ></span>
+              <span
+                class="relative text-[#31abc8] transition duration-300 group-hover:text-gray-100 ease"
+                >Submit</span
+              >
             </button>
           </div>
         </div>
@@ -182,10 +188,8 @@ export class EntryFormComponent implements OnInit, OnDestroy {
   file: string;
   header = true;
   csvnew: csv[] = [];
-  csvRecords: csv[] = [];
   entreeList: any[] = [];
   csv: any[] = [];
-  check = 0;
   d: Date = new Date();
   f: string;
   id: number;

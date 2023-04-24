@@ -217,7 +217,7 @@ import { MessageService } from '../../services/messages.service';
           </div>
           <a
             href="./single_post.html"
-            class="block tracking-wide text-[#6A64F1] font-bold font-serif text-center hover:text-primary transition-colors duration-150 text-xl md:text-xl mb-1"
+            class="block tracking-wide text-[#31abc8] font-bold font-serif text-center hover:text-primary transition-colors duration-150 text-xl md:text-xl mb-1"
           >
             Manager Dashboard
           </a>

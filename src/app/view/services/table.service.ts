@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { CalendarDay } from '../../shared/models/calendar-view';
 import { MenuBreakdown } from '../../shared/models/menubreakdown';
+import { InventoryTableData, TableInventory } from '../models/inventory';
 
 @Injectable({ providedIn: 'root' })
 export class TableService {
@@ -29,16 +30,21 @@ export class TableService {
     new BehaviorSubject<boolean>(false);
   viewTable$ = this.viewTableSubject.asObservable();
   protected inventoryTableSubject: BehaviorSubject<any> =
-    new BehaviorSubject<any>([]);
+    new BehaviorSubject<any>('');
   inventoryTable$ = this.inventoryTableSubject.asObservable();
 
-  dataList: any[] = [];
+  protected dataList: any[] = [];
+  protected iventoryList: any[] = [];
 
   constructor() {}
 
   updateTableData(data: any[]) {
     this.dataList = data;
     this.tableDataSubject.next(data);
+  }
+  updateTableInventoryValues(inventory: InventoryTableData[]) {
+    this.iventoryList = inventory;
+    this.inventoryTableSubject.next(inventory);
   }
 
   searchItems(term: string) {
@@ -52,6 +58,19 @@ export class TableService {
     console.log(data);
 
     this.tableDataSubject.next(data);
+    return data;
+  }
+  searchCategories(term: string) {
+    if (term == null || term == '') {
+      return this.iventoryList;
+    }
+
+    const data: InventoryTableData[] = this.iventoryList.filter((item) => {
+      return item.category.toLowerCase().includes(term.toLowerCase());
+    });
+    console.log(data);
+
+    this.inventoryTableSubject.next(data);
     return data;
   }
 
@@ -68,10 +87,6 @@ export class TableService {
   }
 
   updateTableType(bool: boolean) {
-    this.inventoryTableSubject.next(bool);
-  }
-
-  updateTableInventoryValues(inventory: any) {
-    this.inventoryTableSubject.next(inventory);
+    this.viewTableSubject.next(bool);
   }
 }

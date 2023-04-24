@@ -9,15 +9,21 @@ import { CalendarDay } from '../../shared/models/calendar-view';
 
 @Injectable({ providedIn: 'root' })
 export class ViewService {
-  selectedRangeSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  protected selectedRangeSubject: BehaviorSubject<any> =
+    new BehaviorSubject<any>(null);
   selectedRange$ = this.selectedRangeSubject.asObservable();
-  menubreakdownSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  protected menubreakdownSubject: BehaviorSubject<any> =
+    new BehaviorSubject<any>(null);
   menubreakdown$ = this.menubreakdownSubject.asObservable();
-  breakdownSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  protected breakdownSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
+    null
+  );
   breakdowns$ = this.breakdownSubject.asObservable();
-  viewSubject: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+  protected viewSubject: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   view$ = this.viewSubject.asObservable();
-  missingSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  protected missingSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
+    null
+  );
   missing$ = this.missingSubject.asObservable();
 
   constructor(private provider: ProviderService) {}

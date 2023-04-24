@@ -19,10 +19,14 @@ export class CalendarService {
   day: any;
   activeDate = new Date();
 
-  calendarSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  protected calendarSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
+    null
+  );
   calendar$ = this.calendarSubject.asObservable();
 
-  activeDateSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  protected activeDateSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
+    null
+  );
   activeDate$ = this.activeDateSubject.asObservable();
   menuBreakdown: DailyMenuBreakdown = {
     id: 0,

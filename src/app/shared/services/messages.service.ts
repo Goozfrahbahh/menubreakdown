@@ -8,9 +8,11 @@ export class MessageService {
   message: string;
   oldMessages: string[] = [];
   logMessages: LogMessage[] = [];
-  messagesSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  protected messagesSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
+    null
+  );
   messages$ = this.messagesSubject.asObservable();
-  logSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  protected logSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   log$ = this.logSubject.asObservable();
   constructor() {}
 

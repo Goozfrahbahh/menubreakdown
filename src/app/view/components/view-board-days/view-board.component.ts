@@ -15,7 +15,7 @@ import { CalendarDay, DateRange } from '../../../shared/models/calendar-view';
   selector: 'app-view-board-days',
   template: `
     <button
-      class="flex-container relative flex w-full h-full rounded-md shadow-lg text-white gap-0 transition-transform hover:bg-[#6A64F1] hover:bg-opacity-20 hover:shadow-2xl active:bg-[#6A64F1]"
+      class="flex-container relative flex w-full h-full rounded-md shadow-lg bg-zinc-900 bg-opacity-30 text-white gap-0 transition-transform hover:bg-[#31abc8] hover:bg-opacity-10 hover:shadow-2xl active:bg-[#31abc8] active:bg-opacity-70"
       (click)="selectedDay(day)"
       [value]="day"
       [ngClass]="{ selected: day.selected === true }"
@@ -31,7 +31,7 @@ import { CalendarDay, DateRange } from '../../../shared/models/calendar-view';
         >{{ day.dayName }}</span
       >
       <span
-        class="absolute bottom-2 right-3 text-[#6A64F1] text-opacity-50 focus:text-white"
+        class="absolute bottom-2 right-3 text-[#31abc8] text-opacity-50 focus:text-white"
         >{{ day.date.toLocaleDateString('en-us', { month: 'long' }) }}</span
       >
     </button>
@@ -40,7 +40,7 @@ import { CalendarDay, DateRange } from '../../../shared/models/calendar-view';
     `
       .selected {
         --tw-bg-opacity: 1;
-        background-color: rgba(106, 100, 241, 0.8);
+        background-color: rgba(49, 171, 200, 0.6);
         border-radius: 0.5rem;
         color: #ffffff !important;
       }
@@ -54,15 +54,8 @@ export class ViewBoardDaysComponent implements OnInit {
 
   @Input() day: CalendarDay;
   @Input() i: number;
-  cellSize: string;
-  selectedDays: CalendarDay[] = [];
   list: any[] = [];
   list2: any[] = [];
-  startDate: any;
-  endDate: any;
-  range: DateRange;
-  selectedRange: any[];
-
   constructor() {}
 
   ngOnInit() {}

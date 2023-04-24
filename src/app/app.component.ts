@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  OnDestroy,
   OnInit,
   Output,
   VERSION,
@@ -10,17 +11,18 @@ import { ProviderService } from './shared/services/provider.service';
 import { SettingsService } from './shared/services/settings.service';
 import { MenuBreakdownService } from './shared/services/menubreakdown.service';
 import { CalendarService } from './shared/services/calendar.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'my-app',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('navigation-item', { static: true })
   @Output('toggle')
   toggleEmit = new EventEmitter<any>();
-  name = 'Angular ' + VERSION.major;
+  private destroy$ = new Subject<void>();
   activeDate: any;
   toggleState = 'closed' ? 'open' : 'closed';
   messagesOn: boolean;
@@ -37,13 +39,17 @@ export class AppComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.settingsService.messages$.subscribe((bool: any) => {
-      this.messagesOn = bool;
-    });
+    this.settingsService.messages$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((bool: any) => {
+        this.messagesOn = bool;
+      });
     this.provider.setUp('Setting Up');
-    this.provider.stringMessage$.subscribe((date: any) => {
-      this.message = date;
-    });
+    this.provider.stringMessage$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((date: any) => {
+        this.message = date;
+      });
   }
 
   toggleReceive() {
@@ -59,5 +65,10 @@ export class AppComponent implements OnInit {
 
   openInterface() {
     console.log('interface open works');
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

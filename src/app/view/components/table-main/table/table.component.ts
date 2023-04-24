@@ -2,6 +2,8 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  OnDestroy,
+  OnInit,
   QueryList,
   ViewChild,
   ViewChildren,
@@ -15,6 +17,7 @@ import {
 import { Subject, map, switchMap, takeUntil } from 'rxjs';
 import { ViewService } from '../../../services/view.service';
 import { TableService } from '../../../services/table.service';
+import { InventoryKey, inventory } from '../../../models/inventory';
 
 @Component({
   selector: 'app-table',
@@ -27,6 +30,7 @@ import { TableService } from '../../../services/table.service';
             <div
               class="overflow-y-scroll overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg"
               id="scroll"
+              *ngIf="!tableView"
             >
               <table
                 class="w-full flex-col divide-y divide-gray-200 table nax-h-[50vh] dark:divide-gray-700 border-collapse"
@@ -38,76 +42,62 @@ import { TableService } from '../../../services/table.service';
                 <app-tbody [dataList]="dataList"></app-tbody>
               </table>
             </div>
-            <!-- <div
+            <div
               class="overflow-y-scroll overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg"
               id="scroll"
-              *ngIf="tableInventory"
+              *ngIf="tableView"
             >
               <table
                 class="w-full flex-col divide-y divide-gray-200 table nax-h-[50vh] dark:divide-gray-700 border-collapse"
               >
-                <app-thead
-                  [tableData]="tableData"
-                ></app-thead>
-                <app-tbody [tableData]="tableData"></app-tbody>
+                <app-thead-inventory></app-thead-inventory>
+                <app-tbody-inventory
+                  (openItem)="openItem($event)"
+                  [inventoryTable]="tableData"
+                ></app-tbody-inventory>
               </table>
-            </div> -->
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="mt-6 sm:flex sm:items-center sm:justify-between ">
-        <div class="text-sm text-gray-500 dark:text-gray-400">
-          Total Items
-          <span class="font-medium text-gray-700 dark:text-gray-100">{{
+      <div class="mt-2 sm:flex sm:items-center sm:justify-between ">
+        <div class="text-sm text-gray-700 dark:text-gray-400">
+          Total Items:
+          <span class="font-medium text-gray-700 dark:text-white">{{
             menubreakdowns.length
           }}</span>
         </div>
 
         <div class="flex items-center mt-4 gap-x-4 sm:mt-0">
-          <a
-            href="#"
-            class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="w-5 h-5 rtl:-scale-x-100"
+          <ng-container *ngIf="!tableView; else categoriesTable">
+            <button
+              (click)="viewCategoryTable()"
+              class="rounded-md px-3.5 py-1 m-1  overflow-hidden relative flex flex-row justify-between group cursor-pointer border-2 font-medium border-zinc-600 text-[#31abc8]"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"
-              />
-            </svg>
-
-            <span> previous </span>
-          </a>
-
-          <a
-            href="#"
-            class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800"
-          >
-            <span> Next </span>
-
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="w-5 h-5 rtl:-scale-x-100"
+              <span
+                class="absolute w-64 h-0 inline-block align-middle transition-all duration-300 origin-center rotate-45 -translate-x-20 bg-[#31abc8] bg-opacity-70 top-1/2 group-hover:h-64 group-hover:-translate-y-32 ease"
+              ></span>
+              <span
+                class="relative text-[#31abc8] transition duration-300 group-hover:text-gray-100 ease"
+                >Inventory Categories Table</span
+              >
+            </button>
+          </ng-container>
+          <ng-template #categoriesTable>
+            <button
+              (click)="viewEntreeTable()"
+              class="rounded-md px-3.5 py-1 m-1 mr-6 overflow-hidden relative flex flex-row justify-between group cursor-pointer border-2 font-medium border-zinc-600 text-[#31abc8]"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
-              />
-            </svg>
-          </a>
+              <span
+                class="absolute w-64 h-0 inline-block align-middle transition-all duration-300 origin-center rotate-45 -translate-x-20 bg-[#31abc8] bg-opacity-70 top-1/2 group-hover:h-64 group-hover:-translate-y-32 ease"
+              ></span>
+              <span
+                class="relative text-[#31abc8] transition duration-300 group-hover:text-gray-100 ease"
+                >Item Table</span
+              >
+            </button>
+          </ng-template>
         </div>
       </div>
     </div>
@@ -133,21 +123,17 @@ import { TableService } from '../../../services/table.service';
     `,
   ],
 })
-export class TableComponent {
+export class TableComponent implements OnInit, OnDestroy {
   @ViewChild('rowRef') rowHeader: ElementRef<any>;
   @ViewChildren('rows') rows: QueryList<ElementRef>;
   dataList: any[] = [];
-  tableData: any[] = [];
+  tableData: any[];
   menubreakdowns: MenuBreakdown[] = [];
   receivedbreakdowns: MenuBreakdown[] = [];
-  sortedData: any;
-  sortId: Sort;
-  sortDate: Sort;
-  sortItem: Sort;
-  sortQuantity: Sort;
+  categories = InventoryKey;
+  descriptions = inventory;
   clearMenuBreakdown: DailyMenuBreakdown[] = [];
-  combinedList: Set<string> = new Set();
-  combined: MenuBreakdown[] = [];
+  combinedData: any = {};
   private destroy$ = new Subject<void>();
   tableView: boolean = false;
 
@@ -176,7 +162,16 @@ export class TableComponent {
 
     this.tableService.tableData$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((tableData) => (this.dataList = tableData));
+      .subscribe((tableData) => {
+        const data: any[] = this.addInventoryCategories(
+          tableData,
+          this.categories,
+          this.descriptions
+        );
+        if (data) {
+          this.dataList = data;
+        }
+      });
 
     this.tableService.viewTable$
       .pipe(takeUntil(this.destroy$))
@@ -186,7 +181,13 @@ export class TableComponent {
 
     this.tableService.inventoryTable$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => (this.tableData = data));
+      .subscribe((data) => {
+        if (data === null || data === '' || data === undefined) {
+          return;
+        } else if (data.length > 0) {
+          this.tableData = data;
+        }
+      });
   }
   ngAfterViewInit() {
     this.rows;
@@ -194,6 +195,35 @@ export class TableComponent {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  addInventoryCategories(
+    data: MenuBreakdown[],
+    categories: string[],
+    descriptions: string[]
+  ) {
+    if (categories.length > 0 && descriptions.length > 0) {
+      for (let category of categories) {
+        for (let des of descriptions) {
+          this.combinedData[category] = des;
+        }
+      }
+    }
+
+    const keys = Object.keys(this.combinedData);
+    data.forEach((item, i) => {
+      if (this.combinedData[item.item]) {
+        data[i].category = this.combinedData[item.item];
+      }
+    });
+
+    return data;
+  }
+
+  openItem(event: any) {
+    console.log(event);
+    this.tableData[event].selected = !this.tableData[event].selected;
+    this.tableService.updateTableData(this.tableData);
   }
   convertMenuBreakdown(menubreakdown: DailyMenuBreakdown[]): MenuBreakdown[] {
     menubreakdown.forEach((breakdowns) => {
@@ -250,11 +280,13 @@ export class TableComponent {
     return true;
   }
 
-  updateViewInventory() {
-    this.viewService.updateView(true);
+  viewCategoryTable() {
+    this.tableView = true;
+    this.tableService.updateTableType(this.tableView);
   }
 
-  updateViewItems() {
-    this.viewService.updateView(false);
+  viewEntreeTable() {
+    this.tableView = false;
+    this.tableService.updateTableType(this.tableView);
   }
 }

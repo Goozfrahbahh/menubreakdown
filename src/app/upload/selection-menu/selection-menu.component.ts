@@ -24,19 +24,19 @@ import { Router } from '@angular/router';
         <li role="presentation" class="flex-grow text-left">
           <button
             (click)="onSelectEntryForm()"
-            class="my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 dark:hover:text-indigo-300 hover:isolate focus:isolate focus:border-transparent dark:text-neutral-400 dark:hover:bg-transparent dark:data-[te-nav-active]:border-primary-400 dark:data-[te-nav-active]:text-primary-400"
+            class="my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 dark:hover:text-white hover:isolate focus:isolate focus:border-transparent dark:text-neutral-400 dark:hover:bg-transparent dark:data-[te-nav-active]:border-primary-400 dark:data-[te-nav-active]:text-primary-400"
             role="tab"
           >
             Entry Form
           </button>
         </li>
         <hr
-          class="my-2 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-indigo-400 to-transparent opacity-25 dark:opacity-100"
+          class="my-2 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-[#31abc8] to-transparent opacity-25 dark:opacity-100"
         />
         <li role="presentation" class="flex-grow text-left">
           <button
             (click)="onSelectDelete()"
-            class="focus:border-transparent bg-zinc--800/20 my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate focus:isolate  dark:text-neutral-400 dark:hover:text-indigo-300 dark:data-[te-nav-active]:border-primary-400 dark:data-[te-nav-active]:text-primary-400"
+            class="focus:border-transparent bg-zinc--800/20 my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate focus:isolate  dark:text-neutral-400 dark:hover:text-white dark:data-[te-nav-active]:border-primary-400 dark:data-[te-nav-active]:text-primary-400"
             href="delete-form"
           >
             Remove Form

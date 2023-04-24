@@ -3,9 +3,12 @@ import { BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class SettingsService {
-  navigationInfoSubject: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+  protected navigationInfoSubject: BehaviorSubject<any> =
+    new BehaviorSubject<any>(false);
   navigationInfo$ = this.navigationInfoSubject.asObservable();
-  messagesSubject: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+  protected messagesSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
+    false
+  );
 
   messages$ = this.messagesSubject.asObservable();
 

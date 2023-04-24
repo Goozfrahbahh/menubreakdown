@@ -6,9 +6,11 @@ import { MessageService } from './messages.service';
 
 @Injectable({ providedIn: 'root' })
 export class ProviderService implements OnInit, OnDestroy {
-  menubreakdownSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  protected menubreakdownSubject: BehaviorSubject<any> =
+    new BehaviorSubject<any>(null);
   menubreakdown$ = this.menubreakdownSubject.asObservable();
-  stringMessageSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  protected stringMessageSubject: BehaviorSubject<any> =
+    new BehaviorSubject<any>(null);
   stringMessage$ = this.stringMessageSubject.asObservable();
   dailymenubreakdowns: DailyMenuBreakdown[];
   private destroy$ = new Subject<void>();

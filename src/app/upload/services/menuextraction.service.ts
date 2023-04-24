@@ -24,11 +24,6 @@ export interface csv {
 }
 @Injectable({ providedIn: 'root' })
 export class MenuExtractionService implements OnInit, OnDestroy {
-  fileList$: Observable<string>;
-  id$: Observable<number>;
-  date$: Observable<Date>;
-  totals$: Observable<any[]>;
-
   menubreakdown: DailyMenuBreakdown = {
     id: 0,
     date: new Date(),
@@ -60,7 +55,16 @@ export class MenuExtractionService implements OnInit, OnDestroy {
       });
   }
 
-  deleteMenuBreakdown(id: number) {}
+  deleteMenuBreakdown(id: number) {
+    this.menuBreakdownService
+      .deleteMenuBreakdown(id)
+      .then((res: any) => {
+        console.log('Deleted Menu-Breakdown:', res);
+      })
+      .catch((err) => {
+        console.log('Error deleting Menu-breakdown:', err);
+      });
+  }
 
   ngOnDestroy() {
     this.destroy$.next();

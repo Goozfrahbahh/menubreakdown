@@ -15,6 +15,7 @@ export interface MenuBreakdown {
   date: Date;
   item: string;
   quantity: number;
+  category?: string;
 }
 
 export type StateWithoutMenuBreakdowns = OptionalNullable<string>;

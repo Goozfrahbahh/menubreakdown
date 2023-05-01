@@ -50,6 +50,7 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe((date: any) => {
         this.message = date;
       });
+    this.provider.dailymenubreakdowns;
   }
 
   toggleReceive() {

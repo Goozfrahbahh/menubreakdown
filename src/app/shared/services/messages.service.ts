@@ -4,10 +4,10 @@ import { LogMessage } from '../models/logs';
 
 @Injectable({ providedIn: 'root' })
 export class MessageService {
-  messages: string[] = [];
-  message: string;
-  oldMessages: string[] = [];
-  logMessages: LogMessage[] = [];
+  messages: any[] = [];
+  message: any;
+  oldMessages: any[] = [];
+  logMessages: any[] = [];
   protected messagesSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
     null
   );
@@ -22,12 +22,13 @@ export class MessageService {
     if (num > 500) {
       const check = num / 500;
       this.messages.push(newString.slice(0, 500));
+    } else {
+      this.messages.push(newString);
+      this.messagesSubject.next(this.messages);
     }
-    this.messagesSubject.next(this.messages);
-    const date = new Date();
-    let messagesLog = [];
+    let messagesLog: any[] = [];
     messagesLog.push(message);
-    this.logMessages.push({ message: messagesLog, timestamp: date });
+    this.logMessages.push(messagesLog);
   }
   addMultipleMessages(messages: string[]) {
     this.messages = [...this.messages, ...messages];

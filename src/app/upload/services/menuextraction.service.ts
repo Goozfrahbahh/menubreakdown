@@ -19,8 +19,8 @@ import {
 export interface csv {
   group: string;
   item: string;
+  sold: number;
   modifier: string;
-  quantity: number;
 }
 @Injectable({ providedIn: 'root' })
 export class MenuExtractionService implements OnInit, OnDestroy {
@@ -28,7 +28,6 @@ export class MenuExtractionService implements OnInit, OnDestroy {
     id: 0,
     date: new Date(),
     totals: [],
-    file: '',
   };
 
   private destroy$ = new Subject<void>();
@@ -45,8 +44,10 @@ export class MenuExtractionService implements OnInit, OnDestroy {
       return alert('No Data Input');
     }
 
+    console.log(menubreakdown);
+
     this.menuBreakdownService
-      .addMenuBreakdown(this.menubreakdown)
+      .addMenuBreakdown(menubreakdown)
       .then((res: any) => {
         console.log('Added Menu-Breakdown:', res);
       })

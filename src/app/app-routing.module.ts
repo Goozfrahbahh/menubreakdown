@@ -7,6 +7,7 @@ import { MessagesComponent } from './shared/components/messages/message.componen
 import { SelectionMenuComponent } from './upload/selection-menu/selection-menu.component';
 import { EntryFormComponent } from './upload/entry-form/entry-form.component';
 import { DeleteFormComponent } from './upload/delete-form/delete-form.component';
+import { MenuEditorComponent } from './view/menu/menu-editor/menu-editor.component';
 
 export const appRoutes: Routes = [
   {
@@ -28,6 +29,10 @@ export const appRoutes: Routes = [
   {
     path: 'message-center',
     component: MessagesComponent,
+  },
+  {
+    path: 'menu-editor',
+    component: MenuEditorComponent,
   },
   {
     path: '**',

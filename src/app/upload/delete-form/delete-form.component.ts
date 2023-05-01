@@ -19,7 +19,7 @@ import {
       class="upload flex align-middle items-center justify-center content-center p-12 mt-[10vh]"
     >
       <div
-        class="mx-auto w-full max-w-[550px] p-10 pb-2 bg-zinc-800 bg-opacity-40 shadow-xl hover:shadow-2xl rounded-xl"
+        class="mx-auto w-full max-w-[550px] p-10 pb-2 border-4 border-zinc-600 border-opacity-80 bg-zinc-800 bg-opacity-40 shadow-xl hover:shadow-2xl rounded-xl"
       >
         <h1
           class="text-2xl -mt-2 mb-6 text-gray-200 border-b border-b-zinc-700 pb-2"

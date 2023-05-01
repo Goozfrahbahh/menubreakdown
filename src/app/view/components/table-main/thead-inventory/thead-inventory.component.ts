@@ -9,18 +9,18 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
       <tr class="border-b-[1px] border-zinc-600 border-b-zinc-500">
         <th
           scope="col"
-          class="py-5 pr-7 pl-5 w-[185px] text-xs font-semibold font-serif text-left rtl:text-right text-gray-300 dark:text-gray-300"
+          class="py-5 pr-7 pl-5 w-[220px] text-xs font-semibold font-serif text-left rtl:text-right text-gray-300 dark:text-gray-300"
         >
           <span>Inventory Category</span>
         </th>
 
         <th
           scope="col"
-          class="px-12 py-5 w-[80px] text-xs font-semibold font-serif text-left rtl:text-right text-gray-300 dark:text-gray-300"
+          class="px-12 py-5 w-[130px] text-center text-xs font-semibold font-serif text-gray-300 dark:text-gray-300"
         >
           Total Portion
         </th>
-        <th scope="col" class="relative py-3.5 px-7">
+        <th scope="col" class="relative py-3.5 px-7 w-[60px]">
           <span class="sr-only">Expand</span>
         </th>
       </tr>

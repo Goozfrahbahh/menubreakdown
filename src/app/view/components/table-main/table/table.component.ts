@@ -12,18 +12,22 @@ import { Sort } from '../../../models/table';
 import { ProviderService } from '../../../../shared/services/provider.service';
 import {
   DailyMenuBreakdown,
+  EntreeList,
+  Groups,
   MenuBreakdown,
+  MenuGroups,
 } from '../../../../shared/models/menubreakdown';
 import { Subject, map, switchMap, takeUntil } from 'rxjs';
 import { ViewService } from '../../../services/view.service';
 import { TableService } from '../../../services/table.service';
-import { InventoryKey, inventory } from '../../../models/inventory';
+import { Category, ModifiersEntrees } from '../../../models/inventory';
+import { ContentComponent } from '../content/content.component';
 
 @Component({
   selector: 'app-table',
   template: `
     <div class="container-table w-[450px]">
-      <app-content [dataList]="dataList"></app-content>
+      <app-content #content [dataList]="dataList"></app-content>
       <div class="mt-2">
         <div class="-mx-4 -my-2 overflow-x-hidden sm:-mx-6 lg:-mx-8">
           <div class="inline-flex min-w-full py-2 align-middle md:px-6 lg:px-8">
@@ -61,7 +65,7 @@ import { InventoryKey, inventory } from '../../../models/inventory';
         </div>
       </div>
 
-      <div class="mt-2 sm:flex sm:items-center sm:justify-between ">
+      <div class="mt-2 pl-2 sm:flex sm:items-center sm:justify-between ">
         <div class="text-sm text-gray-700 dark:text-gray-400">
           Total Items:
           <span class="font-medium text-gray-700 dark:text-white">{{
@@ -73,27 +77,27 @@ import { InventoryKey, inventory } from '../../../models/inventory';
           <ng-container *ngIf="!tableView; else categoriesTable">
             <button
               (click)="viewCategoryTable()"
-              class="rounded-md px-3.5 py-1 m-1  overflow-hidden relative flex flex-row justify-between group cursor-pointer border-2 font-medium border-zinc-600 text-[#31abc8]"
+              class="rounded-md px-3.5 py-1 m-1 ml-0 pl-0 overflow-hidden relative flex flex-row justify-between group cursor-pointer border-2 font-medium border-zinc-600 text-[#31abc8]"
             >
               <span
                 class="absolute w-64 h-0 inline-block align-middle transition-all duration-300 origin-center rotate-45 -translate-x-20 bg-[#31abc8] bg-opacity-70 top-1/2 group-hover:h-64 group-hover:-translate-y-32 ease"
               ></span>
               <span
-                class="relative text-[#31abc8] transition duration-300 group-hover:text-gray-100 ease"
-                >Inventory Categories Table</span
-              >
+                class="relative pl-2 inline-flex text-gray-600 dark:text-gray-300 transition duration-300 group-hover:text-gray-100 ease align-middle"
+                >Inventory Categories Table
+              </span>
             </button>
           </ng-container>
           <ng-template #categoriesTable>
             <button
               (click)="viewEntreeTable()"
-              class="rounded-md px-3.5 py-1 m-1 mr-6 overflow-hidden relative flex flex-row justify-between group cursor-pointer border-2 font-medium border-zinc-600 text-[#31abc8]"
+              class="rounded-md px-3.5 py-1 -mr-4 overflow-hidden relative flex flex-row justify-between group cursor-pointer border-2 font-medium border-zinc-600 text-[#31abc8]"
             >
               <span
                 class="absolute w-64 h-0 inline-block align-middle transition-all duration-300 origin-center rotate-45 -translate-x-20 bg-[#31abc8] bg-opacity-70 top-1/2 group-hover:h-64 group-hover:-translate-y-32 ease"
               ></span>
               <span
-                class="relative text-[#31abc8] transition duration-300 group-hover:text-gray-100 ease"
+                class="relative text-gray-600 dark:text-gray-300 transition duration-300 group-hover:text-gray-100 ease"
                 >Item Table</span
               >
             </button>
@@ -126,16 +130,20 @@ import { InventoryKey, inventory } from '../../../models/inventory';
 export class TableComponent implements OnInit, OnDestroy {
   @ViewChild('rowRef') rowHeader: ElementRef<any>;
   @ViewChildren('rows') rows: QueryList<ElementRef>;
+  @ViewChild('content') content: ContentComponent;
   dataList: any[] = [];
   tableData: any[];
   menubreakdowns: MenuBreakdown[] = [];
   receivedbreakdowns: MenuBreakdown[] = [];
-  categories = InventoryKey;
-  descriptions = inventory;
   clearMenuBreakdown: DailyMenuBreakdown[] = [];
   combinedData: any = {};
   private destroy$ = new Subject<void>();
   tableView: boolean = false;
+  entreeSales: MenuBreakdown[] = [];
+  categoryMap: any;
+  modifierData: any[] = [];
+  modifierList: any[] = [];
+  groups: any;
 
   constructor(
     private tableService: TableService,
@@ -143,9 +151,15 @@ export class TableComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.groups = MenuGroups;
+    this.tableService.setGroups(this.groups);
+    //     this.groups = MenuGroups;
+    //     this.categoryMap = this.setInventoryCategories(this.groups);
     this.viewService.menubreakdown$
       .pipe(
-        map((menubreakdown) => this.convertMenuBreakdown(menubreakdown)),
+        map((menubreakdown) =>
+          this.convertMenuBreakdown(this.groups, menubreakdown)
+        ),
         map((menubreakdowns: MenuBreakdown[]) =>
           this.viewService.updateTableValues(menubreakdowns)
         ),
@@ -163,14 +177,7 @@ export class TableComponent implements OnInit, OnDestroy {
     this.tableService.tableData$
       .pipe(takeUntil(this.destroy$))
       .subscribe((tableData) => {
-        const data: any[] = this.addInventoryCategories(
-          tableData,
-          this.categories,
-          this.descriptions
-        );
-        if (data) {
-          this.dataList = data;
-        }
+        this.dataList = tableData;
       });
 
     this.tableService.viewTable$
@@ -197,44 +204,95 @@ export class TableComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  addInventoryCategories(
-    data: MenuBreakdown[],
-    categories: string[],
-    descriptions: string[]
-  ) {
-    if (categories.length > 0 && descriptions.length > 0) {
-      for (let category of categories) {
-        for (let des of descriptions) {
-          this.combinedData[category] = des;
-        }
-      }
-    }
-
-    const keys = Object.keys(this.combinedData);
-    data.forEach((item, i) => {
-      if (this.combinedData[item.item]) {
-        data[i].category = this.combinedData[item.item];
-      }
-    });
-
-    return data;
-  }
-
   openItem(event: any) {
     console.log(event);
     this.tableData[event].selected = !this.tableData[event].selected;
     this.tableService.updateTableData(this.tableData);
   }
-  convertMenuBreakdown(menubreakdown: DailyMenuBreakdown[]): MenuBreakdown[] {
+  setInventoryCategories(menuGroups: Groups[]) {
+    const categoryMap = {};
+    menuGroups.forEach((group) => {
+      Object.values(group).forEach((menuItems) => {
+        menuItems.forEach((menuItem) => {
+          if (menuItem.categories) {
+            menuItem.categories.forEach((categoryObj) => {
+              const category = categoryObj.category;
+              const itemData: EntreeList = {
+                item: menuItem.name,
+                portion: categoryObj.portion,
+              };
+
+              if (categoryObj.modifier) {
+                itemData.modifier = categoryObj.modifier;
+              }
+
+              if (categoryMap[category]) {
+                categoryMap[category].push(itemData);
+              } else {
+                categoryMap[category] = [itemData];
+              }
+            });
+          }
+        });
+      });
+    });
+    return categoryMap;
+  }
+
+  convertMenuBreakdown(
+    groups: Groups[],
+    menubreakdown: DailyMenuBreakdown[]
+  ): MenuBreakdown[] {
+    console.log(menubreakdown);
+    const modifiers: Category = this.setInventoryCategories(groups);
+    const getModifiers = (categories: Category): string[] => {
+      return Object.values(categories)
+        .reduce((entrees, entreeList) => entrees.concat(entreeList), [])
+        .filter((entree) => entree.modifier)
+        .map((entree) => entree.modifier as string);
+    };
+    this.modifierList = getModifiers(modifiers);
+    console.log(modifiers);
     menubreakdown.forEach((breakdowns) => {
-      const data: MenuBreakdown[] = breakdowns.totals.map((total) => ({
+      const sales = breakdowns.totals.map((total) => ({
         id: breakdowns.id,
         date: breakdowns.date,
+        group: total.group,
         item: total.item,
-        quantity: total.quantity,
+        sold: Number(total.sold),
+        modifier: total.modifier,
       }));
-      this.menubreakdowns = [...this.menubreakdowns, ...data];
+      sales.forEach((item) => {
+        if (item.modifier === '') {
+          this.menubreakdowns.push(item);
+        }
+        if (item.modifier !== '') {
+          for (let mod of this.modifierList) {
+            if (mod === item.modifier) {
+              console.log(item);
+              this.menubreakdowns.push(item);
+            }
+          }
+        }
+      });
     });
+    const combinedData = this.menubreakdowns.reduce((result: any[], entree) => {
+      const foundIndex = result.findIndex(
+        (item) =>
+          item.id === entree.id &&
+          item.item === entree.item &&
+          item.modifier === entree.modifier
+      );
+
+      if (foundIndex !== -1) {
+        result[foundIndex].sold += entree.sold;
+      } else {
+        result.push(entree);
+      }
+
+      return result;
+    }, []);
+    this.menubreakdowns = combinedData;
     return this.menubreakdowns;
   }
   trackByFn(value: any, key: any) {
@@ -263,7 +321,7 @@ export class TableComponent implements OnInit, OnDestroy {
           (accumulate) => accumulate.item === current.item
         );
         if (existingItem) {
-          existingItem.quantity += current.quantity;
+          existingItem.sold += current.sold;
         } else {
           accumulator.push({ ...current });
         }
@@ -281,6 +339,7 @@ export class TableComponent implements OnInit, OnDestroy {
   }
 
   viewCategoryTable() {
+    this.content.viewAll();
     this.tableView = true;
     this.tableService.updateTableType(this.tableView);
   }

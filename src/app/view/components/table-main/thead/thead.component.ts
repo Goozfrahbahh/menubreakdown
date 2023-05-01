@@ -15,14 +15,14 @@ import { TableService } from '../../../services/table.service';
   selector: 'app-thead',
   template: `
     <thead
-      class="w-full bg-zinc-500 dark:bg-zinc-700 dark:bg-opacity-[.45] shadow-xl border-b-[.5px] border-red-700"
+      class="w-full bg-zinc-500 dark:bg-zinc-700 dark:bg-opacity-[.45] shadow-xl border-b-[.5px]"
     >
       <tr
         class="align-middle text-center border-b-[1px] border-zinc-600 border-b-zinc-500"
       >
         <th
           scope="col"
-          class="px-6 py-4  pr-8 w-[185px] align-middle text-left text-xs font-semibold font-serif rtl:text-right text-gray-300 dark:text-gray-300"
+          class="px-6 py-4  pr-8 w-[185px] align-middle text-left text-xs font-serif rtl:text-right text-gray-200 dark:text-gray-400"
         >
           <button class="items-start text-left gap-x-3 focus:outline-none">
             <span>Menu Entree's</span>
@@ -69,14 +69,14 @@ import { TableService } from '../../../services/table.service';
 
         <th
           scope="col"
-          class="pl-8 pr-4 py-4 w-[50px] align-middle text-xs font-semibold font-serif rtl:text-right text-gray-300 dark:text-gray-300"
+          class="pl-8 pr-4 py-4 w-[50px] align-middle text-xs font-semibold font-serif rtl:text-right text-gray-200 dark:text-gray-400"
         >
           <div class="items-center text-center gap-x-3 focus:outline-none">
             Sold
-            <ng-container *ngIf="sortQuantity.direction === 'asc'">
+            <ng-container *ngIf="sortSold.direction === 'asc'">
               <button
                 type="button"
-                (click)="sortData(sortQuantity)"
+                (click)="sortData(sortSold)"
                 class="fill-transparent hover:fill-black"
               >
                 <svg
@@ -94,8 +94,8 @@ import { TableService } from '../../../services/table.service';
                 </svg>
               </button>
             </ng-container>
-            <ng-container *ngIf="sortQuantity.direction === ''">
-              <button type="button" (click)="sortData(sortQuantity)">
+            <ng-container *ngIf="sortSold.direction === ''">
+              <button type="button" (click)="sortData(sortSold)">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -116,7 +116,7 @@ import { TableService } from '../../../services/table.service';
 
         <th
           scope="col"
-          class="pl-4 pr-0 py-4 w-[89px] align-middle text-xs font-semibold font-serif rtl:text-right text-gray-300 dark:text-gray-300"
+          class="pl-4 pr-0 py-4 w-[89px] align-middle text-xs font-semibold font-serif rtl:text-right text-gray-200 dark:text-gray-400"
         >
           <div class="items-center text-center gap-x-3 focus:outline-none">
             Date
@@ -184,15 +184,17 @@ export class TheadComponent implements OnInit, AfterViewInit {
   sortId: Sort;
   sortDate: Sort;
   sortItem: Sort;
-  sortQuantity: Sort;
+  sortSold: Sort;
+  sortGroup: Sort;
   menubreakdowns: MenuBreakdown[] = [];
   constructor(private tableService: TableService) {}
 
   ngOnInit() {
+    this.sortGroup = { active: 'group', direction: 'asc' };
     this.sortId = { active: 'id', direction: 'asc' };
     this.sortDate = { active: 'date', direction: 'asc' };
     this.sortItem = { active: 'item', direction: 'asc' };
-    this.sortQuantity = { active: 'quantity', direction: '' };
+    this.sortSold = { active: 'sold', direction: '' };
   }
 
   ngAfterViewInit(): void {}
@@ -209,8 +211,10 @@ export class TheadComponent implements OnInit, AfterViewInit {
           return this.compare(a.id, b.id, isAsc);
         case 'item':
           return this.compare(a.item, b.item, isAsc);
-        case 'quantity':
-          return this.compare(a.quantity, b.quantity, isAsc);
+        case 'sold':
+          return this.compare(a.sold, b.sold, isAsc);
+        case 'group':
+          return this.compare(a.group, b.group, isAsc);
         case 'date':
           return this.compareDates(a.date, b.date, isAsc);
         default:
@@ -227,10 +231,15 @@ export class TheadComponent implements OnInit, AfterViewInit {
     } else if (sort.active === 'item' && sort.direction === 'asc') {
       this.sortItem = { active: 'item', direction: '' };
     }
-    if (sort.active === 'quantity' && sort.direction === '') {
-      this.sortQuantity = { active: 'quantity', direction: 'asc' };
-    } else if (sort.active === 'quantity' && sort.direction === 'asc') {
-      this.sortQuantity = { active: 'quantity', direction: '' };
+    if (sort.active === 'group' && sort.direction === '') {
+      this.sortGroup = { active: 'group', direction: 'asc' };
+    } else if (sort.active === 'group' && sort.direction === 'asc') {
+      this.sortGroup = { active: 'group', direction: '' };
+    }
+    if (sort.active === 'sold' && sort.direction === '') {
+      this.sortSold = { active: 'sold', direction: 'asc' };
+    } else if (sort.active === 'sold' && sort.direction === 'asc') {
+      this.sortSold = { active: 'sold', direction: '' };
     }
     if (sort.active === 'date' && sort.direction === '') {
       this.sortDate = { active: 'date', direction: 'asc' };

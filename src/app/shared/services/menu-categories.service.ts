@@ -5,7 +5,7 @@ import { environment } from '../../../environments/environment';
 import { createClient } from '@supabase/supabase-js';
 import { DailyMenuBreakdown } from '../models/menubreakdown';
 
-export const MENUBREAKDOWN_TABLE = 'menubreakdowns';
+export const MENUCATEGORIES_TABLE = 'menucategories';
 
 @Injectable({ providedIn: 'root' })
 export class MenuBreakdownService {
@@ -20,23 +20,44 @@ export class MenuBreakdownService {
   }
 
   /** TYPICAL HTTP ROUTE
-   * @desc      Get all books from the db
+   * @desc      Get all categories and menuitems from the db
    * @returns   Observable
    */
-  async getMenuBreakdowns(): Promise<any> {
+  async getMenuSchema(): Promise<any> {
     console.log('lol');
-    const menubreakdowns = await this.supabaseClient
-      .from(MENUBREAKDOWN_TABLE)
+    const menucategories = await this.supabaseClient
+      .from(MENUCATEGORIES_TABLE)
       .select('*');
-    this.log(JSON.stringify(menubreakdowns));
-    return menubreakdowns.data || [];
+    this.log(JSON.stringify(menucategories));
+    return menucategories.data || [];
   }
   /**
    * @desc      Add a new menubreakdown to the db
    * @param     InventoryData    Single row object to type of MenuBreakdown
    * @returns   Promise (data or error)
    */
-  async addMenuBreakdown(menubreakdown: DailyMenuBreakdown): Promise<any> {
+
+  async addMenuCategory(menubreakdown: DailyMenuBreakdown): Promise<any> {
+    const { data, error } = await this.supabaseClient
+      .from('menubreakdowns')
+      .insert([
+        {
+          id: menubreakdown.id,
+          date: menubreakdown.date,
+          totals: menubreakdown.totals,
+        },
+      ]);
+    const menudata = menubreakdown;
+    if (data) {
+      this.log(`Successful uploaded ${menudata}`);
+      return data;
+    }
+    if (error) {
+      this.log(`Failed uploaded ${error} for menu ${menudata.id}`);
+      return error.message;
+    }
+  }
+  async addItemToMenuCategory(menubreakdown: DailyMenuBreakdown): Promise<any> {
     const { data, error } = await this.supabaseClient
       .from('menubreakdowns')
       .insert([

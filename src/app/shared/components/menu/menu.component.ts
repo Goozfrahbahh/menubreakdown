@@ -29,7 +29,7 @@ import { SettingsService } from '../../services/settings.service';
       class="flex flex-row antialiased text-gray-800 ml-3 max-h-[95vh] min-h-[95vh] mt-[2vh]"
     >
       <div
-        class="flex flex-col drop-shadow-2xl shadow-zinc-800 items-center py-4 flex-shrink-0 w-20 text-slate-100 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-zinc-900 via-zinc-800/20 to-zinc-900 rounded-3xl"
+        class="flex flex-col drop-shadow-2xl shadow-zinc-800 items-center py-4 flex-shrink-0 w-20 text-gray-600 dark:text-slate-100 divide-gray-200 font-serif dark:divide-gray-700 dark:bg-zinc-700 dark:bg-opacity-50 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-zinc-900 via-zinc-800/20 to-zinc-900 rounded-3xl"
       >
         <a
           routerLink="/home"
@@ -68,22 +68,28 @@ import { SettingsService } from '../../services/settings.service';
         >
         <ul class="flex flex-col space-y-2 mt-12">
           <li>
-            <a routerLink="/view" class="flex flex-col items-center">
+            <a
+              routerLink="/view"
+              [routerLinkActive]="'active'"
+              class="flex flex-col items-center"
+            >
               <span
-                class="flex items-center justify-center text-zinc-500 hover:bg-[#31abc8] hover:text-white h-12 w-12 rounded-2xl"
+                class="flex items-center group justify-center text-zinc-500 hover:bg-[#31abc8] hover:text-white h-12 w-12 rounded-2xl active:!text-white"
               >
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
                   fill="none"
-                  viewBox="0 0 22 22"
-                  stroke-width="1"
-                  stroke="currentColor"
-                  class="w-6 h-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="hover:stroke-white"
                 >
                   <path
+                    d="M9 17.25V18.2574C9 19.053 8.68393 19.8161 8.12132 20.3787L7.5 21H16.5L15.8787 20.3787C15.3161 19.8161 15 19.053 15 18.2574V17.25M21 5.25V15C21 16.2426 19.9926 17.25 18.75 17.25H5.25C4.00736 17.25 3 16.2426 3 15V5.25M21 5.25C21 4.00736 19.9926 3 18.75 3H5.25C4.00736 3 3 4.00736 3 5.25M21 5.25V12C21 13.2426 19.9926 14.25 18.75 14.25H5.25C4.00736 14.25 3 13.2426 3 12V5.25"
+                    stroke="currentColor"
+                    stroke-width="1.5"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-7.5A1.125 1.125 0 0112 18.375m9.75-12.75c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125m19.5 0v1.5c0 .621-.504 1.125-1.125 1.125M2.25 5.625v1.5c0 .621.504 1.125 1.125 1.125m0 0h17.25m-17.25 0h7.5c.621 0 1.125.504 1.125 1.125M3.375 8.25c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m17.25-3.75h-7.5c-.621 0-1.125.504-1.125 1.125m8.625-1.125c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M12 10.875v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125M13.125 12h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125M20.625 12c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5M12 14.625v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 14.625c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m0 1.5v-1.5m0 0c0-.621.504-1.125 1.125-1.125m0 0h7.5"
                   />
                 </svg>
               </span>
@@ -95,9 +101,13 @@ import { SettingsService } from '../../services/settings.service';
             </a>
           </li>
           <li>
-            <a routerLink="/upload" class="flex flex-col items-center">
+            <a
+              routerLink="/upload"
+              [routerLinkActive]="'active'"
+              class="flex flex-col items-center"
+            >
               <span
-                class="flex items-center justify-center text-zinc-500 hover:bg-[#31abc8] hover:text-white h-12 w-12 rounded-2xl"
+                class="flex items-center justify-center text-[#8e8e8e] hover:bg-[#31abc8] hover:text-white h-12 w-12 rounded-2xl active:!text-white"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -121,12 +131,48 @@ import { SettingsService } from '../../services/settings.service';
               >
             </a>
           </li>
+          <li>
+            <a
+              routerLink="/menu-editor"
+              [routerLinkActive]="'active'"
+              class="flex flex-col items-center"
+            >
+              <span
+                class="flex items-center justify-center text-[#8e8e8e] hover:bg-[#31abc8] hover:text-white h-12 w-12 rounded-2xl active:!text-white"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="active:!stroke-white"
+                  class="w-6 h-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M6 6.878V6a2.25 2.25 0 012.25-2.25h7.5A2.25 2.25 0 0118 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 004.5 9v.878m13.5-3A2.25 2.25 0 0119.5 9v.878m0 0a2.246 2.246 0 00-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0121 12v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6c0-.98.626-1.813 1.5-2.122"
+                  />
+                </svg>
+              </span>
+              <span
+                class="font-serif text-sm font-light"
+                [ngClass]="toggleState ? 'textopen' : 'textclosed'"
+                >Menu Editor</span
+              >
+            </a>
+          </li>
         </ul>
         <ul class="flex justify-end items-center h-full flex-col space-y-2">
           <li>
-            <a routerLink="/message-center" class="flex flex-col items-center">
+            <a
+              routerLink="/message-center"
+              [routerLinkActive]="'active'"
+              class="flex flex-col items-center"
+            >
               <span
-                class="flex items-center justify-center text-zinc-500 hover:bg-[#31abc8] hover:text-white h-12 w-12 rounded-2xl"
+                class="flex items-center justify-center text-[#8e8e8e] hover:bg-[#31abc8] hover:text-white h-12 w-12 rounded-2xl active:!text-white"
               >
                 <svg
                   class="w-8 h-8"
@@ -151,9 +197,13 @@ import { SettingsService } from '../../services/settings.service';
             </a>
           </li>
           <li>
-            <a routerLink="/settings" class="flex flex-col items-center">
+            <a
+              routerLink="/settings"
+              [routerLinkActive]="'active'"
+              class="flex flex-col items-center"
+            >
               <span
-                class="flex items-center justify-center text-zinc-500 hover:bg-[#31abc8] hover:text-white h-12 w-12 rounded-2xl"
+                class="flex items-center justify-center text-[#8e8e8e] hover:bg-[#31abc8] hover:text-white h-12 w-12 rounded-2x active:!text-white"
               >
                 <svg
                   class="w-6 h-6"
@@ -199,7 +249,10 @@ import { SettingsService } from '../../services/settings.service';
         display: none;
       }
       .active {
-        background-color: #31abc8;
+        background-color: #626262;
+        border-radius: 0.5rem;
+        color: #fff !important;
+        --currentColor: #fff !important;
       }
     `,
   ],

@@ -13,7 +13,7 @@ import { ViewService } from '../../services/view.service';
   selector: 'app-interface-table',
   template: `
     <div
-      class="interface-outlet flex flex-col items-center justify-center text-gray-500 min-w-full mt-[25vh]"
+      class="interface-outlet flex flex-col items-center justify-center text-gray-400 min-w-full mt-[25vh]"
     >
       <span
         class="text-gray-100 font-serif text-xl flex justify-center animate-fade-in-down mt-6 mb-2"

@@ -26,7 +26,7 @@ export class ViewService {
   );
   missing$ = this.missingSubject.asObservable();
 
-  constructor(private provider: ProviderService) {}
+  constructor() {}
   updateSelectedRange(range: any[]) {
     this.selectedRangeSubject.next(range);
   }

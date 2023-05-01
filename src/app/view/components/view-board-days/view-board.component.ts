@@ -15,7 +15,7 @@ import { CalendarDay, DateRange } from '../../../shared/models/calendar-view';
   selector: 'app-view-board-days',
   template: `
     <button
-      class="flex-container relative flex w-full h-full rounded-md shadow-lg bg-zinc-900 bg-opacity-30 text-white gap-0 transition-transform hover:bg-[#31abc8] hover:bg-opacity-10 hover:shadow-2xl active:bg-[#31abc8] active:bg-opacity-70"
+      class="flex-container relative flex w-full h-full rounded-md shadow-lg border-2 border-zinc-600 border-opacity-60 bg-zinc-900 bg-opacity-10 gap-2 text-white transition-transform hover:bg-[#31abc8] hover:bg-opacity-10 hover:shadow-2xl active:bg-[#31abc8] active:bg-opacity-70"
       (click)="selectedDay(day)"
       [value]="day"
       [ngClass]="{ selected: day.selected === true }"

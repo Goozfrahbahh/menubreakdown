@@ -28,7 +28,7 @@ import { InventoryTableData } from '../../../models/inventory';
         <div *ngIf="!tableView">
           <button
             (click)="routeNavigateUpload()"
-            class="flex rounded-md px-3.5 py-2 m-1 mr-0 ml-0 overflow-hidden relative group cursor-pointer border-2 font-medium border-zinc-600 text-[#31abc8]"
+            class="flex rounded-md px-3.5 py-2 m-1 mr-0 ml-0 overflow-hidden relative group cursor-pointer border-2 font-medium border-zinc-500 text-[#31abc8]"
           >
             <svg
               width="20"
@@ -56,14 +56,14 @@ import { InventoryTableData } from '../../../models/inventory';
               class="absolute w-64 h-0 transition-all duration-300 origin-center rotate-45 -translate-x-20 bg-[#31abc8] bg-opacity-70 top-1/2 group-hover:h-64 group-hover:-translate-y-32 ease"
             ></span>
             <span
-              class="relative ml-2 text-[#31abc8] transition duration-300 group-hover:text-gray-100 ease"
+              class="relative ml-2  text-gray-500 dark:text-gray-400 transition duration-300 group-hover:text-gray-700 dark:group-hover:text-gray-100 ease ease"
               >Add/Delete Form</span
             >
           </button>
         </div>
         <button
           (click)="changeDatesSelected()"
-          class="flex rounded-md px-3.5 py-2 m-1 ml-0 overflow-hidden relative group cursor-pointer border-2 font-medium border-zinc-600 text-[#31abc8]"
+          class="flex rounded-md px-3.5 py-2 m-1 ml-0 overflow-hidden relative group cursor-pointer border-2 font-medium border-zinc-500 text-[#31abc8]"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -83,7 +83,7 @@ import { InventoryTableData } from '../../../models/inventory';
             class="absolute w-64 h-0 transition-all duration-300 origin-center rotate-45 -translate-x-20 bg-[#31abc8] bg-opacity-70 top-1/2 group-hover:h-64 group-hover:-translate-y-32 ease"
           ></span>
           <span
-            class="relative ml-2 text-[#31abc8] transition duration-300 group-hover:text-gray-100 ease"
+            class="relative ml-2 text-gray-500 dark:text-gray-400 transition duration-300 group-hover:text-gray-700 dark:group-hover:text-gray-100 ease"
             >Change Date Selection</span
           >
         </button>
@@ -92,17 +92,17 @@ import { InventoryTableData } from '../../../models/inventory';
 
     <div class="flex md:flex md:items-center mt-2">
       <div
-        class="inline-flex overflow-hidden border-[.5px] divide-x rounded-lg bg-zinc-800 bg-opacity-10 rtl:flex-row-reverse dark:border-zinc-600 dark:divide-zinc-600"
+        class="inline-flex overflow-hidden border-[.5px] divide-x rounded-lg bg-zinc-800 bg-opacity-10 rtl:flex-row-reverse dark:border-zinc-500 dark:divide-zinc-600"
       >
         <button
           (click)="viewAll()"
-          class="flex flex-row flex-nowrap min-w-fit rounded-md px-3.5 py-2 overflow-hidden relative group cursor-pointer border-2 font-medium border-zinc-600 text-[#31abc8]"
+          class="flex flex-row flex-nowrap min-w-fit rounded-r-none rounded-md px-3.5 py-2 overflow-hidden relative group cursor-pointer border-2 font-medium border-zinc-500 text-[#31abc8]"
         >
           <span
             class="absolute w-64 h-0 transition-all duration-300 origin-center rotate-45 -translate-x-20 bg-[#31abc8] bg-opacity-70 top-1/2 group-hover:h-64 group-hover:-translate-y-32 ease"
           ></span>
           <span
-            class="relative text-center text-sm text-[#31abc8] transition duration-300 group-hover:text-gray-100 ease"
+            class="relative text-center text-sm text-gray-500 dark:text-gray-400 transition duration-300 group-hover:text-gray-700 dark:group-hover:text-gray-100 ease"
             >View All</span
           >
         </button>
@@ -111,13 +111,13 @@ import { InventoryTableData } from '../../../models/inventory';
             (click)="combinedData()"
             class="flex flex-row flex-nowrap min-w-fit rounded-md px-3.5 py-2
             overflow-hidden relative group cursor-pointer border-2 font-medium
-            border-zinc-600 text-[#31abc8]"
+            border-zinc-500 rounded-l-none text-[#31abc8]"
           >
             <span
               class="absolute w-64 h-0 transition-all duration-300 origin-center rotate-45 -translate-x-20 bg-[#31abc8] bg-opacity-70 top-1/2 group-hover:h-64 group-hover:-translate-y-32 ease"
             ></span>
             <span
-              class="relative text-sm text-[#31abc8] transition duration-300 group-hover:text-gray-100 ease"
+              class="relative text-sm text-gray-500 dark:text-gray-400 transition duration-300 group-hover:text-gray-100 ease"
             >
               Combined</span
             >
@@ -126,17 +126,17 @@ import { InventoryTableData } from '../../../models/inventory';
       </div>
       <div class="px-1"></div>
       <div
-        class="relative flex items-center max-w-[150px] ml-1 mt-4 md:mt-0"
+        class="relative flex overflow-hidden items-center group max-w-[140px] ml-1 mt-4 md:mt-0"
         *ngIf="!tableView"
       >
-        <span class="absolute max-w-fit">
+        <span class="absolute max-w-fit z-20">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="w-5 h-5 mx-3 text-gray-400 dark:text-gray-600"
+            stroke-width="2"
+            stroke="#fff"
+            class="w-5 h-5 mx-3 text-gray-600 dark:text-gray-100 group-hover:text-[#ff9eff] dark:group-hover:text-[#ff9eff]"
           >
             <path
               stroke-linecap="round"
@@ -149,7 +149,7 @@ import { InventoryTableData } from '../../../models/inventory';
           type="text"
           #searchBox
           (input)="search(searchBox.value)"
-          class="inline-flex w-full py-1.5 pr-5 text-gray-700 bg-white border border-gray-200 rounded-lg placeholder-gray-400/70 pl-11 rtl:pr-11 rtl:pl-5 dark:bg-zinc-800 dark:text-gray-400 dark:border-gray-600 focus:border-zinc-400 dark:focus:border-zinc-600 focus:ring-zinc-600 focus:outline-none focus:ring focus:ring-opacity-40"
+          class="inline-flex w-full py-1.5 pr-5 z-20 text-gray-700 bg-white border border-gray-200/20 rounded-lg placeholder-gray-400/70 pl-11 rtl:pr-11 rtl:pl-5 dark:bg-zinc-800/80 dark:text-gray-400 dark:border-gray-600 focus:border-zinc-400 dark:focus:border-zinc-500 focus:ring-zinc-600 focus:outline-none focus:ring focus:ring-opacity-40"
         />
       </div>
       <div
@@ -185,13 +185,13 @@ import { InventoryTableData } from '../../../models/inventory';
       <div (clickOutside)="clickedOutside()" class="relative flex justify-end">
         <button
           (click)="toggleMenu()"
-          class="flex  text-white bg-gray-200 items-center justify-center w-40  px-5 py-2 ml-1 text-sm font-semibold text-left dark:hover:bg-zinc-800 dark:hover:text-white hover:text-white dark:bg-zinc-800 dark:bg-opacity-80 hover:bg-zinc-800 dark:text-gray-400 rounded-lg "
+          class="flex ml-6  text-white bg-gray-200 items-center justify-center border-2 border-zinc-500 w-40  px-5 py-2 ml-1 text-sm font-semibold text-left dark:hover:bg-zinc-800 dark:hover:text-white hover:text-white dark:bg-zinc-800 dark:bg-opacity-80 hover:bg-zinc-800 dark:text-gray-400 rounded-lg "
         >
           <span x-text="sortType">Filter by</span>
           <svg
             fill="currentColor"
             viewBox="0 0 20 20"
-            :class="{'rotate-180': openSort, 'rotate-0': !openSort}"
+            [ngClass]="{ 'rotate-180': openSort, 'rotate-0': !openSort }"
             class="w-4 h-4  transition-transform duration-200 transform "
           >
             <path
@@ -202,40 +202,38 @@ import { InventoryTableData } from '../../../models/inventory';
           </svg>
         </button>
         <ng-container *ngIf="openSort">
-          <div class="absolute z-50 w-full origin-top-right mt-7">
-            <div
-              class="px-2 pt-2 pb-2 rounded-md shadow-lg dark:bg-zinc-800 dark:bg-opacity-90"
-            >
-              <ul class="flex flex-col rounded">
+          <div class="absolute z-50 w-40 object-right-bottom mt-7 ">
+            <div class="px-2 pt-2 pb-2 rounded-lg shadow-lg">
+              <ul class="flex flex-col rounded-xl">
                 <li
-                  class="flex flex-row items-center text-center justify-center bg-transparent p-2 pb-0 mb-0 dark:hover:text-white "
+                  class="flex flex-row items-center text-center justify-center bg-zinc-700 p-2 pb-0 mb-0 dark:hover:text-white "
                 >
                   <button
                     (click)="filterByDate(this.allDate)"
-                    class="flex w-full text-center rounded-md px-3.5 py-2 m-1 -ml-1 overflow-hidden relative group cursor-pointer border-2 font-medium border-zinc-600 text-[#31abc8]"
+                    class="flex w-full justify-center rounded-md px-4 py-2 overflow-hidden relative group cursor-pointer border-2 font-medium border-zinc-500 text-[#31abc8]"
                   >
                     <span
-                      class="absolute w-64 h-0 transition-all duration-300 origin-center rotate-45 -translate-x-20 bg-[#31abc8] bg-opacity-70 top-1/2 group-hover:h-64 group-hover:-translate-y-32 ease"
+                      class="absolute w-64 h-0 transition-all duration-300 origin-center rotate-45 -translate-x-20 bg-[#31abc8] bg-opacity-40 backdrop-blur-lg top-1/2 group-hover:h-64 group-hover:-translate-y-32 ease"
                     ></span>
                     <span
-                      class="relative ml-2 text-[#31abc8] transition duration-300 group-hover:text-gray-100 ease"
+                      class="relative ml-2 hover:text-white font-serif -ml-2 place-self-center transition duration-300 text-gray-600 dark:text-[#fec84b] group-hover:text-[#31abc8] ease"
                       >All</span
                     >
                   </button>
                 </li>
                 <li
-                  class="flex flex-row items-center justify-center bg-zinc-800 bg-opacity-60 p-2 pt-0 mt-0 hover:border-zinc-500/50 dark:hover:order-zinc-500/50 dark:hover:text-white "
+                  class="flex flex-row items-center justify-center bg-zinc-700 p-2 pt-0 mt-0 hover:border-zinc-500/50 dark:hover:order-zinc-500/50 dark:hover:text-white "
                   *ngFor="let date of dateList"
                 >
                   <button
                     (click)="filterByDate(date.date)"
-                    class="flex w-full text-center rounded-md px-3.5 py-2 m-1 -ml-1 overflow-hidden relative group cursor-pointer border-2 font-medium border-zinc-600 text-[#31abc8]"
+                    class="flex w-full text-center rounded-md px-3.5 py-2 overflow-hidden relative group cursor-pointer border-2 font-medium border-zinc-500 text-[#31abc8]"
                   >
                     <span
-                      class="absolute w-64 h-0 transition-all duration-300 origin-center rotate-45 -translate-x-20 bg-[#31abc8] bg-opacity-70 top-1/2 group-hover:h-64 group-hover:-translate-y-32 ease"
+                      class="absolute w-64 h-0 transition-all duration-300 origin-center rotate-45 -translate-x-20 bg-[#31abc8] bg-opacity-40 backdrop-blur-lg top-1/2 group-hover:h-64 group-hover:-translate-y-32 ease"
                     ></span>
                     <span
-                      class="relative ml-2 text-[#31abc8] transition duration-300 group-hover:text-gray-100 ease"
+                      class="relative ml-4 hover:text-[#31abc8] font-serif transition duration-300 text-gray-600 dark:text-[#fec84b] group-hover:text-[#31abc8] ease"
                     >
                       {{ date.date | date : 'shortDate' }}
                     </span>
@@ -380,7 +378,7 @@ export class ContentComponent implements OnInit, OnDestroy {
     const combinedQuantities = (list: MenuBreakdown[]) => {
       this.dataList.forEach((item) => {
         if (combinedItems[item.item]) {
-          combinedItems[item.item].quantity += item.quantity;
+          combinedItems[item.item].sold += item.sold;
         } else {
           combinedItems[item.item] = { ...item };
         }
@@ -390,7 +388,10 @@ export class ContentComponent implements OnInit, OnDestroy {
     };
 
     const combinedData = combinedQuantities(this.dataList);
-
+    combinedData.map(function (item) {
+      delete item.modifier;
+      return item;
+    });
     this.tableService.updateTableData(combinedData);
   }
 

@@ -17,7 +17,7 @@ import {
   MenuBreakdown,
   StateWithoutMenuBreakdowns,
 } from '../../../shared/models/menubreakdown';
-import { Subject, switchMap, takeUntil } from 'rxjs';
+import { Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { ProviderService } from '../../../shared/services/provider.service';
 import { MessageService } from '../../../shared/services/messages.service';
 import { TableService } from '../../services/table.service';
@@ -26,7 +26,7 @@ import { TableService } from '../../services/table.service';
   selector: 'app-board',
   template: `
     <div
-      class="feature-container flex max-h-[100vh] max-w-[100vw] pt-4 overflow-hidden bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-zinc-900 to-zinc-800 bg-gradient-to-r]"
+      class="feature-container flex max-h-[100vh] max-w-[100vw] pt-4 overflow-hidden bg-transparent"
       *ngIf="!viewOff; else menubreakdown"
     >
       <div
@@ -112,7 +112,10 @@ export class ViewBoardComponent implements OnInit, AfterViewInit, OnDestroy {
       });
 
     this.provider.menubreakdown$
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        tap((items) => console.log(items)),
+        takeUntil(this.destroy$)
+      )
       .subscribe((breakdown: DailyMenuBreakdown[]) => {
         if (breakdown) {
           this.dataList = breakdown.sort((a, b) => a.id - b.id);

@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MenuBreakdown } from '../../../../shared/models/menubreakdown';
-import { EntreeList, inventory } from '../../../models/inventory';
 import { TableService } from '../../../services/table.service';
 
 @Component({
@@ -14,21 +13,26 @@ import { TableService } from '../../../services/table.service';
     >
       <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
         <div>
-          <h2 class="tracking-wider dark:text-[#31abc8] text-[#31abc8] ">
+          <h2 class="tracking-wider dark:text-[#0fc8f6] text-[#0fc8f6] ">
             {{ breakdown.item }}
           </h2>
-          <div *ngIf="breakdown.category">
-            <p class="text-sm font-normal text-gray-600 dark:text-gray-500">
-              {{ breakdown.category }}
+          <span
+            class="tracking-normal dark:text-[#ff9eff] text-[#ff9eff]"
+            *ngIf="breakdown.modifier"
+            >{{ breakdown.modifier }}</span
+          >
+          <div *ngIf="breakdown.group">
+            <p class="text-sm font-normal text-gray-600 dark:text-gray-400">
+              {{ breakdown.group }}
             </p>
           </div>
         </div>
       </td>
       <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
         <div
-          class="inline px-3 py-1 font-sans text-sm font-normal rounded-full text-[#71ff4e] dark:text-[#71ff4e] gap-x-2 bg-zinc-600/60 dark:bg-zinc-600/30"
+          class="inline px-3 py-1 font-sans text-sm font-normal rounded-full text-[#fec84b] dark:text-[#fec84b] gap-x-2 bg-zinc-600/60 dark:bg-zinc-600/30"
         >
-          {{ breakdown.quantity }}
+          {{ breakdown.sold }}
         </div>
       </td>
       <td class="px-4 py-4 text-sm whitespace-nowrap">

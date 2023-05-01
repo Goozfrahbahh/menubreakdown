@@ -19,7 +19,6 @@ import {
   DailyMenuBreakdown,
   MenuBreakdown,
   Totals,
-  entreeLists,
 } from '../../shared/models/menubreakdown';
 import { MenuExtractionService, csv } from '../services/menuextraction.service';
 import {
@@ -36,10 +35,13 @@ import {
   tap,
   Subject,
   BehaviorSubject,
+  filter,
+  from,
 } from 'rxjs';
 import { CsvParserService } from '../services/csvparser.service';
 import { UploadFormService } from '../services/upload-form.service';
 import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-entry-form',
@@ -48,7 +50,7 @@ import { FormControl } from '@angular/forms';
       class="upload flex align-middle items-center justify-center content-center p-12 mt-[10vh]"
     >
       <div
-        class="mx-auto w-full max-w-[550px] p-10 pb-2 dark:divide-gray-700 bg-zinc-800 bg-opacity-40 shadow-xl hover:shadow-2xl rounded-xl"
+        class="mx-auto w-full max-w-[550px] p-10 pb-2 border-4 border-zinc-600 border-opacity-80 dark:divide-gray-700 bg-zinc-800 bg-opacity-40 shadow-xl hover:shadow-2xl rounded-xl"
       >
         <h1
           class="text-2xl -mt-2 mb-6 text-gray-200 border-b border-b-zinc-700 pb-2"
@@ -180,8 +182,6 @@ import { FormControl } from '@angular/forms';
 export class EntryFormComponent implements OnInit, OnDestroy {
   @HostBinding('@pageAnimations')
   dateField = new FormControl();
-  protected dateSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  date$ = this.dateSubject.asObservable();
   date: any;
   filesList: File[] = [];
   files: string[] = [];
@@ -195,16 +195,29 @@ export class EntryFormComponent implements OnInit, OnDestroy {
   id: number;
   totals: Totals[] = [];
   menubreakdown: DailyMenuBreakdown;
+  MenuGroups = [
+    { group: 'Entrees' },
+    { group: 'Appetizers' },
+    { group: 'Soups' },
+    { group: 'Burgers' },
+    { group: 'Kids Menu' },
+    { group: 'Desserts' },
+    { group: 'Sides' },
+    { group: 'Only Meats' },
+    { group: 'Salads' },
+  ];
+
+  protected csvSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   private destroy$ = new Subject<void>();
 
   constructor(
     private csvParserService: CsvParserService,
     private uploadFormService: UploadFormService,
-    private menuExtractionService: MenuExtractionService
+    private menuExtractionService: MenuExtractionService,
+    private router: Router
   ) {}
 
   ngOnInit() {
-    this.entreeList = [...entreeLists];
     this.dateField.setValue(new Date());
     this.dateField.valueChanges.pipe(takeUntil(this.destroy$)).subscribe();
 
@@ -239,10 +252,10 @@ export class EntryFormComponent implements OnInit, OnDestroy {
     this.filesList = files;
     this.file = files[0].name;
     this.uploadFormService.updateUploadFilesList(this.file);
+
     this.header =
       (this.header as unknown as string) === 'true' || this.header === true;
 
-    //Parse csv and extract relevent Entrees from csv upload   **pipe1: map, catchError -> handleError  **pipe2: switchMap => extractionMethod(service)   **subsccribe
     const csvRecords = this.csvParserService
       .parse(files[0], { header: this.header, delimiter: ',' })
       .pipe(
@@ -253,86 +266,44 @@ export class EntryFormComponent implements OnInit, OnDestroy {
         )
       )
       .pipe(
-        switchMap((result: any) => this.extractionMethod(result)),
-        tap((result) => this.csv.push(result)),
+        concatAll<any>(),
+        map((result: any) =>
+          this.csvnew.push({
+            group: result[1],
+            item: result[2],
+            modifier: result[3],
+            sold: Number(result[5]) || 0,
+          })
+        ),
+        switchMap((csvnew) => of(this.csvnew)),
+        takeLast(1),
+        switchMap((csv) => from(csv)),
+        filter((item) => item.item !== ''),
+        filter((item) => this.MenuGroups.some((id) => item.group === id.group)),
+        map((items) => this.csv.push(items)),
         takeUntil(this.destroy$)
       )
-      .subscribe((results: any) => {
-        this.entreeList = this.fillMenuEntreeList(results);
+      .subscribe((results) => {
+        this.csvSubject.next(this.csv);
       });
-  }
-  extractionMethod(csvRecords: any): Observable<csv> {
-    const csv$ = of(csvRecords);
-    const vars = csv$.pipe(
-      concatAll(),
-      map((result: any) =>
-        this.csvnew.push({
-          group: result[0],
-          item: result[2],
-          modifier: result[3],
-          quantity: result[5],
-        })
-      ),
-      switchMap((csvnew) => of(this.csvnew)),
-      takeLast(1)
-    );
-
-    // use stream copy to ensure no mutations
-    const csv2 = vars;
-
-    // Split the stream into two distinct parts: FOOD  and FOOD3PD keep sales point location
-    const dineIn$: Observable<csv> = csv2.pipe(
-      map((result: csv[]) =>
-        result.filter((result) => result.group === 'FOOD')
-      ),
-      switchMap((results: csv[]) => of(results)),
-      concatAll(),
-      distinctUntilChanged((p: csv, q: csv) => p.item === q.item)
-    );
-
-    const takeOut$: Observable<csv> = csv2.pipe(
-      map((result: csv[]) =>
-        result.filter((result) => result.group === 'FOOD (3PD)')
-      ),
-      switchMap((results: csv[]) => of(results)),
-      concatAll(),
-      distinctUntilChanged((p: csv, q: csv) => p.item === q.item)
-    );
-
-    // Combine the takout and dinein streams
-    const combine$ = of(takeOut$, dineIn$);
-
-    const combined$ = combine$.pipe(
-      zipAll(),
-      switchMap((value) => of(value)),
-      concatAll()
-    );
-
-    return combined$;
-  }
-
-  fillMenuEntreeList(csv: any) {
-    for (let i = 0; i < this.entreeList.length; i++) {
-      if (this.entreeList[i][0] === csv.item) {
-        this.entreeList[i][1] =
-          Number(csv.quantity) + Number(this.entreeList[i][1]);
-      }
-    }
-    this.uploadFormService.updateTotals(this.entreeList);
-    return this.entreeList;
   }
 
   onSubmit() {
-    console.log(this.id), console.log(this.d);
+    const data = this.csvSubject.asObservable();
+    console.log('hey');
+    data
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => (this.totals = data));
+
     console.log(this.totals);
-    console.log(this.f);
     this.menubreakdown = {
       id: this.id,
       date: this.d,
       totals: this.totals,
-      file: this.f,
     };
+    console.log(this.menubreakdown);
     this.menuExtractionService.addMenuBreakdown(this.menubreakdown);
+    this.router.navigate(['/message-center']);
   }
 
   ngOnDestroy() {

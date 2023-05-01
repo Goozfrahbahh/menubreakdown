@@ -1,9 +1,9 @@
 <div class="right-2 top-2 flex flex-row justify-center w-full h-full">
 	<div class="animate-fade-in-down focus:outline-none inset-0 top-0 left-0 z-50 flex flex-row items-center justify-center h-screen max-w-[400px] pl-[8vw] pr-[8vw] py-2 space-y-4 bg-transparent outline-none"
-		*ngFor="let message of messageService.messages; let i = index;trackby: trackById">
-		<div class="hover:shodow-lg rounded-2xl bg-zinc-800 bg-opacity-40 flex flex-row p-8 shadow-md max-h-[20vh] min-w-[50vw] overflow-y-scroll overflow-x-hidden"
+		*ngFor="let message of messageService.messages; let i = index">
+		<div class="hover:shodow-lg rounded-2xl bg-zinc-800 bg-opacity-40 flex flex-row p-8 border-4 border-zinc-600 border-opacity-80 shadow-md max-h-[21vh] min-w-[50vw] overflow-y-scroll overflow-x-hidden"
 			id="scroll">
-			<div class="relative flex items-center justify-between">
+			<div class="relative flex items-center justify-start">
 				<div class="flex items-center">
 					<!-- <svg xmlns="http://www.w3.org/2000/svg"
 					class="rounded-2xl bg-zinc-800 w-16 h-16 p-1 text-white border border-gray-700" fill="none"

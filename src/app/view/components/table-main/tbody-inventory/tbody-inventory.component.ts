@@ -6,14 +6,14 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { MenuBreakdown } from '../../../../shared/models/menubreakdown';
 import {
+  CategoryMap,
   EntreeList,
-  InventoryItems,
-  InventoryKey,
-  InventoryTableData,
-  TableInventory,
-} from '../../../models/inventory';
+  Groups,
+  MenuBreakdown,
+  MenuGroups,
+} from '../../../../shared/models/menubreakdown';
+import { InventoryItems, InventoryTableData } from '../../../models/inventory';
 import { isNgTemplate } from '@angular/compiler';
 import { TableService } from '../../../services/table.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -21,18 +21,18 @@ import { Subject, takeUntil } from 'rxjs';
 @Component({
   selector: 'app-tbody-inventory',
   template: ` <tbody
-    class="bg-white h-[400px] inline-flex flex-col block divide-y divide-gray-200 font-serif dark:divide-gray-700 dark:bg-zinc-700 dark:bg-opacity-[.45] overflow-y-scroll overflow-hidden overflow-ellipsis"
+    class="bg-white h-[400px] inline-flex flex-col border-[#31abc8] divide-y-4 divide-gray-200 font-serif dark:divide-gray-700 dark:bg-zinc-700 dark:bg-opacity-[.45] overflow-y-scroll overflow-hidden overflow-ellipsis"
   >
     <tr
       class="hover:bg-zinc-800 hover:bg-opacity-90"
-      *ngFor="let categories of inventoryTable; let i = index"
+      *ngFor="let categories of tableData; let i = index; trackBy: trackByIndex"
     >
       <td class="px-6 py-4 text-sm font-medium whitespace-nowrap">
         <div>
-          <h2 class="tracking-wider text-[#31abc8] dark:text-[#31abc8]">
+          <h2 class="tracking-wider text-[#36badc] dark:text-[#36badc]">
             {{ categories.category }}
           </h2>
-          <p class="text-sm font-normal text-gray-600 dark:text-gray-500">
+          <p class="text-sm font-normal text-gray-600 dark:text-gray-400">
             Certified Angus Beef Top Butt Choice
           </p>
         </div>
@@ -41,21 +41,22 @@ import { Subject, takeUntil } from 'rxjs';
         class="px-14 py-4 text-sm font-medium whitespace-nowrap place-items-end my-auto min-w-max min-w-0"
       >
         <div
-          class="px-3 py-1 font-sans text-sm font-normal rounded-full text-[#71ff4e] dark:text-[#71ff4e] gap-x-2 bg-zinc-600/60 dark:bg-zinc-600/30"
+          class="px-3 py-1 font-sans text-sm font-normal rounded-full text-[#fec84b] dark:text-[#fec84b] gap-x-2 bg-zinc-600/60 dark:bg-zinc-600/30"
         >
-          {{ categories.totalQuantity }}
+          {{ categories.total }}
         </div>
       </td>
       <td
-        class="w-full relative place-self-end pl-[40px] pr-10 text-sm whitespace-nowrap min-w-fit"
+        class="w-full relative place-self-end pl-[60px] pr-10 text-sm whitespace-nowrap min-w-fit"
       >
         <ng-container *ngIf="!categories.selected">
           <button
-            class="px-1 py-1 absolute right-4 top-5 text-gray-500 transition-colors duration-200 rounded-lg dark:text-gray-300 hover:bg-gray-100"
+            class="px-1 py-1 absolute right-4 top-5 text-gray-500 transition-colors duration-200 rounded-lg dark:text-gray-300"
             (click)="onOpenInventoryItem(i)"
           >
             <svg
               fill="#ffffff"
+              class="hover:fill-[#31abc8]"
               height="20px"
               width="20px"
               version="1.1"
@@ -96,12 +97,13 @@ import { Subject, takeUntil } from 'rxjs';
         </ng-container>
         <ng-container *ngIf="categories.selected">
           <button
-            class="px-1 py-1 absolute right-4 top-5 inline-block text-gray-500 transition-colors duration-200 rounded-lg dark:text-gray-300 hover:bg-gray-100"
+            class="px-1 py-1 absolute right-4 top-5 inline-block text-gray-500 transition-colors duration-200 rounded-lg dark:text-gray-300"
             (click)="onOpenInventoryItem(i)"
           >
             <svg
               fill="#ffffff"
               viewBox="0 0 512 512"
+              class="hover:fill-[#31abc8]"
               width="20px"
               height="20px"
               xmlns="http://www.w3.org/2000/svg"
@@ -124,7 +126,7 @@ import { Subject, takeUntil } from 'rxjs';
       <td class="flex flex-col w-full">
         <ng-container *ngIf="categories.selected">
           <div
-            class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded dark:bg-transparent"
+            class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded dark:bg-transparent"
           >
             <div class="block w-full overflow-x-auto">
               <table class="items-center bg-transparent w-full table-auto">
@@ -133,17 +135,17 @@ import { Subject, takeUntil } from 'rxjs';
                     class="border-[.5px] border-collapse border-zinc-600 text-gray-300"
                   >
                     <th
-                      class="px-6 align-middle py-3 text-xs uppercase border-l-[.5px] border-r-0 border-zinc-700  whitespace-nowrap font-semibold text-left"
+                      class="px-6 break-words align-middle py-3 text-xs uppercase border-l-[.5px] border-r-0 border-zinc-700  whitespace-nowrap font-semibold text-left text-slate-600 dark:text-slate-400"
                     >
                       Entree
                     </th>
                     <th
-                      class="px-6 align-middle py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+                      class="px-6 break-words align-middle py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left text-slate-600 dark:text-slate-400"
                     >
                       Totals
                     </th>
                     <th
-                      class="px-6 align-middle py-3 text-xs uppercase border-l-0 border-r-[.5px] border-zinc-700 whitespace-nowrap font-semibold text-left"
+                      class="px-6 break-words align-middle py-3 text-xs uppercase border-l-0 border-r-[.5px] border-zinc-700 whitespace-nowrap font-semibold text-left text-slate-600 dark:text-slate-400"
                     >
                       Portion Size
                     </th>
@@ -152,33 +154,43 @@ import { Subject, takeUntil } from 'rxjs';
 
                 <tbody>
                   <tr
-                    *ngFor="let entrees of categories.individualPlates"
+                    *ngFor="let entrees of categories.entreeList"
                     class="text-white font-sans"
                   >
                     <th
-                      class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700 "
+                      class="border-b-1 border-t-0 px-6 m-w-[220px] w-[220px] align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left "
                     >
-                      {{ entrees.name }}
+                      <h2
+                        class="tracking-wider text-gray-600 dark:text-gray-400"
+                      >
+                        {{ entrees.item }}
+                      </h2>
+                      <div *ngIf="entrees.modifier">
+                        <p
+                          class="text-xs font-normal text-[#ff9eff] dark:text-[#ff9eff]"
+                        >
+                          {{ entrees.modifier }}
+                        </p>
+                      </div>
                     </th>
                     <td
-                      class="border-t-0 px-6 text-center align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 font-sans text-green-300"
+                      class="px-10 py-4 mr-2 text-center text-sm font-medium whitespace-nowrap place-items-end my-auto min-w-[40px]"
                     >
-                      {{ entrees.quantity }}
+                      <div
+                        class="px-1 py-1 font-sans text-center self-center text-xs font-normal rounded-full text-[#ffcd58] dark:text-[#ffcd58] gap-x-2 bg-zinc-600/60 dark:bg-zinc-600/30"
+                      >
+                        {{ entrees.sold }}
+                      </div>
                     </td>
                     <td
-                      class="border-t-0 px-6 text-center align-center border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-sans text-[#31abc8]"
+                      class="px-10 py-4 text-center text-sm font-medium whitespace-nowrap place-items-end my-auto min-w-[40px]"
                     >
-                      {{ entrees.portion }}
-                    </td>
-                    <ng-container>
-                      <td
-                        class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                        *ngIf="entrees.modifier"
+                      <div
+                        class="px-1 py-1 font-sans text-xs font-normal rounded-full text-gray-600 dark:text-gray-400 gap-x-2 bg-zinc-600/60 dark:bg-zinc-600/30"
                       >
-                        <i class="fas fa-arrow-up text-emerald-500 mr-4"></i>
-                        {{ entrees.modifier }}
-                      </td>
-                    </ng-container>
+                        {{ entrees.portion }}
+                      </div>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -200,88 +212,39 @@ export class TbodyInventoryComponent implements OnInit, OnDestroy {
   @Output('openItem') openItem = new EventEmitter<any>();
   @Input() inventoryTable: InventoryTableData[] = [];
   dataList: MenuBreakdown[] = [];
-  categories = EntreeList;
-  keyList = InventoryKey;
   cachedData: any[] = [];
   formattedObj: any = {};
   inventoryData: any;
+  itemData: EntreeList;
   result: any;
+  groups: any;
+  categories: any[] = [];
+  tableData: any[] = [];
   private destroy$ = new Subject<void>();
 
   constructor(private tableService: TableService) {}
 
   ngOnInit() {
-    this.tableService.tableData$
+    this.groups = MenuGroups;
+    this.tableService.inventoryTable$
       .pipe(takeUntil(this.destroy$))
       .subscribe((data) => {
-        this.dataList = data;
-        const combinedArray = this.combineArray(this.categories, this.keyList);
-        this.inventoryData = this.buildInventoryTable(combinedArray);
-        const ObjJson = this.compareAndFormat(
-          this.inventoryData,
-          combinedArray
-        );
-        const result = Object.keys(ObjJson).map((key) => ({
-          category: key,
-          ...ObjJson[key],
-        }));
+        this.tableData = data;
         if (this.cachedData.length < 1) {
-          this.cachedData = result;
+          this.cachedData = this.tableData;
         }
-        console.log(result);
-        this.tableService.updateTableInventoryValues(result);
+        return this.tableData;
       });
   }
-
-  buildInventoryTable(combinedArray: any) {
-    if (combinedArray) {
-      const inventoryData = this.dataList.reduce((acc: any, menu) => {
-        const inventoryItem = this.findInventoryItem(menu.item, combinedArray);
-        if (inventoryItem) {
-          const { inventoryKey, portion } = inventoryItem;
-
-          if (!acc[inventoryKey]) {
-            const itemFromCombinedArray = combinedArray.find((item: any) =>
-              item.hasOwnProperty(inventoryKey)
-            );
-            if (itemFromCombinedArray) {
-              acc[inventoryKey] = {
-                totalQuantity: 0,
-                individualPlates: itemFromCombinedArray[inventoryKey].map(
-                  (plate: any) => ({ ...plate, quantity: 0 })
-                ),
-                selected: false,
-              };
-            }
-          }
-          if (acc[inventoryKey]) {
-            acc[inventoryKey].totalQuantity += portion * menu.quantity;
-            const plateIndex = acc[inventoryKey].individualPlates.findIndex(
-              (plate: any) => plate.name === menu.item
-            );
-            if (plateIndex !== -1) {
-              acc[inventoryKey].individualPlates[plateIndex].quantity +=
-                portion * menu.quantity;
-            }
-
-            acc[inventoryKey].selected = false;
-          }
-        }
-
-        return acc;
-      }, {});
-
-      return inventoryData;
-    }
-  }
   onOpenInventoryItem(index: number) {
-    console.log(this.cachedData);
-    this.cachedData[index].selected = !this.cachedData[index].selected;
+    console.log(this.cachedData[index]);
+    const toggle = this.cachedData[index].selected;
+    const option = !toggle;
+    this.cachedData[index].selected = option;
     this.tableService.updateTableInventoryValues(this.cachedData);
   }
-  trackByIndex(index: number, value: TableInventory): InventoryTableData {
-    console.log(value[index]);
-    return value[index];
+  trackByIndex(index: number, value: InventoryTableData): number {
+    return index;
   }
 
   combineArray(items: InventoryItems[][], key: string[]) {

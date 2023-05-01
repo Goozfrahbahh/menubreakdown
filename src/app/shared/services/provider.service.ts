@@ -23,6 +23,7 @@ export class ProviderService implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.setUp('Normal');
+    console.log('');
     this.messageService.messages$
       .pipe(takeUntil(this.destroy$))
       .subscribe((messages) => this.messages.push(messages));
@@ -34,7 +35,7 @@ export class ProviderService implements OnInit, OnDestroy {
     this.stringMessageSubject.next(this.stringMessage);
     this.dailymenubreakdowns =
       await this.menuBreakdownService.getMenuBreakdowns();
-    if (this.dailymenubreakdowns.length > 1) {
+    if (this.dailymenubreakdowns.length > 0) {
       this.menubreakdownSubject.next(this.dailymenubreakdowns);
     }
   }

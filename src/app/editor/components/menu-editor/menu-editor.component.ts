@@ -1,15 +1,6 @@
 import { Component } from '@angular/core';
-import {
-  EntreeList,
-  FoodMenuGroupGUID,
-  GroupEntreeList,
-  Groups,
-  ItemGroup,
-  MenuGroups,
-  MenuItem,
-} from '../../../shared/models/menubreakdown';
-import { MenuService } from '../services/menu.service';
-import { Subject, takeUntil } from 'rxjs';
+import { MenuService } from '../../services/menu.service';
+import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
 import {
   trigger,
   transition,
@@ -17,21 +8,29 @@ import {
   animate,
   keyframes,
 } from '@angular/animations';
-import { MenuCategory } from '../models/categories';
+import { MenuCategory } from '../../models/categories';
+import {
+  Groups,
+  GroupEntreeList,
+  FoodMenuGroupGUID,
+  MenuGroups,
+  ItemGroup,
+} from '../../../shared/models/menubreakdown';
+import { ProviderService } from '../../../shared/services/provider.service';
 
 @Component({
   selector: 'app-menu-editor',
   template: `
     <div
-      class="menu-container w-full h-full flex flex-row px-4 pt-6 pb-6 rounded-xl items-start content-start align-left justify-start"
-      @inOutPaneAnimation
-      *ngIf="isOpen"
+      class="menu-container w-full h-full flex flex-row px-4 pt-6 pb-8 rounded-xl items-start content-start align-left justify-start"
     >
       <div
-        class="categorylist-container flex flex-col h-full z-20 justify-start rounded-xl shadow-2xl dark:divide-gray-700 dark:bg-zinc-700 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-zinc-900 via-zinc-800/20 to-zinc-900 "
+        class="categorylist-container flex flex-col h-full z-20 justify-start rounded-xl shadow-2xl dark:bg-zinc-700 dark:bg-opacity-50 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-zinc-900 via-zinc-800/20 to-zinc-900 "
+        @inOutPaneAnimation
+        *ngIf="isOpen"
       >
         <h2
-          class="title-menu pl-6 p-4 pb-10 text-2xl text-left font-semibold text-[#e8823c]"
+          class="title-menu pl-6 p-4 pb-10 text-2xl text-left font-semibold text-gray-200"
         >
           Category
         </h2>
@@ -45,13 +44,13 @@ import { MenuCategory } from '../models/categories';
         >
           <li
             class="w-full h-full bg-opacity-30"
-            [ngClass]="category.selected ? 'selected' : ''"
+            [ngClass]="category.selected ? 'backdrop-brightness-150' : ''"
           >
             <button
               (click)="onSelectCategory(category.group, index)"
               @inOutPaneAnimation
               [ngClass]="category.selected ? 'textwht' : ''"
-              class="flex py-6 px-14 flex-grow min-w-full w-full flex-auto first-of-type:rounded-t-xl last-of-type:rounded-b-xl category-filter text-gray-400 group-hover:text-white font-serif text-xl m-auto"
+              class="flex py-6 px-14 flex-grow min-w-full w-full flex-auto uppercase text-sm first-of-type:rounded-t-xl last-of-type:rounded-b-xl category-filter text-gray-400 group-hover:text-white font-serif m-auto"
             >
               {{ category.group }}
             </button>
@@ -61,20 +60,18 @@ import { MenuCategory } from '../models/categories';
       <div
         *ngIf="filtered.length > 0"
         @inOutPaneAnimation2
-        class="flex flex-col min-w-fit h-full z-10 dark:divide-gray-700 dark:bg-zinc-700 dark:bg-opacity-50 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-zinc-900 via-zinc-800/20 to-zinc-900 overflow-hidden"
+        class="flex h-full max-w-fit border-4 z-10 shadow-xl border-zinc-800/80 dark:divide-gray-700 dark:bg-zinc-700 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-zinc-800 via-zinc-700 to-zinc-800 overflow-hidden"
       >
         <div class="flex flex-col overflow-x-hidden">
-          <div
-            class="relative max-w-[250px] mt-4 md:mt-0 flex flex-row flex-nowrap"
-          >
+          <div class="relative mt-4 md:mt-0 flex flex-row flex-nowrap">
             <h2
-              class="title-menu flex min-w-fit pt-4 pl-6 p-4 pb-6 text-2xl text-left font-semibold text-[#e8823c]"
+              class="title-menu whitespace-nowrap min-w-fit pt-4 pl-6 p-4 pb-6 mb-2 text-md text-left font-semibold text-gray-400"
             >
               Menu Information
             </h2>
-            <div class="pt-2 relative mx-auto text-gray-600 -right-4 top-6">
+            <div class="pt-2 relative mx-auto text-gray-600 -right-4 top-4">
               <input
-                class="border-2 border-[#9f9f9f] bg-transparent h-10 px-5 pr-16 active:outline-[#0fc8f6] active:border-[#0fc8f6] rounded-lg text-sm text-white focu  focus:ring-4 focus:outline-none focus:ring-[#0fc8f6]"
+                class="border-2 border-[#9f9f9f] bg-transparent h-10 px-5 pr-16 active:outline-[#0fc8f6] active:border-[#0fc8f6] rounded-lg text-sm text-white  focus:ring-2 focus:outline-none focus:ring-[#0fc8f6]"
                 placeholder="Search"
                 #searchBoxtwo
                 (input)="searchCategories(searchBoxtwo.value)"
@@ -101,15 +98,20 @@ import { MenuCategory } from '../models/categories';
               </button>
             </div>
           </div>
-          <div class="conatiner-entree p-4 overflow-x-hidden overflow-y-scroll">
+          <div
+            class="conatiner-entree p-4 backdrop-blur-sm overflow-x-hidden overflow-y-scroll"
+          >
             <app-entree [entreeList]="categoryList"></app-entree>
           </div>
+          d
         </div>
       </div>
-      <div class="edit-section" *ngIf="selectedMenuItem">
-        <app-entree-detail
-          [selectedMenuItem]="selectedMenuItem"
-        ></app-entree-detail>
+      <div
+        class="edit-section flex"
+        *ngIf="selectedMenuItem"
+        @inOutPaneAnimation
+      >
+        <app-entree-detail></app-entree-detail>
       </div>
     </div>
   `,
@@ -133,7 +135,7 @@ import { MenuCategory } from '../models/categories';
           transform: 'translateX(-50%)',
         }),
         animate(
-          '500ms ease',
+          '600ms ease',
           style({ opacity: 1, transform: 'translateX(0)' })
         ),
       ]),
@@ -148,30 +150,17 @@ import { MenuCategory } from '../models/categories';
     trigger('inOutPaneAnimation2', [
       transition(':enter', [
         style({
-          opacity: 0,
-          display: 'block',
-          transform: 'translateX(-50%)',
-          overflow: 'hidden',
+          width: 0,
+          postion: 'absolute',
         }),
         animate(
-          '750ms ease-in-out',
-          keyframes([
-            style({ opacity: 0, z: -10, transform: 'translateX(-30%)' }),
-            style({ opacity: 0.2, z: -10, transform: 'translateX-10%)' }),
-            style({ opacity: 1, z: 20, transform: 'translateX(0)' }),
-          ])
+          '2s cubic-bezier( 0.455, 0.03, 0.515, 0.955 )',
+          style({ width: '100%' })
         ),
       ]),
       transition(':leave', [
-        style({ opacity: 1, transform: 'translateX(0)' }), //apply default styles before animation starts
-        animate(
-          '600ms ease',
-          keyframes([
-            style({ opacity: 0.2, z: -10, transform: 'translateX-10%)' }),
-            style({ opacity: 0, z: -10, transform: 'translateX(-40%)' }),
-            style({ opacity: 0, z: -10, transform: 'translateX(-5100%)' }),
-          ])
-        ),
+        style({ width: '100%' }), //apply default styles before animation starts
+        animate('500ms ease-out', style({ width: 0, postion: 'absolute' })),
       ]),
     ]),
   ],
@@ -187,44 +176,50 @@ export class MenuEditorComponent {
   categoryListTemp: GroupEntreeList[] = [];
   categoryList: GroupEntreeList[] = [];
   cachedData: any[] = [];
-  selectedMenuItem: GroupEntreeList;
+  groupedList: GroupEntreeList;
+  selectedMenuItem: boolean = false;
   private destroy$ = new Subject<void>();
 
-  constructor(private menuService: MenuService) {}
+  constructor(
+    private menuService: MenuService,
+    private provider: ProviderService
+  ) {}
 
   ngOnInit() {
+    // run animation metadata
     this.isOpen = true;
-    Object.values(FoodMenuGroupGUID).forEach((item: ItemGroup) => {
-      this.categoriesTemp.push(item.group);
-    });
-    console.log(this.categoriesTemp);
-    for (let cat of this.categoriesTemp) {
-      this.categories.push({
-        group: cat,
-        selected: false,
+
+    // Get Menu groups to set up filter menu
+    this.setMenuGroups(FoodMenuGroupGUID);
+
+    this.provider.menuGroups$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.menuGroups = data;
+        const categoryMap = this.setInventoryCategories(MenuGroups);
+        this.mapCategoryGroupsToEntrees(categoryMap);
+        this.menuService.updateEntreeListCategories(this.categoryListInit);
       });
-    }
 
-    this.menuGroups = MenuGroups;
-    const categoryMap = this.setInventoryCategories(this.menuGroups);
+    //     console.log(MenuGroups);
+    //     // map menu categoryg groups from menu data
+    //     const categoryMap = this.setInventoryCategories(MenuGroups);
 
-    this.dataList = Object.values(categoryMap);
-    this.dataList = this.dataList.map((item) => {
-      for (let i of item) {
-        this.categoryListInit.push(i);
-      }
-    });
-    console.log(this.categoryListInit);
-    this.menuService.updateEntreeListCategories(this.categoryListInit);
+    //     // map category groups to
+    //     this.mapCategoryGroupsToEntrees(categoryMap);
 
+    //     this.menuService.updateEntreeListCategories(this.categoryListInit);
+
+    // Subscribe to entreeList$ observable and update categoryListTemp when data is emitted
     this.menuService.entreeList$
       .pipe(takeUntil(this.destroy$))
       .subscribe((data) => {
         this.categoryListTemp = data;
       });
 
+    // Subscribe to filteredList$ observable and update categoryList and cachedData when data is emitted
     this.menuService.filteredList$
-      .pipe(takeUntil(this.destroy$))
+      .pipe(debounceTime(100), distinctUntilChanged(), takeUntil(this.destroy$))
       .subscribe((data) => {
         if (data) {
           this.categoryList = data;
@@ -235,23 +230,51 @@ export class MenuEditorComponent {
         }
       });
 
+    // Subscribe to selectedItem$ observable and update selectedMenuItem when data is emitted
     this.menuService.selectedItem$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
-        this.selectedMenuItem = data;
+      .subscribe((data: GroupEntreeList) => {
+        this.selectedMenuItem = true;
       });
   }
 
-  searchCategories(term: string) {
-    if (term === '' || term === null) {
-      this.menuService.updateFilteredList(this.cachedData);
+  // Map category groups to entrees
+  mapCategoryGroupsToEntrees(categoryMap: any) {
+    this.dataList = Object.values(categoryMap);
+    this.dataList = this.dataList.map((item) => {
+      for (let i of item) {
+        this.categoryListInit.push(i);
+      }
+    });
+
+    return this.categoryListInit;
+  }
+
+  // Set up Inventory Menu Categories
+  setMenuGroups(menuGroups: ItemGroup[]) {
+    Object.values(menuGroups).forEach((item: ItemGroup) => {
+      this.categoriesTemp.push(item.group);
+    });
+    for (let cat of this.categoriesTemp) {
+      this.categories.push({
+        group: cat,
+        selected: false,
+      });
     }
+  }
+
+  searchCategories(term: string) {
     this.menuService.searchItems(term);
   }
 
-  onSelectCategory(category: string, i) {
+  onSelectCategory(category: string, i: number) {
+    // Remove group filter from menu group category selection menu
     this.categories[i].selected = !this.categories[i].selected;
+
+    // Reset filtered Value
     this.filtered = [];
+
+    // Set filtered value based on selected categories
     this.categories.forEach((category) => {
       if (category.selected === true) {
         this.filtered.push(category.group);
@@ -267,8 +290,8 @@ export class MenuEditorComponent {
       );
       allCategoryItems = allCategoryItems.concat(categoryItems);
     });
-    console.log('Before');
-    console.log(allCategoryItems);
+
+    // Account for duplicate group data accross different entree items
     allCategoryItems = allCategoryItems = allCategoryItems.reduce(
       (acc: GroupEntreeList[], curr: GroupEntreeList) => {
         const sameValue = acc.findIndex((item) => item.item === curr.item);
@@ -279,7 +302,9 @@ export class MenuEditorComponent {
       },
       []
     );
-    console.log(allCategoryItems);
+    if (allCategoryItems.length < 1) {
+      this.menuService.updateSelectedMenuItem(this.groupedList);
+    }
     this.menuService.updateFilteredList(allCategoryItems);
   }
 

@@ -1,15 +1,24 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MessageService } from './messages.service';
 import { environment } from '../../../environments/environment';
 import { createClient } from '@supabase/supabase-js';
 import { DailyMenuBreakdown } from '../models/menubreakdown';
+import { Observable, catchError, of, tap } from 'rxjs';
 
+const httpOptions = {
+  headers: new HttpHeaders({
+    apiKey: `${environment.supabaseKey}`,
+    Authorization: `Bearer ${environment.supabaseKey}`,
+    'Content-Type': 'application/json',
+  }),
+};
 export const MENUBREAKDOWN_TABLE = 'menubreakdowns';
 
 @Injectable({ providedIn: 'root' })
 export class MenuBreakdownService {
   projectUrl = 'https://hjxygqmxqkuxgehnewpy.supabase.co';
+  apiUrl = 'https://hjxygqmxqkuxgehnewpy.supabase.co/rest/v1/menubreakdowns';
 
   private supabaseClient!: any;
   constructor(private message: MessageService, private http: HttpClient) {
@@ -22,14 +31,13 @@ export class MenuBreakdownService {
   /** TYPICAL HTTP ROUTE
    * @desc      Get all books from the db
    * @returns   Observable
+   *
    */
-  async getMenuBreakdowns(): Promise<any> {
-    console.log('lol');
-    const menubreakdowns = await this.supabaseClient
-      .from(MENUBREAKDOWN_TABLE)
-      .select('*');
-    this.log(JSON.stringify(menubreakdowns));
-    return menubreakdowns.data || [];
+  getMenuBreakdowns() {
+    return this.http.get(this.apiUrl, httpOptions).pipe(
+      tap((response) => this.log(`${response}`)),
+      catchError(this.handleError('GetMenubreakdowns'))
+    );
   }
   /**
    * @desc      Add a new menubreakdown to the db
@@ -98,6 +106,13 @@ export class MenuBreakdownService {
       this.log(error.message);
       return error.message;
     }
+  }
+
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+      this.log(error.message);
+      return of(result as T);
+    };
   }
 
   private log(message: string) {

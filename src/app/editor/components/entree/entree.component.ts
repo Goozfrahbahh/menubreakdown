@@ -1,9 +1,11 @@
 import { Component, Input } from '@angular/core';
+import { MenuService } from '../../services/menu.service';
+import { NgOptimizedImage } from '@angular/common';
 import { GroupEntreeList } from '../../../shared/models/menubreakdown';
-import { MenuService } from '../services/menu.service';
 
 @Component({
   selector: 'app-entree',
+  providers: [NgOptimizedImage],
   template: `
     <div class="container" *ngFor="let entree of entreeList">
       <article
@@ -13,45 +15,41 @@ import { MenuService } from '../services/menu.service';
         <aside
           class="absolute left-1 flex h-full flex-col justify-center space-y-8 p-3"
         >
-          <!-- like icon -->
-          <svg
-            class="flex justify-end invisible right-1 h-7 w-7 text-stone-200 opacity-0 transition-all duration-200 hover:scale-[120%] hover:text-white group-hover:visible group-hover:opacity-100"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-            ></path>
-          </svg>
-
           <!-- download icon -->
           <!-- image (left side) -->
-          <div class="absolute inset-y-0 left-0 w-48 p-4">
-            <img
-              src="{{ entree.imageUrl }}"
-              class="h-full w-full object-cover object-center opacity-95 rounded-xl"
-            />
-
+          <div
+            class="absolute bg-blend-multiply left-0 h-28 w-48 px-4 py-4 mt-2 mb-2 saturate-150"
+          >
+            <ng-container *ngIf="entree.imageUrl; else none">
+              <img
+                ngSrc="{{ entree.imageUrl }}"
+                fill
+                class="h-full w-full object-cover object-center bg-clip-content opacity-95 rounded-xl prose-img:"
+              />
+            </ng-container>
+            <ng-template #none>
+              <img class="list-image-none" />
+            </ng-template>
             <div
-              class="invisible absolute inset-0 flex h-full w-full p-4 rounded-xl items-center justify-center opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100"
+              class="invisible absolute inset-0 flex max-h-28 h-28 w-full p-4 rounded-xl items-center justify-center opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 hover:backdrop-blur-lg"
             >
               <button class="stats button" (click)="onClickMenuItem(entree)">
                 <svg
-                  class="h-w-14 w-14 cursor-pointer text-white transition-all duration-200 hover:text-sky-400"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  fill="#ffffff"
+                  class="bi bi-box-arrow-in-right"
+                  viewBox="0 0 16 16"
                 >
                   <path
                     fill-rule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
-                    clip-rule="evenodd"
-                  ></path>
+                    d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"
+                  />
+                  <path
+                    fill-rule="evenodd"
+                    d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
+                  />
                 </svg>
               </button>
             </div>
@@ -89,21 +87,26 @@ import { MenuService } from '../services/menu.service';
                   class="absolute right-2 bottom-3 justify-end items-center space-x-1"
                 >
                   <!-- liked icon -->
-                  <svg
-                    class="h-5 w-5"
-                    fill="none"
-                    stroke="#ff9eff"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
+                  <button
+                    class="like-button"
+                    type="button"
+                    (click)="onLikeItem(entree)"
                   >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                    ></path>
-                  </svg>
-                  <div>{{ entree.sold }}</div>
+                    <svg
+                      class="h-5 w-5"
+                      fill="none"
+                      stroke="#ff9eff"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                      ></path>
+                    </svg>
+                  </button>
                 </span>
               </div>
             </section>
@@ -123,6 +126,11 @@ export class EntreeComponent {
   }
 
   onClickMenuItem(menuItem: GroupEntreeList) {
+    console.log(menuItem);
     this.menuService.updateSelectedMenuItem(menuItem);
+  }
+
+  onLikeItem(item: GroupEntreeList) {
+    console.log(item.item);
   }
 }

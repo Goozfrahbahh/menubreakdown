@@ -17,6 +17,8 @@ import {
   template: `
     <div
       class="upload flex align-middle items-center justify-center content-center p-12 mt-[10vh]"
+      *ngIf="animationTrigger"
+      @filterAnimation
     >
       <div
         class="mx-auto w-full max-w-[550px] p-10 pb-2 border-4 border-zinc-600 border-opacity-80 bg-zinc-800 bg-opacity-40 shadow-xl hover:shadow-2xl rounded-xl"
@@ -103,35 +105,26 @@ import {
     </div>
   `,
   animations: [
-    trigger('listAnimation', [
-      transition(':enter, * => 0, * => -1', []),
-      transition(':increment', [
-        query(':enter', [
-          animate(
-            '150ms cubic-bezier(.17,.67,.83,.67)',
-            style({
-              opacity: 1,
-              width: '*',
-            })
-          ),
-        ]),
+    trigger('filterAnimation', [
+      transition(':enter', [
+        style({
+          opacity: 0,
+          width: '0',
+        }),
+        animate('300ms ease', style({ opacity: 1, width: '100%' })),
       ]),
-      transition(':decrement', [
-        query(':leave', [
-          animate(
-            '300ms cubic-bezier(.17,.67,.83,.67)',
-            style({
-              opacity: 0,
-              width: '0px',
-            })
-          ),
-        ]),
+      transition(':leave', [
+        style({ opacity: 1, width: '100%' }), //apply default styles before animation starts
+        animate('300ms ease', style({ opacity: 0, width: '0' })),
       ]),
     ]),
   ],
 })
+
+// animate('300ms ease-out', style({ opacity: 1, width: '*' })),
+// animate('300ms ease-out', style({ opacity: 0, width: '0px' })),
 export class DeleteFormComponent implements OnInit, OnDestroy {
-  @HostBinding('@listAnimation')
+  animationTrigger: boolean = false;
   dateField = new FormControl();
   id: number;
   dateList: any[] = [];
@@ -142,6 +135,7 @@ export class DeleteFormComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.animationTrigger = true;
     this.uploadFormService.id$
       .pipe(takeUntil(this.destroy$))
       .subscribe((id: number) => {

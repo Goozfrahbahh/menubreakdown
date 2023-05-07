@@ -1,4 +1,11 @@
 {
-	"editor.fontFamily": "Fira code",
-	"markdown.preview.fontFamily": "Fira Code"
+	"editor.fontFamily": "Fira Code",
+	"markdown.preview.fontFamily": "Fira Code",
+	"winopacity.opacity": 230,
+	"editor.codeLensFontFamily": "Fira Code",
+	"editor.inlayHints.fontFamily": "Fira Code",
+	"scm.inputFontFamily": "Fira Code",
+	"debug.console.fontFamily": "Fira Code",
+	"notebook.output.fontFamily": "Fira Code",
+	"terminal.integrated.fontFamily": "Fira Code"
 }

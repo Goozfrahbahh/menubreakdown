@@ -8,17 +8,21 @@ import { UploadModule } from './upload/upload.module';
 import { ViewDataModule } from './view/view-data.module';
 import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
-import { MenuModule } from './view/menu/lmenu.module';
+import { CoreModule } from './core/core.module';
+import { NgOptimizedImage } from '@angular/common';
+import { MenuModule } from './editor/editor.module';
 
 @NgModule({
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    NgOptimizedImage,
     MenuModule,
     ViewDataModule,
     UploadModule,
     SharedModule,
+    CoreModule,
     AppRoutingModule,
   ],
   declarations: [AppComponent],

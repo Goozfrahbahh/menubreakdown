@@ -42,12 +42,15 @@ import { CsvParserService } from '../services/csvparser.service';
 import { UploadFormService } from '../services/upload-form.service';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ProviderService } from '../../shared/services/provider.service';
 
 @Component({
   selector: 'app-entry-form',
   template: `
     <div
       class="upload flex align-middle items-center justify-center content-center p-12 mt-[10vh]"
+      *ngIf="animationTrigger"
+      @filterAnimation
     >
       <div
         class="mx-auto w-full max-w-[550px] p-10 pb-2 border-4 border-zinc-600 border-opacity-80 dark:divide-gray-700 bg-zinc-800 bg-opacity-40 shadow-xl hover:shadow-2xl rounded-xl"
@@ -178,9 +181,24 @@ import { Router } from '@angular/router';
       </div>
     </div>
   `,
+  animations: [
+    trigger('filterAnimation', [
+      transition(':enter', [
+        style({
+          opacity: 0,
+          width: '0',
+        }),
+        animate('300ms ease', style({ opacity: 1, width: '100%' })),
+      ]),
+      transition(':leave', [
+        style({ opacity: 1, width: '100%' }), //apply default styles before animation starts
+        animate('300ms ease', style({ opacity: 0, width: '0' })),
+      ]),
+    ]),
+  ],
 })
 export class EntryFormComponent implements OnInit, OnDestroy {
-  @HostBinding('@pageAnimations')
+  animationTrigger: boolean = false;
   dateField = new FormControl();
   date: any;
   filesList: File[] = [];
@@ -188,24 +206,13 @@ export class EntryFormComponent implements OnInit, OnDestroy {
   file: string;
   header = true;
   csvnew: csv[] = [];
-  entreeList: any[] = [];
   csv: any[] = [];
   d: Date = new Date();
   f: string;
   id: number;
   totals: Totals[] = [];
   menubreakdown: DailyMenuBreakdown;
-  MenuGroups = [
-    { group: 'Entrees' },
-    { group: 'Appetizers' },
-    { group: 'Soups' },
-    { group: 'Burgers' },
-    { group: 'Kids Menu' },
-    { group: 'Desserts' },
-    { group: 'Sides' },
-    { group: 'Only Meats' },
-    { group: 'Salads' },
-  ];
+  groups: any[] = [];
 
   protected csvSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   private destroy$ = new Subject<void>();
@@ -214,13 +221,19 @@ export class EntryFormComponent implements OnInit, OnDestroy {
     private csvParserService: CsvParserService,
     private uploadFormService: UploadFormService,
     private menuExtractionService: MenuExtractionService,
-    private router: Router
+    private router: Router,
+    private provider: ProviderService
   ) {}
 
   ngOnInit() {
+    this.animationTrigger = true;
     this.dateField.setValue(new Date());
     this.dateField.valueChanges.pipe(takeUntil(this.destroy$)).subscribe();
-
+    this.provider.listGroups$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.groups = data;
+      });
     this.uploadFormService.id$
       .pipe(takeUntil(this.destroy$))
       .subscribe((id) => (this.id = id));
@@ -231,10 +244,7 @@ export class EntryFormComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((date) => (this.d = date));
     this.uploadFormService.totals$
-      .pipe(
-        tap((_) => console.log(_)),
-        takeUntil(this.destroy$)
-      )
+      .pipe(takeUntil(this.destroy$))
       .subscribe((totals) => (this.totals = totals));
   }
 
@@ -279,7 +289,7 @@ export class EntryFormComponent implements OnInit, OnDestroy {
         takeLast(1),
         switchMap((csv) => from(csv)),
         filter((item) => item.item !== ''),
-        filter((item) => this.MenuGroups.some((id) => item.group === id.group)),
+        filter((item) => this.groups.some((menu) => item.group === menu.group)),
         map((items) => this.csv.push(items)),
         takeUntil(this.destroy$)
       )
@@ -290,18 +300,15 @@ export class EntryFormComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     const data = this.csvSubject.asObservable();
-    console.log('hey');
     data
       .pipe(takeUntil(this.destroy$))
       .subscribe((data) => (this.totals = data));
 
-    console.log(this.totals);
     this.menubreakdown = {
       id: this.id,
       date: this.d,
       totals: this.totals,
     };
-    console.log(this.menubreakdown);
     this.menuExtractionService.addMenuBreakdown(this.menubreakdown);
     this.router.navigate(['/message-center']);
   }

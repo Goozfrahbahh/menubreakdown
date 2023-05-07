@@ -7,7 +7,7 @@ import { MessagesComponent } from './components/messages/message.component';
 import { ClickOutsideDirective } from './animations/click-outside.directive';
 import { SettingsComponent } from './components/settings/settings.component';
 import { ListFilterPipe } from './pipes/list-filter.pipe';
-import { MenuComponent } from './components/menu/menu.component';
+import { MenuComponent } from './components/navigation/navigation.component';
 import { AppRoutingModule } from '../app-routing.module';
 import { ButtonCloseComponent } from './components/button-close/button-close.component';
 

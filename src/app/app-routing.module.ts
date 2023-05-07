@@ -4,15 +4,24 @@ import { HomeComponent } from './shared/components/home/home.component';
 import { SettingsComponent } from './shared/components/settings/settings.component';
 import { ViewBoardComponent } from './view/components/board/board.component';
 import { MessagesComponent } from './shared/components/messages/message.component';
-import { SelectionMenuComponent } from './upload/selection-menu/selection-menu.component';
 import { EntryFormComponent } from './upload/entry-form/entry-form.component';
 import { DeleteFormComponent } from './upload/delete-form/delete-form.component';
-import { MenuEditorComponent } from './view/menu/menu-editor/menu-editor.component';
+import { SignInComponent } from './core/components/sign-in/sign-in.component';
+import { SignUpComponent } from './core/components/sign-up/sign-up.component';
+import { MenuEditorComponent } from './editor/components/menu-editor/menu-editor.component';
 
 export const appRoutes: Routes = [
   {
     path: 'home',
     component: HomeComponent,
+  },
+  {
+    path: 'sign-in',
+    component: SignInComponent,
+  },
+  {
+    path: 'sign-up',
+    component: SignUpComponent,
   },
   {
     path: 'settings',
@@ -23,9 +32,14 @@ export const appRoutes: Routes = [
     component: ViewBoardComponent,
   },
   {
-    path: 'upload',
-    component: SelectionMenuComponent,
+    path: 'entry-form',
+    component: EntryFormComponent,
   },
+  {
+    path: 'delete-form',
+    component: DeleteFormComponent,
+  },
+
   {
     path: 'message-center',
     component: MessagesComponent,

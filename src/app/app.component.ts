@@ -9,9 +9,9 @@ import {
 } from '@angular/core';
 import { ProviderService } from './shared/services/provider.service';
 import { SettingsService } from './shared/services/settings.service';
-import { MenuBreakdownService } from './shared/services/menubreakdown.service';
 import { CalendarService } from './shared/services/calendar.service';
 import { Subject, takeUntil } from 'rxjs';
+import { MenuBreakdownService } from './shared/services/menubreakdown.service';
 
 @Component({
   selector: 'my-app',
@@ -31,7 +31,8 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private provider: ProviderService,
     private settingsService: SettingsService,
-    private calendarService: CalendarService
+    private calendarService: CalendarService,
+    private menuBreakdownService: MenuBreakdownService
   ) {
     const today = new Date();
     this.activeDate = today;

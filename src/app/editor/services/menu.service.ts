@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ProviderService } from '../../../shared/services/provider.service';
-import { GroupEntreeList } from '../../../shared/models/menubreakdown';
+import { GroupEntreeList, MenuItem } from '../../shared/models/menubreakdown';
+import { ProviderService } from '../../shared/services/provider.service';
+import { MenuItemsService } from '../../shared/services/menuitems.service';
 
 @Injectable({ providedIn: 'root' })
 export class MenuService {
@@ -22,7 +23,7 @@ export class MenuService {
   selectedItem$ = this.selectedItemSubject.asObservable();
 
   dataList: any[] = [];
-  constructor(private provider: ProviderService) {}
+  constructor(private menuItemsService: MenuItemsService) {}
 
   ngOnInit() {}
 
@@ -51,5 +52,18 @@ export class MenuService {
 
   updateSelectedMenuItem(item: GroupEntreeList) {
     this.selectedItemSubject.next(item);
+  }
+
+  addMenuItem(menuItem: MenuItem) {
+    console.log(menuItem);
+
+    this.menuItemsService
+      .addMenuItem(menuItem)
+      .then((res: any) => {
+        console.log('Added MenuItem:', res);
+      })
+      .catch((err) => {
+        console.log('Error adding MenuItem:', err);
+      });
   }
 }

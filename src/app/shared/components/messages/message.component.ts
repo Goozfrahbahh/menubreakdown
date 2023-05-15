@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from '../../services/messages.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-messages',
@@ -25,12 +26,25 @@ import { MessageService } from '../../services/messages.service';
   ],
 })
 export class MessagesComponent implements OnInit {
-  log: string[] = [];
+  logs: string[] = [];
+  opened: boolean = false;
+
+  private destroy$ = new Subject<void>();
   constructor(public messageService: MessageService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.messageService.log$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((logs) => (this.logs = logs));
+  }
 
   trackById(index: number, message: any) {
     return message[index];
+  }
+
+  onClick(log: any) {
+    const data = JSON.stringify(log);
+
+    console.log(data);
   }
 }

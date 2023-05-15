@@ -57,7 +57,7 @@ import { InventoryTableData } from '../../../models/inventory';
             ></span>
             <span
               class="relative ml-2  text-gray-500 dark:text-gray-400 transition duration-300 group-hover:text-gray-700 dark:group-hover:text-gray-100 ease ease"
-              >Add/Delete Form</span
+              >Upload Breakdown</span
             >
           </button>
         </div>
@@ -90,7 +90,7 @@ import { InventoryTableData } from '../../../models/inventory';
       </div>
     </div>
 
-    <div class="flex md:flex md:items-center mt-2">
+    <div class="flex md:flex md:items-center justify-between mt-2">
       <div
         class="inline-flex overflow-hidden border-[.5px] divide-x rounded-lg bg-zinc-800 bg-opacity-10 rtl:flex-row-reverse dark:border-zinc-500 dark:divide-zinc-600"
       >
@@ -182,10 +182,13 @@ import { InventoryTableData } from '../../../models/inventory';
       <div *ngIf="tableView">
         <div class="mx-[33px]"></div>
       </div>
-      <div (clickOutside)="clickedOutside()" class="relative flex justify-end">
+      <div
+        (clickOutside)="clickedOutside()"
+        class="relative flex place-content-end justify-end justify-items-end"
+      >
         <button
           (click)="toggleMenu()"
-          class="flex ml-6  text-white bg-gray-200 items-center justify-center border-2 border-zinc-500 w-40  px-5 py-2 ml-1 text-sm font-semibold text-left dark:hover:bg-zinc-800 dark:hover:text-white hover:text-white dark:bg-zinc-800 dark:bg-opacity-80 hover:bg-zinc-800 dark:text-gray-400 rounded-lg "
+          class="flex ml-1 self-end place-content-end text-white bg-gray-200 items-center justify-center border-2 border-zinc-500 w-40  px-5 py-2 text-sm font-semibold text-left dark:hover:bg-zinc-800 dark:hover:text-white hover:text-white dark:bg-zinc-800 dark:bg-opacity-80 hover:bg-zinc-800 dark:text-gray-400 rounded-lg "
         >
           <span x-text="sortType">Filter by</span>
           <svg
@@ -202,7 +205,7 @@ import { InventoryTableData } from '../../../models/inventory';
           </svg>
         </button>
         <ng-container *ngIf="openSort">
-          <div class="absolute z-50 w-40 object-right-bottom mt-7 ">
+          <div class="absolute z-50 w-40 object-right-bottom mt-7">
             <div class="px-2 pt-2 pb-2 rounded-lg shadow-lg">
               <ul class="flex flex-col rounded-xl">
                 <li
@@ -216,7 +219,7 @@ import { InventoryTableData } from '../../../models/inventory';
                       class="absolute w-64 h-0 transition-all duration-300 origin-center rotate-45 -translate-x-20 bg-[#31abc8] bg-opacity-40 backdrop-blur-lg top-1/2 group-hover:h-64 group-hover:-translate-y-32 ease"
                     ></span>
                     <span
-                      class="relative ml-2 hover:text-white font-serif -ml-2 place-self-center transition duration-300 text-gray-600 dark:text-[#fec84b] group-hover:text-[#31abc8] ease"
+                      class="relative ml-2 hover:text-white font-serif place-self-center transition duration-300 text-gray-600 dark:text-[#fec84b] group-hover:text-[#31abc8] ease"
                       >All</span
                     >
                   </button>
@@ -328,7 +331,7 @@ export class ContentComponent implements OnInit, OnDestroy {
   }
 
   routeNavigateUpload() {
-    this.route.navigateByUrl('/upload');
+    this.route.navigateByUrl('/entry-form');
   }
 
   filterByDate(date: Date) {

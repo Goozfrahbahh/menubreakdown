@@ -8,6 +8,7 @@ export interface CalendarDay {
   date: Date;
   id: number;
   selected?: boolean;
+  hasUpload?: boolean;
   cssClass?: string[];
   monthName?: string;
   disabled?: boolean;

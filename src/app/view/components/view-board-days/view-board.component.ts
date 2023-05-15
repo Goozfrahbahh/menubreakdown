@@ -19,6 +19,7 @@ import { CalendarDay, DateRange } from '../../../shared/models/calendar-view';
       (click)="selectedDay(day)"
       [value]="day"
       [ngClass]="{ selected: day.selected === true }"
+      [ngClass]="{ disabled: day.disabled === true }"
       #boxRef
     >
       <span
@@ -31,16 +32,21 @@ import { CalendarDay, DateRange } from '../../../shared/models/calendar-view';
         >{{ day.dayName }}</span
       >
       <span
-        class="absolute bottom-2 right-3 text-[#31abc8] text-opacity-50 focus:text-white"
-        >{{ day.date.toLocaleDateString('en-us', { month: 'long' }) }}</span
+        class="absolute bottom-2 right-3 p-1 text-zinc-900 rounded-lg bg-[#ffd470] focus:text-white"
+        *ngIf="day.hasUpload"
+        >Uploaded</span
       >
     </button>
   `,
   styles: [
     `
+      .disabled {
+        cursor: not-allowed;
+        background-color: rgba(110, 110, 110, 0.1);
+      }
       .selected {
         --tw-bg-opacity: 1;
-        background-color: rgba(49, 171, 200, 0.6);
+        background-color: rgba(49, 171, 200, 0.4);
         border-radius: 0.5rem;
         color: #ffffff !important;
       }

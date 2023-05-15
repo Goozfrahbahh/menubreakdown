@@ -1,7 +1,7 @@
 {
 	"editor.fontFamily": "Fira Code",
 	"markdown.preview.fontFamily": "Fira Code",
-	"winopacity.opacity": 230,
+	"winopacity.opacity": 100,
 	"editor.codeLensFontFamily": "Fira Code",
 	"editor.inlayHints.fontFamily": "Fira Code",
 	"scm.inputFontFamily": "Fira Code",

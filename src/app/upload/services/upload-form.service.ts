@@ -43,6 +43,11 @@ export class UploadFormService {
     this.menubreakdownSubject.next(menuBreakdown);
   }
 
+  resetUpload() {
+    this.fileListSubject.next(null);
+    this.menubreakdownSubject.next(null);
+  }
+
   updateTotals(totals: Totals[]) {
     this.totalMenubreakdownSubject.next(totals);
   }

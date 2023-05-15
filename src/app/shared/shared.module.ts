@@ -10,6 +10,7 @@ import { ListFilterPipe } from './pipes/list-filter.pipe';
 import { MenuComponent } from './components/navigation/navigation.component';
 import { AppRoutingModule } from '../app-routing.module';
 import { ButtonCloseComponent } from './components/button-close/button-close.component';
+import { StatusModalComponent } from './components/status-modal/status-modal.component';
 
 export const ExportComponents = [
   MessagesComponent,
@@ -19,6 +20,7 @@ export const ExportComponents = [
   ButtonCloseComponent,
   ListFilterPipe,
   HomeComponent,
+  StatusModalComponent,
 ];
 export const ImportModules = [
   CommonModule,

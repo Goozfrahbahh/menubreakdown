@@ -10,7 +10,7 @@ import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
 import { NgOptimizedImage } from '@angular/common';
-import { MenuModule } from './editor/editor.module';
+import { MenuEditorModule } from './editor/editor.module';
 
 @NgModule({
   imports: [
@@ -18,7 +18,7 @@ import { MenuModule } from './editor/editor.module';
     BrowserAnimationsModule,
     HttpClientModule,
     NgOptimizedImage,
-    MenuModule,
+    MenuEditorModule,
     ViewDataModule,
     UploadModule,
     SharedModule,

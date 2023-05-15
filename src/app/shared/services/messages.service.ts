@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { LogMessage } from '../models/logs';
+import { LogMessage, Success } from '../models/logs';
 
 @Injectable({ providedIn: 'root' })
 export class MessageService {
@@ -14,6 +14,10 @@ export class MessageService {
   messages$ = this.messagesSubject.asObservable();
   protected logSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   log$ = this.logSubject.asObservable();
+  protected successSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
+    null
+  );
+  success$ = this.successSubject.asObservable();
   constructor() {}
 
   add(message: string) {
@@ -21,7 +25,7 @@ export class MessageService {
     const num = newString.length;
     if (num > 500) {
       const check = num / 500;
-      this.messages.push(newString.slice(0, 500));
+      this.messages.push(newString.slice(0, 200));
     } else {
       this.messages.push(newString);
       this.messagesSubject.next(this.messages);
@@ -29,6 +33,7 @@ export class MessageService {
     let messagesLog: any[] = [];
     messagesLog.push(message);
     this.logMessages.push(messagesLog);
+    this.logSubject.next(this.logMessages);
   }
   addMultipleMessages(messages: string[]) {
     this.messages = [...this.messages, ...messages];
@@ -40,6 +45,10 @@ export class MessageService {
       (message, i) => message[i] !== message[index]
     );
     this.messagesSubject.next(this.messages);
+  }
+
+  updateSuccessMessage(message: Success) {
+    this.successSubject.next(message);
   }
 
   getMessages() {

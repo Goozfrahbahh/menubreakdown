@@ -21,20 +21,69 @@ import { Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { ProviderService } from '../../../shared/services/provider.service';
 import { MessageService } from '../../../shared/services/messages.service';
 import { TableService } from '../../services/table.service';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-board',
   template: `
     <div
-      class="feature-container flex max-h-[100vh] max-w-[100vw] pt-4 overflow-hidden bg-transparent"
+      class="top-panel-container flex flex-row w-[70vw] relative font-serif justify-center align-middle p-4 pt-10 pb-0"
+      *ngIf="!viewOff"
+    >
+      <h2 class="absolute font-serif text-xl text-gray-300 left-6">
+        View Date Selection
+      </h2>
+      <button
+        (click)="onMonthChange(this.previousMonth)"
+        class="rounded-md px-3.5 py-2 m-1 overflow-hidden relative group cursor-pointer border-2 font-medium border-zinc-600 text-white"
+      >
+        <span
+          class="absolute w-64 h-0 transition-all duration-300 origin-center rotate-45 -translate-x-20 bg-[#ffd470] bg-opacity-70 top-1/2 group-hover:h-64 group-hover:-translate-y-32 ease"
+        ></span>
+        <span
+          class="relative  transition duration-300 group-hover:text-gray-100 ease"
+          >Previous Month</span
+        >
+      </button>
+      <button
+        (click)="goToday()"
+        class="rounded-md px-3.5 py-2 m-1 overflow-hidden relative group cursor-pointer border-2 font-medium border-zinc-600 text-white"
+      >
+        <span
+          class="absolute w-64 h-0 transition-all duration-300 origin-center rotate-45 -translate-x-20 bg-[#49b8d4] bg-opacity-70 top-1/2 group-hover:h-64 group-hover:-translate-y-32 ease"
+        ></span>
+        <span
+          class="relative  transition duration-300 group-hover:text-gray-100 ease"
+          >Today</span
+        >
+      </button>
+      <button
+        (click)="onMonthChange(this.nextMonth)"
+        class="rounded-md px-3.5 py-2 m-1 overflow-hidden relative group cursor-pointer border-2 font-medium border-zinc-600 text-white"
+      >
+        <span
+          class="absolute w-64 h-0 transition-all duration-300 origin-center rotate-45 -translate-x-20 bg-[#ffd470] bg-opacity-70 top-1/2 group-hover:h-64 group-hover:-translate-y-32 ease"
+        ></span>
+        <span
+          class="relative transition duration-300 group-hover:text-gray-100 ease"
+          >Next Month</span
+        >
+      </button>
+      <span
+        class="absolute right-8 font-bold  p-2 font-serif top-12 text-gray-200 transition duration-300  ease"
+        >{{ month }}, {{ year }}</span
+      >
+    </div>
+    <div
+      class="feature-container flex max-h-[100vh] max-w-[100vw] bg-transparent"
       *ngIf="!viewOff; else menubreakdown"
     >
       <div
-        class="calendar h-[96vh] min-w-[70vw] flex p-5 justify-center items-center content-center align-middle flex-col overflow-hidden"
+        class="calendar h-[86vh] min-w-[70vw] flex p-5 pt-4 justify-center items-center content-center align-middle flex-col overflow-hidden overflow-y-scroll"
         #calendarRef
       >
         <div
-          class="grid grid-cols-7 grid-rows-5 h-full w-full gap-0"
+          class="grid grid-cols-7 grid-rows-auto h-full w-full gap-0"
           #calendarRef
         >
           <div
@@ -67,7 +116,27 @@ import { TableService } from '../../services/table.service';
       </div>
     </ng-template>
   `,
-
+  animations: [
+    trigger('filterAnimation', [
+      transition(':enter', [
+        style({
+          opacity: 0,
+          width: 0,
+        }),
+        animate(
+          '1s cubic-bezier(.17,.67,.83,.67)',
+          style({ opacity: 1, transform: 'translateY(0)', width: '100%' })
+        ),
+      ]),
+      transition(':leave', [
+        style({ opacity: 1, transform: 'translateY(0)' }), //apply default styles before animation starts
+        animate(
+          '1s cubic-bezier(.17,.67,.83,.67)',
+          style({ opacity: 0, transform: 'translateY(20px)' })
+        ),
+      ]),
+    ]),
+  ],
   styleUrls: ['./board.component.scss'],
 })
 export class ViewBoardComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -76,6 +145,8 @@ export class ViewBoardComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input('selectedDate') selectedDate: CalendarDay;
 
   viewOff: boolean = false;
+  year: number;
+  month: string;
   calendar: CalendarDay[] = [];
   activeDate: Date;
   refList: any[] = [];
@@ -85,6 +156,8 @@ export class ViewBoardComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedMenuBreakdowns: DailyMenuBreakdown[] = [];
   dataList: DailyMenuBreakdown[] = [];
   errorMessage: any[] = [];
+  nextMonth: Date = new Date();
+  previousMonth: Date = new Date();
 
   private destroy$ = new Subject<void>();
 
@@ -102,7 +175,15 @@ export class ViewBoardComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((activeDate) => {
         this.activeDate = activeDate;
         this.calendarService.resetCalendarByValue();
+        this.setPreviousNextMonth(this.activeDate);
         this.calendarService.loadCalendar(activeDate);
+        this.year = this.activeDate.getFullYear();
+        this.month = this.activeDate.toLocaleDateString('en-US', {
+          month: 'long',
+        });
+        if (this.dataList) {
+          this.setUploadDays(this.dataList);
+        }
       });
 
     this.calendarService.calendar$
@@ -119,12 +200,28 @@ export class ViewBoardComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((breakdown: DailyMenuBreakdown[]) => {
         if (breakdown) {
           this.dataList = breakdown.sort((a, b) => a.id - b.id);
+          this.setUploadDays(this.dataList);
         }
       });
 
     this.viewService.view$.pipe(takeUntil(this.destroy$)).subscribe((bool) => {
       this.viewOff = bool;
     });
+  }
+
+  setUploadDays(list: DailyMenuBreakdown[]) {
+    const arr2Map = new Map(this.calendar.map((obj) => [obj.id, obj]));
+
+    // Go through arr1 and modify matching objects in arr2
+    list.forEach((upload) => {
+      const matchingObj = arr2Map.get(upload.id);
+      if (matchingObj) {
+        matchingObj.hasUpload = true;
+      }
+    });
+  }
+  onMonthChange(changeDate: Date) {
+    this.calendarService.setActiveDate(changeDate);
   }
   ngAfterViewInit() {
     this.boxRef.map((ref) => this.refList.push(ref));
@@ -169,6 +266,11 @@ export class ViewBoardComponent implements OnInit, AfterViewInit, OnDestroy {
     this.messageService.add(`${range}`);
 
     return this.selectedMenuBreakdowns;
+  }
+
+  goToday() {
+    const today = new Date();
+    this.calendarService.setActiveDate(today);
   }
 
   onDaySelection(day: CalendarDay, index: number) {
@@ -219,5 +321,29 @@ export class ViewBoardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   save() {
     this.viewService.updateView(false);
+  }
+  setPreviousNextMonth(activeDate: Date) {
+    const month = activeDate.getMonth();
+    if (month === 11) {
+      this.nextMonth = new Date(activeDate.getFullYear() + 1, 0, 1);
+      this.previousMonth = new Date(
+        activeDate.getFullYear(),
+        activeDate.getMonth() - 1,
+        1
+      );
+      return;
+    }
+    if (month === 0) {
+      this.nextMonth = new Date(
+        activeDate.getFullYear(),
+        activeDate.getMonth() + 1,
+        1
+      );
+      this.previousMonth = new Date(activeDate.getFullYear() - 1, 11, 1);
+      return;
+    }
+
+    this.nextMonth = new Date(activeDate.getFullYear(), month + 1, 1);
+    this.previousMonth = new Date(activeDate.getFullYear(), month - 1, 1);
   }
 }

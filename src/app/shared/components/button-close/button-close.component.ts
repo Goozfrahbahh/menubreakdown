@@ -3,9 +3,9 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-close',
   template: `<div class="close-container">
-    <div class="leftright bg-zinc-400"></div>
-    <div class="rightleft bg-zinc-400"></div>
-    <label class="close absolute -right-4 -top-6">close</label>
+    <div class="leftright bg-gray-300"></div>
+    <div class="rightleft bg-gray-300"></div>
+    <label class="close absolute -right-[8px] -top-6">close</label>
   </div>`,
   styles: [
     `
@@ -24,7 +24,7 @@ import { Component, OnInit } from '@angular/core';
 
       .leftright {
         height: 4px;
-        width: 22px;
+        width: 18px;
         position: absolute;
         font-weight: light;
         margin-top: 24px;
@@ -35,7 +35,7 @@ import { Component, OnInit } from '@angular/core';
 
       .rightleft {
         height: 4px;
-        width: 22px;
+        width: 18px;
         position: absolute;
         margin-top: 24px;
         border-radius: 2px;
@@ -48,7 +48,7 @@ import { Component, OnInit } from '@angular/core';
         font-family: Helvetica, Arial, sans-serif;
         font-size: 0.6em;
         text-transform: uppercase;
-        letter-spacing: 2px;
+        letter-spacing: 2.5px;
         transition: all 0.3s ease-in;
         opacity: 0;
       }

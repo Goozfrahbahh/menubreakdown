@@ -43,12 +43,13 @@ import { UploadFormService } from '../services/upload-form.service';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ProviderService } from '../../shared/services/provider.service';
+import { StatusService } from '../../shared/services/status.service';
 
 @Component({
   selector: 'app-entry-form',
   template: `
     <div
-      class="upload flex align-middle items-center justify-center content-center p-12 mt-[10vh]"
+      class="upload flex align-middle items-center justify-center content-center p-12 mt-[10vh] font-sans"
       *ngIf="animationTrigger"
       @filterAnimation
     >
@@ -56,7 +57,7 @@ import { ProviderService } from '../../shared/services/provider.service';
         class="mx-auto w-full max-w-[550px] p-10 pb-2 border-4 border-zinc-600 border-opacity-80 dark:divide-gray-700 bg-zinc-800 bg-opacity-40 shadow-xl hover:shadow-2xl rounded-xl"
       >
         <h1
-          class="text-2xl -mt-2 mb-6 text-gray-200 border-b border-b-zinc-700 pb-2"
+          class="text-2xl -mt-2 mb-6 text-white border-b border-b-zinc-700 pb-2"
         >
           Entry Menu-Breakdown Form
         </h1>
@@ -172,7 +173,7 @@ import { ProviderService } from '../../shared/services/provider.service';
                 class="absolute w-64 h-0 transition-all duration-300 origin-center rotate-45 -translate-x-20 bg-[#31abc8] bg-opacity-70 top-1/2 group-hover:h-64 group-hover:-translate-y-32 ease"
               ></span>
               <span
-                class="relative text-[#31abc8] transition duration-300 group-hover:text-gray-100 ease"
+                class="relative transition duration-300 group-hover:text-gray-100 ease"
                 >Submit</span
               >
             </button>
@@ -186,13 +187,19 @@ import { ProviderService } from '../../shared/services/provider.service';
       transition(':enter', [
         style({
           opacity: 0,
-          width: '0',
+          transform: 'translateY(20px)',
         }),
-        animate('300ms ease', style({ opacity: 1, width: '100%' })),
+        animate(
+          '1s ease-in-out',
+          style({ opacity: 1, transform: 'translateY(0)' })
+        ),
       ]),
       transition(':leave', [
-        style({ opacity: 1, width: '100%' }), //apply default styles before animation starts
-        animate('300ms ease', style({ opacity: 0, width: '0' })),
+        style({ opacity: 1, transform: 'translateY(0)' }), //apply default styles before animation starts
+        animate(
+          '2s ease-in-out',
+          style({ opacity: 0, transform: 'translateY(20px)' })
+        ),
       ]),
     ]),
   ],
@@ -222,7 +229,8 @@ export class EntryFormComponent implements OnInit, OnDestroy {
     private uploadFormService: UploadFormService,
     private menuExtractionService: MenuExtractionService,
     private router: Router,
-    private provider: ProviderService
+    private provider: ProviderService,
+    private statusService: StatusService
   ) {}
 
   ngOnInit() {
@@ -250,8 +258,8 @@ export class EntryFormComponent implements OnInit, OnDestroy {
 
   // Remove Button on File Names List
   removeFile(index: any) {
-    this.filesList.splice(index, 1);
-    this.files.splice(index, 1);
+    this.filesList = [];
+    this.uploadFormService.resetUpload();
   }
 
   onDateSelected(date: any) {
@@ -303,6 +311,10 @@ export class EntryFormComponent implements OnInit, OnDestroy {
     data
       .pipe(takeUntil(this.destroy$))
       .subscribe((data) => (this.totals = data));
+
+    if (!this.id) {
+      this.statusService.updateUploadStatus('');
+    }
 
     this.menubreakdown = {
       id: this.id,

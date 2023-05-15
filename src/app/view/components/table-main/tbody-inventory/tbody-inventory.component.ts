@@ -11,47 +11,47 @@ import {
   EntreeList,
   Groups,
   MenuBreakdown,
-  MenuGroups,
 } from '../../../../shared/models/menubreakdown';
 import { InventoryItems, InventoryTableData } from '../../../models/inventory';
 import { isNgTemplate } from '@angular/compiler';
 import { TableService } from '../../../services/table.service';
 import { Subject, takeUntil } from 'rxjs';
+import { ProviderService } from '../../../../shared/services/provider.service';
 
 @Component({
   selector: 'app-tbody-inventory',
   template: ` <tbody
-    class="bg-white h-[400px] inline-flex flex-col border-[#31abc8] divide-y-4 divide-gray-200 font-serif dark:divide-gray-700 dark:bg-zinc-700 dark:bg-opacity-[.45] overflow-y-scroll overflow-hidden overflow-ellipsis"
+    class="bg-white w-full flex-col inline-flex max-h-[450px] divide-y divide-gray-200 font-serif dark:divide-gray-700 dark:bg-zinc-700 dark:bg-opacity-[.45] overflow-y-scroll overflow-hidden"
   >
     <tr
-      class="hover:bg-zinc-800 hover:bg-opacity-90"
+      class="hover:bg-zinc-800 hover:bg-opacity-90 table-row"
       *ngFor="let categories of tableData; let i = index; trackBy: trackByIndex"
     >
-      <td class="px-6 py-4 text-sm font-medium whitespace-nowrap">
+      <td
+        class="px-10 py-4 min-w-[180px] text-sm font-medium whitespace-nowrap"
+      >
         <div>
-          <h2 class="tracking-wider text-[#36badc] dark:text-[#36badc]">
+          <h2 class="tracking-wider text-[#36badc] dark:text-white">
             {{ categories.category }}
           </h2>
-          <p class="text-sm font-normal text-gray-600 dark:text-gray-400">
-            Certified Angus Beef Top Butt Choice
-          </p>
+          <p class="text-sm font-normal text-gray-600 dark:text-lime-400"></p>
         </div>
       </td>
       <td
-        class="px-14 py-4 text-sm font-medium whitespace-nowrap place-items-end my-auto min-w-max min-w-0"
+        class="px-[3.5rem] py-4 w-[80px] text-sm font-medium whitespace-nowrap text-center my-auto min-w-max min-w-0"
       >
         <div
-          class="px-3 py-1 font-sans text-sm font-normal rounded-full text-[#fec84b] dark:text-[#fec84b] gap-x-2 bg-zinc-600/60 dark:bg-zinc-600/30"
+          class="px-3 py-1 text-center font-sans text-sm font-normal rounded-full text-green-500 dark:text-green-500 gap-x-2 bg-zinc-600/60 dark:bg-zinc-600/30"
         >
           {{ categories.total }}
         </div>
       </td>
       <td
-        class="w-full relative place-self-end pl-[60px] pr-10 text-sm whitespace-nowrap min-w-fit"
+        class="relative min-w-full place-self-end pl-12 pr-9 py-4 text-sm whitespace-nowrap"
       >
         <ng-container *ngIf="!categories.selected">
           <button
-            class="px-1 py-1 absolute right-4 top-5 text-gray-500 transition-colors duration-200 rounded-lg dark:text-gray-300"
+            class="px-1 py-1 absolute right-4 top-3 text-gray-500 transition-colors duration-200 rounded-lg dark:text-gray-300"
             (click)="onOpenInventoryItem(i)"
           >
             <svg
@@ -97,7 +97,7 @@ import { Subject, takeUntil } from 'rxjs';
         </ng-container>
         <ng-container *ngIf="categories.selected">
           <button
-            class="px-1 py-1 absolute right-4 top-5 inline-block text-gray-500 transition-colors duration-200 rounded-lg dark:text-gray-300"
+            class="px-1 py-1 absolute right-4 top-3 inline-block text-gray-500 transition-colors duration-200 rounded-lg dark:text-gray-300"
             (click)="onOpenInventoryItem(i)"
           >
             <svg
@@ -126,7 +126,7 @@ import { Subject, takeUntil } from 'rxjs';
       <td class="flex flex-col w-full">
         <ng-container *ngIf="categories.selected">
           <div
-            class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded dark:bg-transparent"
+            class="relative flex flex-col min-w-0 pl-4 pr-4 break-words bg-white w-full mb-6 shadow-xl rounded dark:bg-transparent"
           >
             <div class="block w-full overflow-x-auto">
               <table class="items-center bg-transparent w-full table-auto">
@@ -135,12 +135,13 @@ import { Subject, takeUntil } from 'rxjs';
                     class="border-[.5px] border-collapse border-zinc-600 text-gray-300"
                   >
                     <th
-                      class="px-6 break-words align-middle py-3 text-xs uppercase border-l-[.5px] border-r-0 border-zinc-700  whitespace-nowrap font-semibold text-left text-slate-600 dark:text-slate-400"
+                      class="px-6 mr-8
+				 break-words align-middle py-3 text-xs uppercase border-l-[.5px] border-r-0 border-zinc-700  whitespace-nowrap font-semibold text-left text-slate-600 dark:text-slate-400"
                     >
                       Entree
                     </th>
                     <th
-                      class="px-6 break-words align-middle py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left text-slate-600 dark:text-slate-400"
+                      class="px-6 w=[50px] width-full break-words align-middle py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left text-slate-600 dark:text-slate-400"
                     >
                       Totals
                     </th>
@@ -158,16 +159,14 @@ import { Subject, takeUntil } from 'rxjs';
                     class="text-white font-sans"
                   >
                     <th
-                      class="border-b-1 border-t-0 px-6 m-w-[220px] w-[220px] align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left "
+                      class="border-b-1 border-t-0 px-6 m-w-[220px] w-[160px] align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left "
                     >
-                      <h2
-                        class="tracking-wider text-gray-600 dark:text-gray-400"
-                      >
+                      <h2 class="tracking-wider text-gray-600 dark:text-white">
                         {{ entrees.item }}
                       </h2>
                       <div *ngIf="entrees.modifier">
                         <p
-                          class="text-xs font-normal text-[#ff9eff] dark:text-[#ff9eff]"
+                          class="text-xs font-normal text-gray-700 dark:text-[#ff9eff]"
                         >
                           {{ entrees.modifier }}
                         </p>
@@ -186,7 +185,7 @@ import { Subject, takeUntil } from 'rxjs';
                       class="px-10 py-4 text-center text-sm font-medium whitespace-nowrap place-items-end my-auto min-w-[40px]"
                     >
                       <div
-                        class="px-1 py-1 font-sans text-xs font-normal rounded-full text-gray-600 dark:text-gray-400 gap-x-2 bg-zinc-600/60 dark:bg-zinc-600/30"
+                        class="px-1 py-1 font-sans text-xs font-normal rounded-full text-[#ffcd58] dark:text-[#ffcd58] gap-x-2 bg-zinc-600/60 dark:bg-zinc-600/30"
                       >
                         {{ entrees.portion }}
                       </div>
@@ -222,10 +221,17 @@ export class TbodyInventoryComponent implements OnInit, OnDestroy {
   tableData: any[] = [];
   private destroy$ = new Subject<void>();
 
-  constructor(private tableService: TableService) {}
+  constructor(
+    private tableService: TableService,
+    private provider: ProviderService
+  ) {}
 
   ngOnInit() {
-    this.groups = MenuGroups;
+    this.provider.menuGroups$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((groups) => {
+        this.groups = groups;
+      });
     this.tableService.inventoryTable$
       .pipe(takeUntil(this.destroy$))
       .subscribe((data) => {

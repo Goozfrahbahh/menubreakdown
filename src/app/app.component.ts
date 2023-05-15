@@ -12,6 +12,7 @@ import { SettingsService } from './shared/services/settings.service';
 import { CalendarService } from './shared/services/calendar.service';
 import { Subject, takeUntil } from 'rxjs';
 import { MenuBreakdownService } from './shared/services/menubreakdown.service';
+import { StatusService } from './shared/services/status.service';
 
 @Component({
   selector: 'my-app',
@@ -27,12 +28,15 @@ export class AppComponent implements OnInit, OnDestroy {
   toggleState = 'closed' ? 'open' : 'closed';
   messagesOn: boolean;
   message: string;
+  nextMonth: Date = new Date();
+  previousMonth: Date = new Date();
+  status: boolean = false;
 
   constructor(
     private provider: ProviderService,
     private settingsService: SettingsService,
     private calendarService: CalendarService,
-    private menuBreakdownService: MenuBreakdownService
+    private statusService: StatusService
   ) {
     const today = new Date();
     this.activeDate = today;
@@ -52,6 +56,16 @@ export class AppComponent implements OnInit, OnDestroy {
         this.message = date;
       });
     this.provider.dailymenubreakdowns;
+
+    this.statusService.uploadStatus$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((status) => {
+        if (status.code !== '') {
+          this.status = true;
+        } else {
+          this.status = false;
+        }
+      });
   }
 
   toggleReceive() {
@@ -72,5 +86,29 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+  setPreviousNextMonth() {
+    const month = this.activeDate.getMonth();
+    if (month === 11) {
+      this.nextMonth = new Date(this.activeDate.getFullYear() + 1, 0, 1);
+      this.previousMonth = new Date(
+        this.activeDate.getFullYear(),
+        this.activeDate.getMonth() - 1,
+        1
+      );
+      return;
+    }
+    if (month === 0) {
+      this.nextMonth = new Date(
+        this.activeDate.getFullYear(),
+        this.activeDate.getMonth + 1,
+        1
+      );
+      this.previousMonth = new Date(this.activeDate.getFullYear() - 1, 11, 1);
+      return;
+    }
+
+    this.nextMonth = new Date(this.activeDate.getFullYear(), month + 1, 1);
+    this.previousMonth = new Date(this.activeDate.getFullYear, month - 1, 1);
   }
 }

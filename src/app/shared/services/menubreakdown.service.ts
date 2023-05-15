@@ -35,7 +35,9 @@ export class MenuBreakdownService {
    */
   getMenuBreakdowns() {
     return this.http.get(this.apiUrl, httpOptions).pipe(
-      tap((response) => this.log(`${response}`)),
+      tap((response) =>
+        this.log('Retrieval of Daily Menu Breakdowns Succeeded from API')
+      ),
       catchError(this.handleError('GetMenubreakdowns'))
     );
   }
@@ -66,8 +68,8 @@ export class MenuBreakdownService {
   }
 
   /**
-   * @desc      Update a book
-   * @param     totalId      ID of book to update
+   * @desc      Update an existing menubreakdown
+   * @param     menubreakdownId      ID of Daily Menu Breakdown to update
    */
   async updateMenuBreawkdown(
     menubreakdownId: number,
@@ -89,8 +91,8 @@ export class MenuBreakdownService {
   }
 
   /**
-   * @desc      Delete a book
-   * @param     totalId      ID of book to delete
+   * @desc      Delete an existing menubreakdown from the db
+   * @param     menubreakdownId      ID of Daily Menu Breakdown to delete
    */
   async deleteMenuBreakdown(menubreakdownId: number): Promise<any> {
     const { data, error } = await this.supabaseClient

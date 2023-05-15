@@ -15,7 +15,6 @@ import {
   EntreeList,
   Groups,
   MenuBreakdown,
-  MenuGroups,
 } from '../../../../shared/models/menubreakdown';
 import { Subject, map, switchMap, takeUntil } from 'rxjs';
 import { ViewService } from '../../../services/view.service';
@@ -26,18 +25,18 @@ import { ContentComponent } from '../content/content.component';
 @Component({
   selector: 'app-table',
   template: `
-    <div class="container-table w-[450px]">
+    <div class="container-table min-w-[450px]">
       <app-content #content [dataList]="dataList"></app-content>
       <div class="mt-2">
         <div class="-mx-4 -my-2 overflow-x-hidden sm:-mx-6 lg:-mx-8">
-          <div class="inline-flex min-w-full py-2 align-middle md:px-6 lg:px-8">
+          <div class="flex min-w-full py-2 align-middle md:px-6 lg:px-8">
             <div
               class="overflow-y-scroll overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg"
               id="scroll"
               *ngIf="!tableView"
             >
               <table
-                class="w-full flex-col divide-y divide-gray-200 table nax-h-[50vh] dark:divide-gray-700 border-collapse"
+                class="w-full flex-col table-auto divide-gray-200nax-h-[50vh] dark:divide-gray-700 border-collapse"
               >
                 <app-thead
                   [dataList]="dataList"
@@ -52,7 +51,7 @@ import { ContentComponent } from '../content/content.component';
               *ngIf="tableView"
             >
               <table
-                class="w-full flex-col divide-y divide-gray-200 table nax-h-[50vh] dark:divide-gray-700 border-collapse"
+                class="w-full flex flex-col table-auto divide-gray-200nax-h-[50vh] dark:divide-gray-700 border-collapse"
               >
                 <app-thead-inventory></app-thead-inventory>
                 <app-tbody-inventory
@@ -91,14 +90,14 @@ import { ContentComponent } from '../content/content.component';
           <ng-template #categoriesTable>
             <button
               (click)="viewEntreeTable()"
-              class="rounded-md px-3.5 py-1 -mr-4 overflow-hidden relative flex flex-row justify-between group cursor-pointer border-2 font-medium border-zinc-600 text-[#31abc8]"
+              class="rounded-md px-3.5 py-1 overflow-hidden relative flex flex-row justify-between group cursor-pointer border-2 font-medium border-zinc-600 text-[#31abc8]"
             >
               <span
                 class="absolute w-64 h-0 inline-block align-middle transition-all duration-300 origin-center rotate-45 -translate-x-20 bg-[#31abc8] bg-opacity-70 top-1/2 group-hover:h-64 group-hover:-translate-y-32 ease"
               ></span>
               <span
                 class="relative text-gray-600 dark:text-gray-300 transition duration-300 group-hover:text-gray-100 ease"
-                >Item Table</span
+                >Menu Item Table</span
               >
             </button>
           </ng-template>
@@ -147,12 +146,17 @@ export class TableComponent implements OnInit, OnDestroy {
 
   constructor(
     private tableService: TableService,
-    private viewService: ViewService
+    private viewService: ViewService,
+    private provider: ProviderService
   ) {}
 
   ngOnInit() {
-    this.groups = MenuGroups;
-    this.tableService.setGroups(this.groups);
+    this.provider.menuGroups$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((menuGroups) => {
+        this.groups = menuGroups;
+        this.tableService.setGroups(this.groups);
+      });
     //     this.groups = MenuGroups;
     //     this.categoryMap = this.setInventoryCategories(this.groups);
     this.viewService.menubreakdown$

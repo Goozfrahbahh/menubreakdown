@@ -15,14 +15,14 @@ import { TableService } from '../../../services/table.service';
   selector: 'app-thead',
   template: `
     <thead
-      class="w-full bg-zinc-500 dark:bg-zinc-700 dark:bg-opacity-[.45] shadow-xl border-b-[.5px]"
+      class="w-full inline-block bg-zinc-500 dark:bg-zinc-700 dark:bg-opacity-[.45] shadow-xl border-b-[.5px]"
     >
       <tr
         class="align-middle text-center border-b-[1px] border-zinc-600 border-b-zinc-500"
       >
         <th
           scope="col"
-          class="px-6 py-4  pr-8 w-[185px] align-middle text-left text-xs font-serif rtl:text-right text-gray-200 dark:text-gray-400"
+          class="px-10 pl-9 pr-9 w-[185px] align-middle text-left text-xs font-serif rtl:text-right text-gray-700 dark:text-[#ffcd58]"
         >
           <button class="items-start text-left gap-x-3 focus:outline-none">
             <span>Menu Entree's</span>
@@ -69,7 +69,7 @@ import { TableService } from '../../../services/table.service';
 
         <th
           scope="col"
-          class="pl-8 pr-4 py-4 w-[50px] align-middle text-xs font-semibold font-serif rtl:text-right text-gray-200 dark:text-gray-400"
+          class="px-12 py-4 w-[50px] align-middle text-xs font-semibold font-serif rtl:text-right text-gray-700 dark:text-[#ffcd58]"
         >
           <div class="items-center text-center gap-x-3 focus:outline-none">
             Sold
@@ -116,7 +116,7 @@ import { TableService } from '../../../services/table.service';
 
         <th
           scope="col"
-          class="pl-4 pr-0 py-4 w-[89px] align-middle text-xs font-semibold font-serif rtl:text-right text-gray-200 dark:text-gray-400"
+          class="px-4 pl-10 pr-9 w-[89px] align-middle text-xs font-semibold font-serif rtl:text-right text-gray-700 dark:text-[#ffcd58]"
         >
           <div class="items-center text-center gap-x-3 focus:outline-none">
             Date

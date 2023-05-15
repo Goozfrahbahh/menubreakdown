@@ -100,13 +100,13 @@ export class CalendarService {
     if (this.renderingEmptySlots >= 6) {
       this.renderingEmptySlots = 0;
     } else {
-      for (let i = 0; i <= this.renderingEmptySlots; i++) {
-        const day = i + 1;
-        const date = new Date(this.year, this.month, i + 1);
+      for (let i = this.renderingEmptySlots; i >= 0; i--) {
+        const date = new Date(this.year, this.month, 0 - i);
+        const day = date.getDate();
         const stringDay = new Date(
           this.year,
           this.month,
-          i + 1
+          date.getDate()
         ).toLocaleDateString('en-us', {
           weekday: 'short',
         });

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { GroupEntreeList, MenuItem } from '../../shared/models/menubreakdown';
 import { ProviderService } from '../../shared/services/provider.service';
-import { MenuItemsService } from '../../shared/services/menuitems.service';
+import { MenuItemsService } from '../../shared/services/menu-items.service';
 
 @Injectable({ providedIn: 'root' })
 export class MenuService {
@@ -29,6 +29,13 @@ export class MenuService {
 
   updateEntreeListCategories(list: any[]) {
     this.entreeListSubject.next(list);
+    if (list.length < 1) {
+      this.selectedItemSubject.next(null);
+    }
+  }
+
+  resetSelected() {
+    this.selectedItemSubject.next(null);
   }
 
   updateFilteredList(list: GroupEntreeList[]) {
@@ -52,18 +59,5 @@ export class MenuService {
 
   updateSelectedMenuItem(item: GroupEntreeList) {
     this.selectedItemSubject.next(item);
-  }
-
-  addMenuItem(menuItem: MenuItem) {
-    console.log(menuItem);
-
-    this.menuItemsService
-      .addMenuItem(menuItem)
-      .then((res: any) => {
-        console.log('Added MenuItem:', res);
-      })
-      .catch((err) => {
-        console.log('Error adding MenuItem:', err);
-      });
   }
 }

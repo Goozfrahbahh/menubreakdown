@@ -18,20 +18,18 @@ import { GroupEntreeList } from '../../../shared/models/menubreakdown';
           <!-- download icon -->
           <!-- image (left side) -->
           <div
-            class="absolute bg-blend-multiply left-0 h-28 w-48 px-4 py-4 mt-2 mb-2 saturate-150"
+            class="absolute bg-blend-multiply left-0 h-28 w-48 px-4 py-4 mt-2 mb-2 saturate-150 group"
           >
             <ng-container *ngIf="entree.imageUrl; else none">
               <img
                 ngSrc="{{ entree.imageUrl }}"
                 fill
-                class="h-full w-full object-cover object-center bg-clip-content opacity-95 rounded-xl prose-img:"
+                class="h-full w-full mt-4 object-cover object-center bg-clip-padding opacity-95 rounded-xl blur-0 group-hover:blur-none"
               />
             </ng-container>
-            <ng-template #none>
-              <img class="list-image-none" />
-            </ng-template>
+            <ng-template #none> <img class="list-image-none" /> </ng-template>
             <div
-              class="invisible absolute inset-0 flex max-h-28 h-28 w-full p-4 rounded-xl items-center justify-center opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 hover:backdrop-blur-lg"
+              class="invisible absolute inset-0 flex max-h-28 h-28 w-full p-4 mt-4 rounded-xl items-center justify-center opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100"
             >
               <button class="stats button" (click)="onClickMenuItem(entree)">
                 <svg
@@ -71,7 +69,7 @@ import { GroupEntreeList } from '../../../shared/models/menubreakdown';
               class="absolute inset-0 flex flex-col justify-between p-4 text-white"
             >
               <header class="space-y-1">
-                <div class="text-3xl font-medium text-[#0fc8f6]">
+                <div class="text-3xl font-medium text-[#ffcd58]">
                   {{ entree.item }}
                 </div>
 

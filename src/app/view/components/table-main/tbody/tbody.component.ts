@@ -5,15 +5,15 @@ import { TableService } from '../../../services/table.service';
 @Component({
   selector: 'app-tbody',
   template: ` <tbody
-    class="bg-white h-[400px] block divide-y divide-gray-200 font-serif dark:divide-gray-700 dark:bg-zinc-700 dark:bg-opacity-[.45] overflow-y-scroll overflow-hidden overflow-ellipsis"
+    class="bg-white w-full inline-block max-h-[450px] divide-y divide-gray-200 font-serif dark:divide-gray-700 dark:bg-zinc-700 dark:bg-opacity-[.45] overflow-y-scroll overflow-hidden"
   >
     <tr
       *ngFor="let breakdown of dataList"
-      class="hover:bg-zinc-700 hover:bg-opacity-50"
+      class="hover:bg-zinc-800 hover:bg-opacity-90 table-row"
     >
-      <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
+      <td class="px-10 pl-9 pr-9 text-sm font-medium whitespace-nowrap">
         <div>
-          <h2 class="tracking-wider dark:text-[#0fc8f6] text-[#0fc8f6] ">
+          <h2 class="tracking-wider text-gray-700 dark:text-white ">
             {{ breakdown.item }}
           </h2>
           <span
@@ -22,20 +22,20 @@ import { TableService } from '../../../services/table.service';
             >{{ breakdown.modifier }}</span
           >
           <div *ngIf="breakdown.group">
-            <p class="text-sm font-normal text-gray-600 dark:text-gray-400">
+            <p class="text-sm font-normal text-gray-800 dark:text-gray-500">
               {{ breakdown.group }}
             </p>
           </div>
         </div>
       </td>
-      <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
+      <td class="px-24 py-4 text-sm font-medium whitespace-nowrap w-[50px]">
         <div
-          class="inline px-3 py-1 font-sans text-sm font-normal rounded-full text-[#fec84b] dark:text-[#fec84b] gap-x-2 bg-zinc-600/60 dark:bg-zinc-600/30"
+          class="inline px-3 py-1 font-sans text-sm font-normal rounded-full text-green-500 dark:text-green-500 gap-x-2 bg-zinc-600/60 dark:bg-zinc-600/30"
         >
           {{ breakdown.sold }}
         </div>
       </td>
-      <td class="px-4 py-4 text-sm whitespace-nowrap">
+      <td class="px-4 pl-12 pr-10 min-w-full text-sm whitespace-nowrap">
         <div>
           <h4 class="text-gray-700 font-sans dark:text-gray-200">
             {{ breakdown.date | date : 'shortDate' }}

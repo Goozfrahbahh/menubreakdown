@@ -16,7 +16,7 @@ import {
   selector: 'app-delete-form',
   template: `
     <div
-      class="upload flex align-middle items-center justify-center content-center p-12 mt-[10vh]"
+      class="upload flex align-middle items-center justify-center content-center p-12 mt-[10vh] font-sans"
       *ngIf="animationTrigger"
       @filterAnimation
     >
@@ -24,7 +24,7 @@ import {
         class="mx-auto w-full max-w-[550px] p-10 pb-2 border-4 border-zinc-600 border-opacity-80 bg-zinc-800 bg-opacity-40 shadow-xl hover:shadow-2xl rounded-xl"
       >
         <h1
-          class="text-2xl -mt-2 mb-6 text-gray-200 border-b border-b-zinc-700 pb-2"
+          class="text-2xl -mt-2 mb-6 text-white border-b border-b-zinc-700 pb-2"
         >
           Remove Menu-Breakdown Form
         </h1>
@@ -109,13 +109,19 @@ import {
       transition(':enter', [
         style({
           opacity: 0,
-          width: '0',
+          transform: 'translateY(20px)',
         }),
-        animate('300ms ease', style({ opacity: 1, width: '100%' })),
+        animate(
+          '1s ease-in-out',
+          style({ opacity: 1, transform: 'translateY(0)' })
+        ),
       ]),
       transition(':leave', [
-        style({ opacity: 1, width: '100%' }), //apply default styles before animation starts
-        animate('300ms ease', style({ opacity: 0, width: '0' })),
+        style({ opacity: 1, transform: 'translateY(0)' }), //apply default styles before animation starts
+        animate(
+          '1s cubic-bezier(.17,.67,.83,.67)',
+          style({ opacity: 0, transform: 'translateY(20px)' })
+        ),
       ]),
     ]),
   ],

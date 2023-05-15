@@ -4,19 +4,19 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   selector: 'app-thead-inventory',
   template: `
     <thead
-      class="w-full bg-gray-50 dark:bg-zinc-700 dark:bg-opacity-[.45] shadow-2xl"
+      class="w-full inline-block bg-gray-50 dark:bg-zinc-700 dark:bg-opacity-[.45] shadow-2xl"
     >
       <tr class="border-b-[1px] border-zinc-600 border-b-zinc-500">
         <th
           scope="col"
-          class="py-5 pr-7 pl-5 w-[220px] text-xs font-semibold font-serif text-left rtl:text-right text-gray-300 dark:text-gray-300"
+          class="px-10 pl-9 pr-9 w-[185px] text-xs tracking-wider font-bold font-serif text-left rtl:text-right text-gray-700 dark:text-[#ffcd58]"
         >
           <span>Inventory Category</span>
         </th>
 
         <th
           scope="col"
-          class="px-12 py-5 w-[130px] text-center text-xs font-semibold font-serif text-gray-300 dark:text-gray-300"
+          class="px-8 py-4 w-[80px] text-center tracking-wider text-xs font-bold font-serif text-gray-700 dark:text-[#ffcd58]"
         >
           Total Portion
         </th>

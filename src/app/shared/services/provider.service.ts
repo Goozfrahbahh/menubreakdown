@@ -7,7 +7,7 @@ import {
 } from '../models/menubreakdown';
 import { MenuBreakdownService } from './menubreakdown.service';
 import { MessageService } from './messages.service';
-import { MenuItemsService } from './menuitems.service';
+import { MenuItemsService } from './menu-items.service';
 
 @Injectable({ providedIn: 'root' })
 export class ProviderService implements OnInit, OnDestroy {

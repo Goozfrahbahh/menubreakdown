@@ -29,18 +29,18 @@ export class MenuItemsService {
   }
 
   /** TYPICAL HTTP ROUTE
-   * @desc      Get all categories and menuitems from the db
+   * @desc      Get all MenuItem = menuitems from the db
    * @returns   Observable
    */
   getMenuItems(): Observable<any> {
     return this.http.get(this.apiUrl, httpOptions).pipe(
-      tap((response) => this.log(`${response}`)),
+      tap((response) => this.log('Retreival of Menu Items Succeeded from API')),
       catchError(this.handleError('getmenuitems'))
     );
   }
   /**
    * @desc      Add a new menubreakdown to the db
-   * @param     InventoryData    Single row object to type of MenuBreakdown
+   * @param     menuitem    Single row object to type of MenuItem
    * @returns   Promise (data or error)
    */
 
@@ -65,42 +65,19 @@ export class MenuItemsService {
       return error.message;
     }
   }
-  async addItemToMenuCategory(menubreakdown: DailyMenuBreakdown): Promise<any> {
-    const { data, error } = await this.supabaseClient
-      .from('menubreakdowns')
-      .insert([
-        {
-          id: menubreakdown.id,
-          date: menubreakdown.date,
-          totals: menubreakdown.totals,
-        },
-      ]);
-    const menudata = menubreakdown;
-    if (data) {
-      this.log(`Successful uploaded ${menudata}`);
-      return data;
-    }
-    if (error) {
-      this.log(`Failed uploaded ${error} for menu ${menudata.id}`);
-      return error.message;
-    }
-  }
 
   /**
-   * @desc      Update a book
-   * @param     totalId      ID of book to update
+   * @desc      Update an existing menuitem
+   * @param     menuitemId      Master Id of the Menu Item
    */
-  async updateMenuBreawkdown(
-    menubreakdownId: number,
-    menubreakdown: DailyMenuBreakdown
-  ): Promise<any> {
+  async updateMenuItem(menuitemId: number, menuitem: MenuItem): Promise<any> {
     const { data, error } = await this.supabaseClient
-      .from('menubreakdowns')
-      .update(menubreakdown)
-      .match({ id: menubreakdownId });
+      .from('menuitems')
+      .update(menuitem)
+      .match({ masterId: menuitemId });
 
     if (data) {
-      this.log(`Update Event: ${menubreakdownId}`);
+      this.log(`Update Event: ${menuitemId}`);
       return data;
     }
     if (error) {
@@ -110,17 +87,18 @@ export class MenuItemsService {
   }
 
   /**
-   * @desc      Delete a book
-   * @param     totalId      ID of book to delete
+   * @desc      Delete an existing Menu Item
+   * @param
+   * @param     menuitemId           Master Id of the Menu Item
    */
-  async deleteMenuBreakdown(menubreakdownId: number): Promise<any> {
+  async deleteMenuItem(menuitemId: number): Promise<any> {
     const { data, error } = await this.supabaseClient
-      .from('menubreakdowns')
+      .from('menuitems')
       .delete()
-      .match({ id: menubreakdownId });
+      .match({ id: menuitemId });
 
     if (data) {
-      this.log(`Delete Event: ${menubreakdownId}`);
+      this.log(`Delete Event: ${menuitemId}`);
       return data;
     }
     if (error) {

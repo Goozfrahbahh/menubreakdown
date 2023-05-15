@@ -1,6 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MenuService } from '../../services/menu.service';
-import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
+import {
+  Subject,
+  debounceTime,
+  distinctUntilChanged,
+  takeUntil,
+  map,
+} from 'rxjs';
 import {
   trigger,
   transition,
@@ -9,28 +15,22 @@ import {
   keyframes,
 } from '@angular/animations';
 import { MenuCategory } from '../../models/categories';
-import {
-  Groups,
-  GroupEntreeList,
-  FoodMenuGroupGUID,
-  MenuGroups,
-  ItemGroup,
-} from '../../../shared/models/menubreakdown';
+import { Groups, GroupEntreeList } from '../../../shared/models/menubreakdown';
 import { ProviderService } from '../../../shared/services/provider.service';
 
 @Component({
   selector: 'app-menu-editor',
   template: `
     <div
-      class="menu-container w-full h-full flex flex-row px-4 pt-6 pb-8 rounded-xl items-start content-start align-left justify-start"
+      class="menu-container w-full h-full flex flex-row px-4 pt-6 pb-8 ml-4 rounded-xl items-start content-start align-left justify-start"
     >
       <div
-        class="categorylist-container flex flex-col h-full z-20 justify-start rounded-xl shadow-2xl dark:bg-zinc-700 dark:bg-opacity-50 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-zinc-900 via-zinc-800/20 to-zinc-900 "
+        class="categorylist-container flex flex-col h-full max-w-min z-20 justify-start rounded-xl shadow-2xl dark:bg-zinc-700 dark:bg-opacity-50 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-zinc-900 via-zinc-800/20 to-zinc-900 "
         @inOutPaneAnimation
         *ngIf="isOpen"
       >
         <h2
-          class="title-menu pl-6 p-4 pb-10 text-2xl text-left font-semibold text-gray-200"
+          class="title-menu pl-6 p-4 pb-10 text-2xl text-left font-semibold text-gray-200 font-sans tracking-tight"
         >
           Category
         </h2>
@@ -43,24 +43,38 @@ import { ProviderService } from '../../../shared/services/provider.service';
           "
         >
           <li
-            class="w-full h-full bg-opacity-30"
+            class="w-full h-full bg-opacity-3 font-serif font-bold"
             [ngClass]="category.selected ? 'backdrop-brightness-150' : ''"
           >
             <button
               (click)="onSelectCategory(category.group, index)"
               @inOutPaneAnimation
               [ngClass]="category.selected ? 'textwht' : ''"
-              class="flex py-6 px-14 flex-grow min-w-full w-full flex-auto uppercase text-sm first-of-type:rounded-t-xl last-of-type:rounded-b-xl category-filter text-gray-400 group-hover:text-white font-serif m-auto"
+              class="flex py-6 px-14 flex-grow min-w-full w-full flex-auto uppercase text-sm first-of-type:rounded-t-xl last-of-type:rounded-b-xl category-filter text-gray-400 group-hover:text-white font-serif m-auto whitespace-nowrap"
+              *ngIf="category.group !== 'Weekend Specials'; else special"
             >
-              {{ category.group }}
+              {{ category.group | titlecase }}
             </button>
+            <ng-template #special>
+              <button
+                (click)="onSelectCategory(category.group, index)"
+                @inOutPaneAnimation
+                [ngClass]="category.selected ? 'textwht' : ''"
+                class="flex py-6 px-14 flex-grow min-w-full w-full flex-auto
+              uppercase text-sm first-of-type:rounded-t-xl
+              last-of-type:rounded-b-xl category-filter text-gray-400
+              group-hover:text-white font-serif m-auto whitespace-nowrap"
+              >
+                Specials
+              </button>
+            </ng-template>
           </li>
         </ul>
       </div>
       <div
         *ngIf="filtered.length > 0"
         @inOutPaneAnimation2
-        class="flex h-full max-w-fit border-4 z-10 shadow-xl border-zinc-800/80 dark:divide-gray-700 dark:bg-zinc-700 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-zinc-800 via-zinc-700 to-zinc-800 overflow-hidden"
+        class="flex h-full max-w-fit border-4 z-10 shadow-xl border-zinc-800/80 dark:divide-gray-700 dark:bg-zinc-700 dark:bg-opacity-50 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-zinc-900 via-zinc-800/20 to-zinc-900  overflow-hidden"
       >
         <div class="flex flex-col overflow-x-hidden">
           <div class="relative mt-4 md:mt-0 flex flex-row flex-nowrap">
@@ -71,7 +85,7 @@ import { ProviderService } from '../../../shared/services/provider.service';
             </h2>
             <div class="pt-2 relative mx-auto text-gray-600 -right-4 top-4">
               <input
-                class="border-2 border-[#9f9f9f] bg-transparent h-10 px-5 pr-16 active:outline-[#0fc8f6] active:border-[#0fc8f6] rounded-lg text-sm text-white  focus:ring-2 focus:outline-none focus:ring-[#0fc8f6]"
+                class="border-2 border-[#9f9f9f] bg-transparent h-10 px-5 pr-16 active:outline-[#61a3ff] active:border-[#61a3ff] rounded-lg text-sm text-white  focus:ring-2 focus:outline-none focus:ring-[#61a3ff]"
                 placeholder="Search"
                 #searchBoxtwo
                 (input)="searchCategories(searchBoxtwo.value)"
@@ -99,17 +113,15 @@ import { ProviderService } from '../../../shared/services/provider.service';
             </div>
           </div>
           <div
-            class="conatiner-entree p-4 backdrop-blur-sm overflow-x-hidden overflow-y-scroll"
+            class="conatiner-entree p-4 overflow-x-hidden overflow-y-scroll border-zinc-800/80 dark:divide-gray-700"
           >
             <app-entree [entreeList]="categoryList"></app-entree>
           </div>
-          d
         </div>
       </div>
       <div
-        class="edit-section flex"
-        *ngIf="selectedMenuItem"
-        @inOutPaneAnimation
+        class="edit-section h-full flex flex-1 max-w-[420px] w-[420px] font-serif border-2 z-10 shadow-lg border-zinc-800 dark:divide-gray-700 dark:bg-zinc-700 dark:bg-opacity-50 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-zinc-900 via-zinc-800 to-zinc-900/90  overflow-hidden "
+        *ngIf="selectedItem"
       >
         <app-entree-detail></app-entree-detail>
       </div>
@@ -135,7 +147,7 @@ import { ProviderService } from '../../../shared/services/provider.service';
           transform: 'translateX(-50%)',
         }),
         animate(
-          '600ms ease',
+          '400ms linear',
           style({ opacity: 1, transform: 'translateX(0)' })
         ),
       ]),
@@ -163,9 +175,25 @@ import { ProviderService } from '../../../shared/services/provider.service';
         animate('500ms ease-out', style({ width: 0, postion: 'absolute' })),
       ]),
     ]),
+    trigger('editMenu', [
+      transition(':enter', [
+        style({
+          opacity: 0,
+          width: 0,
+        }),
+        animate(
+          '2s cubic-bezier( 0.455, 0.03, 0.515, 0.955 )',
+          style({ opacity: 1, width: '360px' })
+        ),
+      ]),
+      transition(':leave', [
+        style({ opacity: 1, width: '360px' }), //apply default styles before animation starts
+        animate('600ms ease', style({ opacity: 0, width: 0 })),
+      ]),
+    ]),
   ],
 })
-export class MenuEditorComponent {
+export class MenuEditorComponent implements OnInit, OnDestroy {
   categories: MenuCategory[] = [];
   categoriesTemp: string[] = [];
   filtered: string[] = [];
@@ -176,7 +204,8 @@ export class MenuEditorComponent {
   categoryListTemp: GroupEntreeList[] = [];
   categoryList: GroupEntreeList[] = [];
   cachedData: any[] = [];
-  groupedList: GroupEntreeList;
+  selectedItem: GroupEntreeList;
+  resetSelected: GroupEntreeList;
   selectedMenuItem: boolean = false;
   private destroy$ = new Subject<void>();
 
@@ -186,29 +215,29 @@ export class MenuEditorComponent {
   ) {}
 
   ngOnInit() {
+    this.menuService.resetSelected();
     // run animation metadata
     this.isOpen = true;
-
+    this.provider.listGroups$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((groups: MenuCategory[]) => {
+        console.log(groups);
+        const data = groups.map((group) => {
+          return { group: group.group, selected: false };
+        });
+        this.categories = data;
+      });
     // Get Menu groups to set up filter menu
-    this.setMenuGroups(FoodMenuGroupGUID);
+    //     this.setMenuGroups(FoodMenuGroupGUID);
 
     this.provider.menuGroups$
       .pipe(takeUntil(this.destroy$))
       .subscribe((data) => {
         this.menuGroups = data;
-        const categoryMap = this.setInventoryCategories(MenuGroups);
+        const categoryMap = this.setInventoryCategories(this.menuGroups);
         this.mapCategoryGroupsToEntrees(categoryMap);
         this.menuService.updateEntreeListCategories(this.categoryListInit);
       });
-
-    //     console.log(MenuGroups);
-    //     // map menu categoryg groups from menu data
-    //     const categoryMap = this.setInventoryCategories(MenuGroups);
-
-    //     // map category groups to
-    //     this.mapCategoryGroupsToEntrees(categoryMap);
-
-    //     this.menuService.updateEntreeListCategories(this.categoryListInit);
 
     // Subscribe to entreeList$ observable and update categoryListTemp when data is emitted
     this.menuService.entreeList$
@@ -235,6 +264,7 @@ export class MenuEditorComponent {
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: GroupEntreeList) => {
         this.selectedMenuItem = true;
+        this.selectedItem = data;
       });
   }
 
@@ -250,17 +280,9 @@ export class MenuEditorComponent {
     return this.categoryListInit;
   }
 
-  // Set up Inventory Menu Categories
-  setMenuGroups(menuGroups: ItemGroup[]) {
-    Object.values(menuGroups).forEach((item: ItemGroup) => {
-      this.categoriesTemp.push(item.group);
-    });
-    for (let cat of this.categoriesTemp) {
-      this.categories.push({
-        group: cat,
-        selected: false,
-      });
-    }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   searchCategories(term: string) {
@@ -280,6 +302,10 @@ export class MenuEditorComponent {
         this.filtered.push(category.group);
       }
     });
+
+    if (this.filtered.length < 1) {
+      this.menuService.updateSelectedMenuItem(this.resetSelected);
+    }
 
     let allCategoryItems: GroupEntreeList[] = [];
 
@@ -302,10 +328,8 @@ export class MenuEditorComponent {
       },
       []
     );
-    if (allCategoryItems.length < 1) {
-      this.menuService.updateSelectedMenuItem(this.groupedList);
-    }
-    this.menuService.updateFilteredList(allCategoryItems);
+    const data = allCategoryItems.sort((a, b) => a.item.localeCompare(b.item));
+    this.menuService.updateFilteredList(data);
   }
 
   trackByIndex(value: MenuCategory, index: number) {
@@ -344,7 +368,6 @@ export class MenuEditorComponent {
         });
       });
     });
-    console.log(categoryMap);
     return categoryMap;
   }
 }

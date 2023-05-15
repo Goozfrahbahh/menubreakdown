@@ -34,7 +34,7 @@ import { SettingsService } from '../../services/settings.service';
         <a
           routerLink="/home"
           [routerLinkActive]="'active'"
-          class="flex items-center justify-center h-12 w-12 hover:bg-[#5a6367] text-sky-500 rounded-2xl"
+          class="flex items-center justify-center h-12 w-12 text-gray-500 rounded-2xl"
         >
           <svg
             viewBox="100 110 800 800"
@@ -69,105 +69,66 @@ import { SettingsService } from '../../services/settings.service';
         <ul class="flex flex-col space-y-2 mt-12">
           <li>
             <a
-              routerLink="/entry-form"
+              routerLink="/view"
               [routerLinkActive]="'active'"
               class="flex flex-col items-center"
             >
               <span
-                class="flex items-center justify-center text-[#0fc8f6] hover:bg-[#5a6367] hover:text-[#0fc8f6] h-12 w-12 rounded-2xl active:text-white"
-              >
-                <svg viewBox="10 10 20 20" height="24" width="24" fill="none">
-                  <path
-                    fill="#0fc8f6"
-                    d="M26.1,23H25c-0.3,0-0.5-0.2-0.5-0.5S24.7,22,25,22h1.1c0.4,0,0.8-0.2,1.1-0.5c0.3-0.3,0.4-0.7,0.3-1.2 c-0.1-0.5-0.6-1-1.2-1.1l-0.6-0.1c-0.7-0.1-1.1-0.8-1-1.4l0.1-0.7c0-0.2,0-0.3,0-0.4c0-0.8-0.3-1.5-0.8-2s-1.3-0.8-2-0.8 c-1,0-2,0.7-2.4,1.7l-0.2,0.4c-0.2,0.5-0.7,0.8-1.3,0.7l-0.5-0.1c-0.9-0.1-1.9,0.5-2.2,1.4l-0.1,0.4c-0.2,0.5-0.5,0.8-1,0.8 l-0.5,0.1c-0.4,0.1-0.8,0.3-1,0.7c-0.2,0.4-0.3,0.8-0.1,1.2c0.2,0.5,0.8,0.9,1.4,0.9h1c0.3,0,0.5,0.2,0.5,0.5S15.3,23,15,23h-1 c-1.1,0-2-0.6-2.3-1.6c-0.2-0.7-0.2-1.4,0.2-2c0.4-0.6,1-1,1.7-1.1l0.5-0.1c0.1,0,0.2-0.1,0.2-0.2l0.1-0.4 c0.4-1.2,1.6-2.1,2.9-2.1c0.1,0,0.2,0,0.3,0l0.5,0.1c0.1,0,0.2,0,0.3-0.1l0.2-0.4c0.6-1.3,1.9-2.2,3.3-2.3c1,0,2,0.3,2.8,1 c0.7,0.7,1.2,1.7,1.2,2.7c0,0.2,0,0.4-0.1,0.6l-0.1,0.7c0,0.1,0.1,0.3,0.2,0.3l0.6,0.1c1,0.2,1.8,0.9,2,1.9c0.1,0.7,0,1.4-0.5,2 C27.5,22.7,26.8,23,26.1,23z"
-                  ></path>
-                  <path
-                    fill="#fff"
-                    d="M21.5,24.1c-0.1,0-0.3,0-0.4-0.1L20,22.8l-1.2,1.2c-0.2,0.2-0.5,0.2-0.7,0s-0.2-0.5,0-0.7l1.5-1.5 c0.2-0.2,0.5-0.2,0.7,0l1.5,1.5c0.2,0.2,0.2,0.5,0,0.7C21.8,24,21.7,24.1,21.5,24.1z"
-                  ></path>
-
-                  <path
-                    fill="#fff"
-                    d="M20,27.6c-0.3,0-0.5-0.2-0.5-0.5v-5c0-0.3,0.2-0.5,0.5-0.5s0.5,0.2,0.5,0.5v5 C20.5,27.3,20.3,27.6,20,27.6z"
-                  ></path>
-                </svg>
-              </span>
-              <span
-                class="font-serif text-sm font-light"
-                [ngClass]="toggleState ? 'textopen' : 'textclosed'"
-                >Upload Data</span
-              >
-            </a>
-          </li>
-          <li>
-            <a
-              routerLink="/delete-form"
-              [routerLinkActive]="'active'"
-              class="flex flex-col items-center flex-nowrap"
-            >
-              <span
-                class="flex items-center justify-center text-[#0fc8f6] hover:bg-[#5a6367] hover:text-[#0fc8f6] h-12 w-12 rounded-2xl active:!text-white"
+                class="flex items-center group justify-center text-[#bbbbc3] hover:bg-[#5a6367] hover:text-white h-12 w-12 rounded-2xl active:!text-white"
               >
                 <svg
-                  viewBox="-3 -12 70 70"
-                  height="26px"
-                  width="26px"
                   xmlns="http://www.w3.org/2000/svg"
-                  xmlns:xlink="http://www.w3.org/1999/xlink"
-                  xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"
-                  fill="none"
+                  viewBox="0 0 256 256"
+                  height="24"
+                  width="24"
                 >
-                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                  <g
-                    id="SVGRepo_tracerCarrier"
+                  <path
+                    d="M32,56H224a0,0,0,0,1,0,0V192a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V56A0,0,0,0,1,32,56Z"
+                    fill="none"
+                    stroke="#bbbbc3"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                  ></g>
-                  <g id="SVGRepo_iconCarrier">
-                    <g
-                      id="Page-1"
-                      stroke="none"
-                      stroke-width="1"
-                      fill="none"
-                      fill-rule="evenodd"
-                      sketch:type="MSPage"
-                    >
-                      <g
-                        id="Cloud-delete"
-                        sketch:type="MSLayerGroup"
-                        transform="translate(1.000000, 1.000000)"
-                        stroke-width="3"
-                        stroke="#0fc8f6"
-                      >
-                        <g id="Group" sketch:type="MSShapeGroup">
-                          <path
-                            d="M14.7,8.9 C17.6,3.6 23.3,0 29.8,0 C39.3,0 47,7.6 47,17.1 C47,18.4 46.8,19.7 46.6,20.9"
-                            id="Shape"
-                          ></path>
-                          <path
-                            d="M24.6,36 L13.6,36 C6.1,36 0,29.9 0,22.5 C0,15 6.1,9 13.6,9 C17.1,9 20.3,10.3 22.7,12.4"
-                            id="Shape"
-                          ></path>
-                          <path
-                            d="M47.4,14.5 C48.5,14.1 49.7,14 50.9,14 C57,14 62,18.9 62,25 C62,31.1 57,36 50.9,36 L39.8,36"
-                            id="Shape"
-                          ></path>
-                        </g>
-                        <path
-                          d="M39.8,36.4 L36.3,32.9 L39.7,29.5 L35.5,25.2 L32,28.7 L28.5,25.2 L24.3,29.5 L27.8,33 L24.3,36.5 L28.5,40.7 L32,37.2 L35.5,40.8 L39.8,36.4 Z"
-                          id="Shape"
-                          stroke="#ffffff"
-                          sketch:type="MSShapeGroup"
-                        ></path>
-                      </g>
-                    </g>
-                  </g>
+                    stroke-width="14"
+                  />
+                  <line
+                    x1="32"
+                    y1="104"
+                    x2="224"
+                    y2="104"
+                    fill="none"
+                    stroke="#fff"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="8"
+                  />
+                  <line
+                    x1="32"
+                    y1="152"
+                    x2="224"
+                    y2="152"
+                    fill="none"
+                    stroke="#fff"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="8"
+                  />
+                  <line
+                    x1="88"
+                    y1="104"
+                    x2="88"
+                    y2="200"
+                    fill="none"
+                    stroke="#fff"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="8"
+                  />
                 </svg>
               </span>
               <span
                 class="font-serif text-sm font-light"
                 [ngClass]="toggleState ? 'textopen' : 'textclosed'"
-                >Remove Data</span
+                >Table View</span
               >
             </a>
           </li>
@@ -178,7 +139,7 @@ import { SettingsService } from '../../services/settings.service';
               class="flex flex-col items-center"
             >
               <span
-                class="flex items-center justify-center text-[#0fc8f6] hover:bg-[#5a6367] hover:text-[#0fc8f6] h-12 w-12 rounded-2xl active:!text-white"
+                class="flex items-center justify-center text-[#bbbbc3] hover:bg-[#5a6367] hover:text-white h-12 w-12 rounded-2xl active:!text-white"
               >
                 <svg
                   height="28px"
@@ -193,7 +154,7 @@ import { SettingsService } from '../../services/settings.service';
                       fill: #ffffff;
                     }
                     .st1 {
-                      fill: #0fc8f6;
+                      fill: #bbbbc3;
                     }
                   </style>
                   <rect
@@ -203,7 +164,7 @@ import { SettingsService } from '../../services/settings.service';
                     height="70%"
                     rx="30"
                     ry="30"
-                    stroke="#0fc8f6"
+                    stroke="#bbbbc3"
                     fill="none"
                     stroke-width="16"
                     class="bg-none"
@@ -251,66 +212,105 @@ import { SettingsService } from '../../services/settings.service';
           </li>
           <li>
             <a
-              routerLink="/view"
+              routerLink="/entry-form"
               [routerLinkActive]="'active'"
               class="flex flex-col items-center"
             >
               <span
-                class="flex items-center group justify-center text-[#0fc8f6] hover:bg-[#5a6367] hover:text-[#0fc8f6] h-12 w-12 rounded-2xl active:!text-white"
+                class="flex items-center justify-center text-[#bbbbc3] hover:bg-[#5a6367] hover:text-white h-12 w-12 rounded-2xl active:text-white"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 256 256"
-                  height="24"
-                  width="24"
-                >
+                <svg viewBox="10 10 20 20" height="24" width="24" fill="none">
                   <path
-                    d="M32,56H224a0,0,0,0,1,0,0V192a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V56A0,0,0,0,1,32,56Z"
-                    fill="none"
-                    stroke="#0fc8f6"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="14"
-                  />
-                  <line
-                    x1="32"
-                    y1="104"
-                    x2="224"
-                    y2="104"
-                    fill="none"
-                    stroke="#fff"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="8"
-                  />
-                  <line
-                    x1="32"
-                    y1="152"
-                    x2="224"
-                    y2="152"
-                    fill="none"
-                    stroke="#fff"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="8"
-                  />
-                  <line
-                    x1="88"
-                    y1="104"
-                    x2="88"
-                    y2="200"
-                    fill="none"
-                    stroke="#fff"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="8"
-                  />
+                    fill="#bbbbc3"
+                    d="M26.1,23H25c-0.3,0-0.5-0.2-0.5-0.5S24.7,22,25,22h1.1c0.4,0,0.8-0.2,1.1-0.5c0.3-0.3,0.4-0.7,0.3-1.2 c-0.1-0.5-0.6-1-1.2-1.1l-0.6-0.1c-0.7-0.1-1.1-0.8-1-1.4l0.1-0.7c0-0.2,0-0.3,0-0.4c0-0.8-0.3-1.5-0.8-2s-1.3-0.8-2-0.8 c-1,0-2,0.7-2.4,1.7l-0.2,0.4c-0.2,0.5-0.7,0.8-1.3,0.7l-0.5-0.1c-0.9-0.1-1.9,0.5-2.2,1.4l-0.1,0.4c-0.2,0.5-0.5,0.8-1,0.8 l-0.5,0.1c-0.4,0.1-0.8,0.3-1,0.7c-0.2,0.4-0.3,0.8-0.1,1.2c0.2,0.5,0.8,0.9,1.4,0.9h1c0.3,0,0.5,0.2,0.5,0.5S15.3,23,15,23h-1 c-1.1,0-2-0.6-2.3-1.6c-0.2-0.7-0.2-1.4,0.2-2c0.4-0.6,1-1,1.7-1.1l0.5-0.1c0.1,0,0.2-0.1,0.2-0.2l0.1-0.4 c0.4-1.2,1.6-2.1,2.9-2.1c0.1,0,0.2,0,0.3,0l0.5,0.1c0.1,0,0.2,0,0.3-0.1l0.2-0.4c0.6-1.3,1.9-2.2,3.3-2.3c1,0,2,0.3,2.8,1 c0.7,0.7,1.2,1.7,1.2,2.7c0,0.2,0,0.4-0.1,0.6l-0.1,0.7c0,0.1,0.1,0.3,0.2,0.3l0.6,0.1c1,0.2,1.8,0.9,2,1.9c0.1,0.7,0,1.4-0.5,2 C27.5,22.7,26.8,23,26.1,23z"
+                  ></path>
+                  <path
+                    fill="#fff"
+                    d="M21.5,24.1c-0.1,0-0.3,0-0.4-0.1L20,22.8l-1.2,1.2c-0.2,0.2-0.5,0.2-0.7,0s-0.2-0.5,0-0.7l1.5-1.5 c0.2-0.2,0.5-0.2,0.7,0l1.5,1.5c0.2,0.2,0.2,0.5,0,0.7C21.8,24,21.7,24.1,21.5,24.1z"
+                  ></path>
+
+                  <path
+                    fill="#fff"
+                    d="M20,27.6c-0.3,0-0.5-0.2-0.5-0.5v-5c0-0.3,0.2-0.5,0.5-0.5s0.5,0.2,0.5,0.5v5 C20.5,27.3,20.3,27.6,20,27.6z"
+                  ></path>
                 </svg>
               </span>
               <span
                 class="font-serif text-sm font-light"
                 [ngClass]="toggleState ? 'textopen' : 'textclosed'"
-                >Table View</span
+                >Upload Data</span
+              >
+            </a>
+          </li>
+          <li>
+            <a
+              routerLink="/delete-form"
+              [routerLinkActive]="'active'"
+              class="flex flex-col items-center flex-nowrap"
+            >
+              <span
+                class="flex items-center justify-center text-[#bbbbc3] hover:bg-[#5a6367] hover:text-white h-12 w-12 rounded-2xl active:!text-white"
+              >
+                <svg
+                  viewBox="-3 -12 70 70"
+                  height="26px"
+                  width="26px"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"
+                  fill="none"
+                >
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <g
+                      id="Page-1"
+                      stroke="none"
+                      stroke-width="1"
+                      fill="none"
+                      fill-rule="evenodd"
+                      sketch:type="MSPage"
+                    >
+                      <g
+                        id="Cloud-delete"
+                        sketch:type="MSLayerGroup"
+                        transform="translate(1.000000, 1.000000)"
+                        stroke-width="3"
+                        stroke="#bbbbc3"
+                      >
+                        <g id="Group" sketch:type="MSShapeGroup">
+                          <path
+                            d="M14.7,8.9 C17.6,3.6 23.3,0 29.8,0 C39.3,0 47,7.6 47,17.1 C47,18.4 46.8,19.7 46.6,20.9"
+                            id="Shape"
+                          ></path>
+                          <path
+                            d="M24.6,36 L13.6,36 C6.1,36 0,29.9 0,22.5 C0,15 6.1,9 13.6,9 C17.1,9 20.3,10.3 22.7,12.4"
+                            id="Shape"
+                          ></path>
+                          <path
+                            d="M47.4,14.5 C48.5,14.1 49.7,14 50.9,14 C57,14 62,18.9 62,25 C62,31.1 57,36 50.9,36 L39.8,36"
+                            id="Shape"
+                          ></path>
+                        </g>
+                        <path
+                          d="M39.8,36.4 L36.3,32.9 L39.7,29.5 L35.5,25.2 L32,28.7 L28.5,25.2 L24.3,29.5 L27.8,33 L24.3,36.5 L28.5,40.7 L32,37.2 L35.5,40.8 L39.8,36.4 Z"
+                          id="Shape"
+                          stroke="#ffffff"
+                          sketch:type="MSShapeGroup"
+                        ></path>
+                      </g>
+                    </g>
+                  </g>
+                </svg>
+              </span>
+              <span
+                class="font-serif text-sm font-light"
+                [ngClass]="toggleState ? 'textopen' : 'textclosed'"
+                >Delete Items</span
               >
             </a>
           </li>
@@ -323,7 +323,7 @@ import { SettingsService } from '../../services/settings.service';
               class="flex flex-col items-center"
             >
               <span
-                class="flex items-center justify-center text-[#0fc8f6] hover:bg-[#5a6367] hover:text-[#0fc8f6] h-12 w-12 rounded-2xl active:!text-white"
+                class="flex items-center justify-center text-[#bbbbc3] hover:bg-[#5a6367] hover:text-white h-12 w-12 rounded-2xl active:!text-white"
               >
                 <svg
                   viewBox="0 0 192 192"
@@ -340,7 +340,7 @@ import { SettingsService } from '../../services/settings.service';
                   ></g>
                   <g id="SVGRepo_iconCarrier">
                     <path
-                      fill="#0fc8f6"
+                      fill="#bbbbc3"
                       d="M18.5 46v-6a6 6 0 0 0-4.243 10.243L18.5 46ZM42 52h104V40H42v12Zm118 14v60h12V66h-12Zm-14 74H62v12h84v-12ZM42 40H18.5v12H42V40Zm6 86V76.127H36V126h12ZM14.257 50.243l18.814 18.813 8.485-8.485-18.813-18.814-8.486 8.486ZM48 76.127a22 22 0 0 0-6.444-15.556l-8.485 8.485A10 10 0 0 1 36 76.127h12ZM62 140c-7.732 0-14-6.268-14-14H36c0 14.359 11.64 26 26 26v-12Zm98-14c0 7.732-6.268 14-14 14v12c14.359 0 26-11.641 26-26h-12Zm-14-74c7.732 0 14 6.268 14 14h12c0-14.36-11.641-26-26-26v12Z"
                     ></path>
                     <path
@@ -367,7 +367,7 @@ import { SettingsService } from '../../services/settings.service';
               class="flex flex-col items-center"
             >
               <span
-                class="flex items-center justify-center text-[#0fc8f6] hover:bg-[#5a6367] hover:text-[#0fc8f6] h-12 w-12 rounded-2xl"
+                class="flex items-center justify-center text-[#bbbbc3] hover:bg-[#5a6367] hover:text-white h-12 w-12 rounded-2xl"
               >
                 <svg
                   class="w-6 h-6"
@@ -400,48 +400,6 @@ import { SettingsService } from '../../services/settings.service';
           </li>
         </ul>
       </div>
-      <svg
-        aria-hidden="true"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.5"
-        width="24"
-        height="24"
-        viewBox="-.5 0 24 24"
-        xml:space="preserve"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          fill="#fff"
-          d="M24.5,28.5h-9c-1.4,0-2.5-1.1-2.5-2.5V14c0-1.4,1.1-2.5,2.5-2.5h9c1.4,0,2.5,1.1,2.5,2.5v12 C27,27.4,25.9,28.5,24.5,28.5z M15.5,12.5c-0.8,0-1.5,0.7-1.5,1.5v12c0,0.8,0.7,1.5,1.5,1.5h9c0.8,0,1.5-0.7,1.5-1.5V14 c0-0.8-0.7-1.5-1.5-1.5H15.5z"
-        ></path>
-        <path
-          fill="#231815"
-          d="M26,16h-8c-0.3,0-0.5-0.2-0.5-0.5S17.7,15,18,15h8c0.3,0,0.5,0.2,0.5,0.5S26.3,16,26,16z"
-        ></path>
-        <path
-          fill="#231815"
-          d="M26,20.5h-8c-0.3,0-0.5-0.2-0.5-0.5s0.2-0.5,0.5-0.5h8c0.3,0,0.5,0.2,0.5,0.5S26.3,20.5,26,20.5z"
-        ></path>
-        <path
-          fill="#231815"
-          d="M26,25h-8c-0.3,0-0.5-0.2-0.5-0.5S17.7,24,18,24h8c0.3,0,0.5,0.2,0.5,0.5S26.3,25,26,25z"
-        ></path>
-        <path
-          fill="#231815"
-          d="M15,16c-0.1,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.1-0.2-0.1-0.3c0-0.1,0-0.3,0.1-0.4c0.2-0.2,0.5-0.2,0.7,0 c0.1,0.1,0.2,0.2,0.2,0.4c0,0.1-0.1,0.3-0.2,0.3C14.3,15.9,14.1,16,14,16z"
-        ></path>
-        <path
-          fill="#231815"
-          d="M15,20.5c-0.1,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.1-0.2-0.1-0.3c0-0.1,0-0.3,0.1-0.4c0.2-0.2,0.5-0.2,0.7,0 c0.1,0.1,0.2,0.2,0.2,0.4c0,0.1-0.1,0.3-0.2,0.3C14.3,20.4,14.1,20.5,14,20.5z"
-        ></path>
-        <path
-          fill="#231815"
-          d="M15,25c-0.1,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.1-0.2-0.1-0.3c0-0.1,0-0.3,0.1-0.4c0.2-0.2,0.5-0.2,0.7,0 c0.1,0.1,0.2,0.2,0.2,0.4c0,0.1-0.1,0.3-0.2,0.3C14.3,24.9,14.1,25,14,25z"
-        ></path>
-      </svg>
     </div>
   `,
   styles: [

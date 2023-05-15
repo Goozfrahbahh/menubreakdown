@@ -11,6 +11,8 @@ import {
   stagger,
   animate,
 } from '@angular/animations';
+import { Router } from '@angular/router';
+import { ProviderService } from '../../shared/services/provider.service';
 
 @Component({
   selector: 'app-delete-form',
@@ -137,7 +139,9 @@ export class DeleteFormComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   constructor(
     private uploadFormService: UploadFormService,
-    private menuExtractionService: MenuExtractionService
+    private menuExtractionService: MenuExtractionService,
+    private router: Router,
+    private provider: ProviderService
   ) {}
 
   ngOnInit() {
@@ -165,6 +169,8 @@ export class DeleteFormComponent implements OnInit, OnDestroy {
 
   onDelete() {
     this.menuExtractionService.deleteMenuBreakdown(this.id);
+    this.provider.setUp('deleted');
+    this.router.navigate(['/view']);
   }
 
   ngOnDestroy(): void {

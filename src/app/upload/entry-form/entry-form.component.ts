@@ -322,7 +322,8 @@ export class EntryFormComponent implements OnInit, OnDestroy {
       totals: this.totals,
     };
     this.menuExtractionService.addMenuBreakdown(this.menubreakdown);
-    this.router.navigate(['/message-center']);
+    this.provider.setUp('update');
+    this.router.navigate(['/view']);
   }
 
   ngOnDestroy() {

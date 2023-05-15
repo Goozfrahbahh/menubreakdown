@@ -5,9 +5,17 @@ import { LogMessage, Success } from '../models/logs';
 @Injectable({ providedIn: 'root' })
 export class MessageService {
   messages: any[] = [];
+  quotes: string[] = [
+    "You never really know the true quality of someone's character until the road gets rocky",
+    'Start where you are. Use what you have. Do what you can. --Arthur Ashe',
+  ];
   message: any;
   oldMessages: any[] = [];
   logMessages: any[] = [];
+  protected quotesSubject: BehaviorSubject<string[]> = new BehaviorSubject<
+    string[]
+  >(this.quotes);
+  quotes$ = this.quotesSubject.asObservable();
   protected messagesSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
     null
   );

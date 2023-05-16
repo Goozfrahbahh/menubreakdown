@@ -73,7 +73,7 @@ import { ProviderService } from '../../../shared/services/provider.service';
       </div>
       <div
         *ngIf="filtered.length > 0"
-        [@inOutPaneAnimation2]="filtered.length > 0"
+        [@inOutPaneAnimation2]="selection === true"
         class="flex h-full max-w-fit border-4 z-10 shadow-xl border-zinc-800/80 dark:divide-gray-700 dark:bg-zinc-700 dark:bg-opacity-50 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-zinc-900 via-zinc-800/20 to-zinc-900  overflow-hidden"
       >
         <div class="flex flex-col overflow-x-hidden">
@@ -208,6 +208,7 @@ export class MenuEditorComponent implements OnInit, OnDestroy {
   resetSelected: GroupEntreeList;
   selectedMenuItem: boolean = false;
   private destroy$ = new Subject<void>();
+  selection: boolean;
 
   constructor(
     private menuService: MenuService,
@@ -329,6 +330,11 @@ export class MenuEditorComponent implements OnInit, OnDestroy {
       []
     );
     const data = allCategoryItems.sort((a, b) => a.item.localeCompare(b.item));
+    if (data.length < 1) {
+      this.selection = false;
+    } else {
+      this.selection = true;
+    }
     console.log(data);
     this.menuService.updateFilteredList(data);
   }

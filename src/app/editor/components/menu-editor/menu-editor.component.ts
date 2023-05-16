@@ -172,7 +172,7 @@ import { ProviderService } from '../../../shared/services/provider.service';
       ]),
       transition(':leave', [
         style({ width: '100%' }), //apply default styles before animation starts
-        animate('500ms ease-out', style({ width: 0, postion: 'absolute' })),
+        animate('500ms ease', style({ width: 0, postion: 'absolute' })),
       ]),
     ]),
     trigger('editMenu', [

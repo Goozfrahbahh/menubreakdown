@@ -25,7 +25,7 @@ import { ContentComponent } from '../content/content.component';
 @Component({
   selector: 'app-table',
   template: `
-    <div class="container-table min-w-[450px]">
+    <div class="container-table min-w-[800px]">
       <app-content #content [dataList]="dataList"></app-content>
       <div class="mt-2">
         <div class="-mx-4 -my-2 overflow-x-hidden sm:-mx-6 lg:-mx-8">

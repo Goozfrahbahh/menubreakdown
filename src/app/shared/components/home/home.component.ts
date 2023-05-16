@@ -4,7 +4,7 @@ import { Subject, debounceTime, map, take, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-home',
-  template: `
+  template: `f
     <div
       class="min-h-screen bg-transparent shadow-lg flex flex-col justify-center"
     >
@@ -39,8 +39,7 @@ import { Subject, debounceTime, map, take, takeUntil } from 'rxjs';
           ></p>
         </div>
       </div>
-    </div>
-  `,
+    </div> `,
 })
 export class HomeComponent implements OnInit {
   messages: string[] = [];

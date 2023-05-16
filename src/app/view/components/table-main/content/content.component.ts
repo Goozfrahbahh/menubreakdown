@@ -126,7 +126,7 @@ import { InventoryTableData } from '../../../models/inventory';
       </div>
       <div class="px-1"></div>
       <div
-        class="relative flex overflow-hidden items-center group max-w-[140px] ml-1 mt-4 md:mt-0"
+        class="relative flex overflow-hidden items-center group w-[250px] ml-1 mt-4 md:mt-0"
         *ngIf="!tableView"
       >
         <span class="absolute max-w-fit z-20">
@@ -153,7 +153,7 @@ import { InventoryTableData } from '../../../models/inventory';
         />
       </div>
       <div
-        class="relative flex items-center max-w-[150px] mt-4 md:mt-0"
+        class="relative flex items-center w-[250px] mt-4 md:mt-0"
         *ngIf="tableView"
       >
         <span class="absolute max-w-fit">

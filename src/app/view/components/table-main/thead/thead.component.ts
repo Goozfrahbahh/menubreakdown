@@ -22,7 +22,7 @@ import { TableService } from '../../../services/table.service';
       >
         <th
           scope="col"
-          class="px-10 pl-9 pr-9 w-[185px] align-middle text-left text-xs font-serif rtl:text-right text-gray-700 dark:text-[#ffcd58]"
+          class="px-10 pl-9 pr-9 w-[260px] align-middle text-left text-sm font-serif rtl:text-right text-gray-700 dark:text-gray-400"
         >
           <button class="items-start text-left gap-x-3 focus:outline-none">
             <span>Menu Entree's</span>
@@ -69,9 +69,9 @@ import { TableService } from '../../../services/table.service';
 
         <th
           scope="col"
-          class="px-12 py-4 w-[50px] align-middle text-xs font-semibold font-serif rtl:text-right text-gray-700 dark:text-[#ffcd58]"
+          class="px-12 py-4 w-[100px] align-middle text-sm font-semibold font-serif rtl:text-right text-gray-700 dark:text-gray-400"
         >
-          <div class="items-center text-center gap-x-3 focus:outline-none">
+          <div class="pl-4 items-center text-center gap-x-3 focus:outline-none">
             Sold
             <ng-container *ngIf="sortSold.direction === 'asc'">
               <button
@@ -116,7 +116,7 @@ import { TableService } from '../../../services/table.service';
 
         <th
           scope="col"
-          class="px-4 pl-10 pr-9 w-[89px] align-middle text-xs font-semibold font-serif rtl:text-right text-gray-700 dark:text-[#ffcd58]"
+          class="px-4 pl-10 pr-9 w-[89px] align-middle text-sm font-semibold font-serif rtl:text-right text-gray-700 dark:text-gray-400"
         >
           <div class="items-center text-center gap-x-3 focus:outline-none">
             Date

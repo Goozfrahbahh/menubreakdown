@@ -11,7 +11,9 @@ import { TableService } from '../../../services/table.service';
       *ngFor="let breakdown of dataList"
       class="hover:bg-zinc-800 hover:bg-opacity-90 table-row"
     >
-      <td class="px-10 pl-9 pr-9 text-sm font-medium whitespace-nowrap">
+      <td
+        class="px-10 pl-9 pr-9 w-[260px] text-sm font-medium whitespace-nowrap"
+      >
         <div>
           <h2 class="tracking-wider text-gray-700 dark:text-white ">
             {{ breakdown.item }}
@@ -28,14 +30,16 @@ import { TableService } from '../../../services/table.service';
           </div>
         </div>
       </td>
-      <td class="px-24 py-4 text-sm font-medium whitespace-nowrap w-[50px]">
+      <td
+        class="px-14 py-4 text-center text-sm font-medium whitespace-nowrap w-[100px]"
+      >
         <div
-          class="inline px-3 py-1 font-sans text-sm font-normal rounded-full text-green-500 dark:text-green-500 gap-x-2 bg-zinc-600/60 dark:bg-zinc-600/30"
+          class="inline px-3 py-1 font-sans text-sm font-normal rounded-full text-lime-500 dark:text-lime-500 gap-x-2 bg-zinc-600/60 dark:bg-zinc-600/30"
         >
           {{ breakdown.sold }}
         </div>
       </td>
-      <td class="px-4 pl-12 pr-10 min-w-full text-sm whitespace-nowrap">
+      <td class="px-4 pl-12 pr-10 w-[89px] text-sm whitespace-nowrap">
         <div>
           <h4 class="text-gray-700 font-sans dark:text-gray-200">
             {{ breakdown.date | date : 'shortDate' }}

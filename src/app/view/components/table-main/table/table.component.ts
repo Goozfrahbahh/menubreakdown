@@ -25,7 +25,7 @@ import { ContentComponent } from '../content/content.component';
 @Component({
   selector: 'app-table',
   template: `
-    <div class="container-table min-w-[800px]">
+    <div class="container-table w-full">
       <app-content #content [dataList]="dataList"></app-content>
       <div class="mt-2">
         <div class="-mx-4 -my-2 overflow-x-hidden sm:-mx-6 lg:-mx-8">
@@ -51,7 +51,7 @@ import { ContentComponent } from '../content/content.component';
               *ngIf="tableView"
             >
               <table
-                class="w-full flex flex-col table-auto divide-gray-200nax-h-[50vh] dark:divide-gray-700 border-collapse"
+                class="min-w-full flex flex-col table-auto divide-gray-200nax-h-[50vh] dark:divide-gray-700 border-collapse"
               >
                 <app-thead-inventory></app-thead-inventory>
                 <app-tbody-inventory

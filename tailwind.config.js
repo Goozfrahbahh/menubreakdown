@@ -43,6 +43,20 @@ module.exports = {
 			animation: {
 				'fade-in-down': 'fade-in-down 0.5s ease-out'
 			},
+			keyframes: {
+				'in-out-ease': {
+					'0%': {
+						width: '100%',
+					},
+					'100%': {
+						width: 0,
+						position: 'absolute'
+					},
+				}
+			},
+			animation: {
+				'in-out-ease': 'fade-in-down 2s cubic-bezier( 0.455, 0.03, 0.515, 0.955 )'
+			},
 		},
 	},
 	plugins: [require('@tailwindcss/typography')]
